@@ -18,14 +18,26 @@
 |
 */
 
-Route::group(['namespace' => 'Front', 'prefix' => 'client'], function() {
+
+
+
+Route::get('login','Front\Auth\LoginController@index')->name('login');
+Route::post('login','Front\Auth\LoginController@handleProviderCallback')->name('login.submit');
+
+
+Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
     // Route::get('client-register', 'AuthController@clientRegister')->name('client.register');
     // Route::post('client-register-save', 'AuthController@clientRegisterSave')->name('client.save');
     // Route::get('client-login', 'AuthController@clientLogin')->name('client.login');
     // Route::post('client-login-save', 'AuthController@clientLoginSave')->name('client.logged');
+<<<<<<< HEAD
     Route::get('/front', 'FrontController@index')->name('front');
     Route::get('/front/products', 'FrontController@products')->name('products');
     Route::get('/front/product/{id}', 'FrontController@product')->name('product.show');
+=======
+    Route::get('/home', 'FrontController@index')->name('front.index');
+    Route::get('/products', 'FrontController@products')->name('front.products');
+>>>>>>> 485647a6128a7ea121e94b245bfd452901f2185e
 
 });
 
@@ -45,7 +57,7 @@ Route::get('payments/paypal/express-checkout', 'PayPalController@getExpressCheck
 Route::get('payments/paypal/express-checkout-success', 'PayPalController@getExpressCheckoutSuccess');
 Route::get('payments/paypal', 'PayPalController@index')->name('paypal.index');
 
-Route::get('firebase/sw-js','AppSettingController@initFirebase');
+// Route::get('firebase/sw-js','AppSettingController@initFirebase');
 
 
 Route::get('storage/app/public/{id}/{conversion}/{filename?}', 'UploadController@storage');
