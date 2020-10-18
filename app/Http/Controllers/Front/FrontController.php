@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Product;
 use Spatie\MediaLibrary\Models\Media;
 
@@ -24,8 +25,23 @@ class FrontController extends Controller
     public function products()
     {
         $products = Product::all();
-        
-        return view('front.products', compact('products'));
+
+        // $customers = Brand::all();
+    
+        // $grouped = $customers->groupBy(function($item,$key) {
+        //     // dd(json_encode($item->name)[2]);
+        //     return json_encode($item->name)[2];     //treats the name string as an array
+        // });
+        // $brands = Brand::all()->pluck('name', 'id');
+        $brands = Brand::select('name', 'id')->get();
+        return view('front.products', compact('products', 'brands'));
+    }
+
+    public function product($id)
+    {
+        $product = Product::findOrFail($id);
+
+        return view('front.product', compact('product'));
     }
 
 }

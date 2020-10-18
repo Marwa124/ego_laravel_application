@@ -25,6 +25,7 @@ Route::group(['namespace' => 'Front', 'prefix' => 'client'], function() {
     // Route::post('client-login-save', 'AuthController@clientLoginSave')->name('client.logged');
     Route::get('/front', 'FrontController@index')->name('front');
     Route::get('/front/products', 'FrontController@products')->name('products');
+    Route::get('/front/product/{id}', 'FrontController@product')->name('product.show');
 
 });
 
