@@ -23,6 +23,8 @@
 
 Route::get('login','Front\Auth\LoginController@index')->name('login');
 Route::post('login','Front\Auth\LoginController@handleProviderCallback')->name('login.submit');
+Route::get('register','Front\Auth\LoginController@register')->name('front.register');
+Route::post('register','Front\Auth\LoginController@registerProcess')->name('register.submit');
 
 
 Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
@@ -30,6 +32,7 @@ Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
     // Route::post('client-register-save', 'AuthController@clientRegisterSave')->name('client.save');
     // Route::get('client-login', 'AuthController@clientLogin')->name('client.login');
     // Route::post('client-login-save', 'AuthController@clientLoginSave')->name('client.logged');
+
     Route::get('/home', 'FrontController@index')->name('front.index');
     Route::get('/products', 'FrontController@products')->name('front.products');
     Route::get('/product/{id}', 'FrontController@product')->name('front.product.show');

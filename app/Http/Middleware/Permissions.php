@@ -23,6 +23,8 @@ class Permissions
         'debugbar*',
         'login',
         'login.submit',
+        'front.register',
+        'register.submit',
 
        
     ];
@@ -49,7 +51,7 @@ class Permissions
         if(auth()->check()){
             $permission = $request->route()->getName();
           
-        if($permission == 'login'){
+        if($permission == 'login' || $permission == 'front.register'){
             return  redirect('front/home');
 
         }

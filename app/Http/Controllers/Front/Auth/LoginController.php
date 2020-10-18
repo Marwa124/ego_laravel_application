@@ -7,9 +7,13 @@ use App\Models\User;
 use App\Repositories\RoleRepository;
 use App\Repositories\UploadRepository;
 use App\Repositories\UserRepository;
+use function Couchbase\basicDecoderV1;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -109,5 +113,66 @@ class LoginController extends Controller
 
         auth()->login($user,true);
         return redirect('front/home');
+    }
+
+
+
+
+    public function register()
+    {
+        return view('front.auth.register');
+    }
+
+    /**
+     * Obtain the user information from Facebook.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function registerProcess()
+    {
+        try{
+            $validate = \Validator::make(\request()->all(),[
+                'username'   => 'required|min:3|max:15',
+                'email'   => 'required|email|unique:users,email',
+                'password'   => 'required|min:8|confirmed',
+            ]);
+
+            if($validate->fails() ){
+                return back();
+            }
+
+            if(\request('privacy') != 1){
+                return back();
+
+            }
+
+
+            $user =  User::create(
+                [
+                    'name' =>  \request('username'),
+                    'email' =>  \request('email'),
+                    'password' =>  Hash::make(\request('password')),
+                ]
+            );
+
+            $role = Role::findOrFail(4);
+            $user->assignRole($role);
+
+            $user = User::where('email',\request('email'))->first();
+
+            if(!$user){
+                Flash::error('Wrong Email or Password');
+            }
+
+            auth()->login($user,true);
+            return redirect('front/home');
+
+        }
+        catch (\Exception $e){
+            return back();
+
+        }
+
+
     }
 }
