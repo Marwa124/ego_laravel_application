@@ -28,6 +28,9 @@ Route::group(['namespace' => 'Front', 'prefix' => 'client'], function() {
 
 });
 
+
+Route::group(['prefix' => 'admin'], function() {
+
 Route::get('login/{service}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback');
 Auth::routes();
@@ -201,3 +204,4 @@ Route::middleware('auth')->group(function () {
     ]);
 });
 
+});

@@ -56,7 +56,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{url('dashboard')}}" class="nav-link">{{trans('lang.dashboard')}}</a>
+                    <a href="{{url('admin/dashboard')}}" class="nav-link">{{trans('lang.dashboard')}}</a>
                 </li>
             </ul>
 
