@@ -1,0 +1,76 @@
+// **************Media Queries***************
+// nav
+@media screen and (min-width: 991px) {
+    .navbar-brand-centered {
+        position: absolute;
+        left: 43%;
+        display: block;
+        width: 160px;
+        text-align: center;
+    }
+    .navbar > .container .navbar-brand-centered,
+    .navbar > .container-fluid .navbar-brand-centered {
+        margin-left: -80px;
+    }
+    section h5 {
+        font-size: 2rem;
+    }
+    .responsive-filter {
+        display: none;
+    }
+    
+}
+
+
+@media (max-width: 991px) {
+    .responsive-logo {
+        width: 20% !important;
+    }
+    .hide-onTablet {
+        display: none !important;
+    }
+    .secondary-nav{
+        display: none;
+    }
+}
+@media (max-width: 1201px) {
+    .search-container {
+        input {
+            width: 78px !important;
+        }
+    }
+    .nav-link {
+        margin: 0 !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .responsive-text > * {
+        font-size: medium;
+    }
+    .responsive-text p {
+        font-size: 0.6rem;
+    }
+    .products-title {
+        font-size: 1.5rem;
+    }
+
+    .category-nav{
+        display: hidden;
+    }
+    // cart
+
+    .position-quantity-responsive {
+        position: absolute;
+        top: 60%;
+        right: 0%;
+    }
+    .position-icon-responsive {
+        position: absolute;
+        bottom: 3%;
+        right: 0;
+    }
+    .w-small-100 {
+        width: 100% !important;
+    }
+}

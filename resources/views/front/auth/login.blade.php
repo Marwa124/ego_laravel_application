@@ -43,7 +43,7 @@
         <div class="text-center mb-3">
           <p href="index.html" class="mb-0" style="font-size: small;">HAVE YOU PLACED AN ORDER WITHOUT
             CREATING AN ACCOUNT? </p>
-          <a href="index.html" style="font-size: small; text-decoration: underline;">CLICK HERE TO MANAGE YOUR
+          <a href="{{route('front.register')}}" style="font-size: small; text-decoration: underline;">CLICK HERE TO MANAGE YOUR
             ORDER.</a>
         </div>
       </form>

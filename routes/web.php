@@ -23,6 +23,8 @@
 
 Route::get('login','Front\Auth\LoginController@index')->name('login');
 Route::post('login','Front\Auth\LoginController@handleProviderCallback')->name('login.submit');
+Route::get('register','Front\Auth\LoginController@register')->name('front.register');
+Route::post('register','Front\Auth\LoginController@registerProcess')->name('register.submit');
 
 
 Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {

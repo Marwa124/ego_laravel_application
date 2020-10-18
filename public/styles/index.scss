@@ -1,0 +1,14 @@
+@import "./media.scss";
+
+
+//links
+
+.highlighted-text {
+    border-bottom: 1px solid black;
+    cursor: pointer !important;
+}
+
+.modal-dialog {
+    max-width: 800px;
+    margin: 1.75rem auto;
+}

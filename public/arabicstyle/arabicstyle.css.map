@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,UAAU,CAAC;EACP,KAAK,EAAE,KAAK;EACZ,IAAI,EAAC,GAAG;CACX;;AAED,AAAA,eAAe,CAAC;EACZ,YAAY,EAAE,KAAK;EACnB,WAAW,EAAE,KAAK;CACnB",
+    "sources": [
+        "arabicstyle.scss"
+    ],
+    "names": [],
+    "file": "arabicstyle.css"
+}
