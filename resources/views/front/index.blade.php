@@ -564,12 +564,10 @@
           <ul style="list-style-type: none; padding: 0; line-height: 2.4;">
           <li><a style="font-size:small" href="{{route('products')}}">All Products</a></li>
             <li><a style="font-size:small" href="">New Arrivals</a></li>
-            <li><a style="font-size:small" href="">Bags</a></li>
-            <li><a style="font-size:small" href="">Belts</a></li>
-            <li><a style="font-size:small" href="">Footwear</a></li>
-            <li><a style="font-size:small" href="">Accessories</a></li>
-            <li><a style="font-size:small" href="">All Products</a></li>
-            <li><a style="font-size:small" href="">New Arrivals</a></li>
+            <?php $categories = App\Models\Category::latest()->take(4)->get(); ?>
+            @foreach ($categories as $item)
+                <li><a style="font-size:small" href="">{{$item->name}}</a></li>
+            @endforeach
           </ul>
         </div>
         <div class="col-6 col-lg-3  px-4 py-4 responsive-text">

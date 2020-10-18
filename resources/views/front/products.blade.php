@@ -872,19 +872,27 @@
                             <div class="w-auto position-relative">
                                 <div class="fav-icon">
                                     <i class="heart-icon far fa-heart px-1"></i>
+                                    {{-- <i class="heart-icon {{$item->is_favorite ? 'bg-danger' : ''}}"></i> --}}
                                 </div>
                                 <?php 
-                                    // dd(env('App_Url').App\Models\Product::find(188)->getMedia());
-                                    dd(env('App_Url').App\Models\Product::find(188)->getMedia('image')->getUrl('image'));
+                                    // dd(env('App_Url').App\Models\Product::find(188)->image);
+                                    // dd(App\Models\Product::find(188)->has_media);
+                                    // dd(App\Models\Product::find(188)->has_media->getUrl());
                                 ?>
-                                <a href="product.html">
-                                    <img class="img-fluid w-100 mb-3" src="{{env('App_Url').$item->getUrl()}}" alt="">
-                                </a>
+                                    @if ($item->getMedia('image')->first() != null)
+                                        
+                                    <a class="img-fluid w-100 mb-3" href="{{env('App_Url'). 'storage/app/public/' . $item->getMedia('image')->first()->id .'/'. $item->getMedia('image')->first()->file_name}}" target="_blank">
+                                         <img class="img-fluid" src="{{env('App_Url'). 'storage/app/public/' . $item->getMedia('image')->first()->id .'/'. $item->getMedia('image')->first()->file_name}}" alt=""> 
+                                         {{-- <img class="img-fluid" src="{{$item->image->getUrl()}}" alt=""> --}}
+    
+                                        {{-- <img class="img-fluid w-100 mb-3" src="{{env('App_Url').$item->getUrl()}}" alt=""> --}}
+                                    </a>
+                                    @endif
                             </div>
                             <div>
                                 <div>
                                     <h5 class="mb-1">{{$item->name}}</h5>
-                                    <p class="mb-0">Charlie white leg pants</p>
+                                    <p class="mb-0">{{$item->description}}</p>
                                     <p class="mb-0">{{$item->price}}</p>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center">
@@ -892,7 +900,6 @@
                                     <?php
                                         $rating = 0;
                                         foreach ($item->productReviews()->get() as $key => $value) {
-                                        // foreach ($item->productReviews() as $key => $value) {
                                             if($value->rate <= 2)
                                             {
                                                 $rating -=$value->rate;
@@ -985,12 +992,10 @@
                     <ul style="list-style-type: none; padding: 0; line-height: 2.4;">
                         <li><a style="font-size:small" href="">All Products</a></li>
                         <li><a style="font-size:small" href="">New Arrivals</a></li>
-                        <li><a style="font-size:small" href="">Bags</a></li>
-                        <li><a style="font-size:small" href="">Belts</a></li>
-                        <li><a style="font-size:small" href="">Footwear</a></li>
-                        <li><a style="font-size:small" href="">Accessories</a></li>
-                        <li><a style="font-size:small" href="">All Products</a></li>
-                        <li><a style="font-size:small" href="">New Arrivals</a></li>
+                        <?php $categories = App\Models\Category::latest()->take(4)->get(); ?>
+                        @foreach ($categories as $item)
+                            <li><a style="font-size:small" href="">{{$item->name}}</a></li>
+                        @endforeach
                     </ul>
                 </div>
                 <div class="col-6 col-lg-3  px-4 py-4 responsive-text">
