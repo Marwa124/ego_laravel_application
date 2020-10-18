@@ -39,8 +39,8 @@ class FrontController extends Controller
 
     public function product($id)
     {
-        $product = Product::findOrFail($id);
-
+        $product = Product::findOrFail($id)->load('brand');
+        
         return view('front.product', compact('product'));
     }
 
