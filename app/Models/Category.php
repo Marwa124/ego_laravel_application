@@ -79,6 +79,14 @@ class Category extends Model implements HasMedia
         
     ];
 
+    public function child() {
+        return $this->belongsTo(Category::class, 'parent', 'id') ;
+    }
+
+    // public function childs() {
+    //     return $this->hasMany(Category::class, 'parent_id', 'id') ;
+    // }
+
     /**
      * @param Media|null $media
      * @throws \Spatie\Image\Exceptions\InvalidManipulation

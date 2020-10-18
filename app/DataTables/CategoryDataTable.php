@@ -60,7 +60,7 @@ class CategoryDataTable extends DataTable
 
             ],
             [
-                'data' => '',
+                'data' => 'child.id',
                 'title' => trans('lang.sub_category'),
 
             ],

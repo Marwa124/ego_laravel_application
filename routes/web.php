@@ -18,6 +18,16 @@
 |
 */
 
+Route::group(['namespace' => 'Front', 'prefix' => 'client'], function() {
+    // Route::get('client-register', 'AuthController@clientRegister')->name('client.register');
+    // Route::post('client-register-save', 'AuthController@clientRegisterSave')->name('client.save');
+    // Route::get('client-login', 'AuthController@clientLogin')->name('client.login');
+    // Route::post('client-login-save', 'AuthController@clientLoginSave')->name('client.logged');
+    Route::get('/front', 'FrontController@index')->name('front');
+    Route::get('/front/products', 'FrontController@products')->name('products');
+
+});
+
 Route::get('login/{service}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback');
 Auth::routes();

@@ -13,6 +13,7 @@ use Closure;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Exceptions\UnauthorizedException;
+use Spatie\Permission\Models\Permission;
 
 class Permissions
 {
@@ -39,15 +40,45 @@ class Permissions
      */
     public function handle($request, Closure $next)
     {
-        $permission = $request->route()->getName();
-        if ($this->match($request->route()) && auth()->user()->canNot($permission)) {
-            if ($permission == 'dashboard') {
-                return redirect(route('users.profile'));
-            }
-            throw new UnauthorizedException(403, trans('error.permission') . ' <b>' . $permission . '</b>');
-        }
+        // $permission = $request->route()->getName();
 
-        return $next($request);
+        // $routes = app()->routes->getRoutes();
+        // $arr = [];
+        // foreach ($routes as $key => $value) {
+        //     if ($value->getPrefix() == '/client') {
+        //         $arr[] = $value->getPrefix();
+        //         $arr[] = $value->uri;
+        //         $arr[] = $value->getActionMethod();
+        //         // $arr[] = $value;
+        //         $arr[] = $value->action;
+        //         $arr[] = url($value->uri);
+        
+        //         $routeFormat = str_replace('App\Http\Controllers\\', '', $value->action['controller']);
+        //         // dd($v);
+        //         return redirect()->action($routeFormat);
+        //     }
+        // }
+        // dd($arr);
+        $routeName = $request->route()->getName(); //user.create
+        //routes is the name of the column add in permissions table
+        $permission = Permission::whereRaw("FIND_IN_SET ('$routeName', name)")->first();
+        if($permission)
+        {
+            if(!auth()->user()->can($permission->name))
+            {
+            abort('401');
+            }
+        }
+            return $next($request);
+
+        // if ($this->match($request->route()) && auth()->user()->canNot($permission)) {
+        //     if ($permission == 'dashboard') {
+        //         return redirect(route('users.profile'));
+        //     }
+        //     throw new UnauthorizedException(403, trans('error.permission') . ' <b>' . $permission . '</b>');
+        // }
+
+        // return $next($request);
     }
 
     private function match(\Illuminate\Routing\Route $route)
