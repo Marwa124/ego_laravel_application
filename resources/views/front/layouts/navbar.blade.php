@@ -417,28 +417,3 @@
       </div>
     </div>
   </div>
-
-  @push('scripts')
-      <script>
-      //   $(document).on('click', '#search-btn', function(){
-      //   var inputSearch = $('input[name="search"]').val();
-      //   $.ajax({
-      //     url: '{{url('front/search?keyword=')}}' + inputSearch,
-      //     type: 'get',
-      //     success: function(data){
-      //       // console.log(data);
-      //         $.each(data.data, function(i, val){
-      //             console.log(JSON.stringify(val, null, 4));
-      //             var a =JSON.stringify(val);
-      //             for (var i in a){
-      //               console.log(i.title);
-      //           }
-      //         });
-      //     },
-      //     error: function(x, y, z){
-      //       console.log(x + ' ' + y + ' ' + z);
-      //     }
-      //   });
-      // });
-      </script>
-  @endpush

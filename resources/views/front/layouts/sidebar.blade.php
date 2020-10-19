@@ -71,10 +71,12 @@
                             <h6 class="text-capitalize">{{$key}}</h6>
                             <div class="checkboxes ml-3">
                                 @foreach ($items as $item)
+                                <?php $count = App\Models\Brand::find($item['id'])->products()->count();  ?> 
+                                
                                     <div class="form-check mb-1">
                                         <input type="checkbox" class="form-check-input" id="check1">
                                         <label class="form-check-label" for="check1">{{$item['name']}} <small
-                                                class="text-muted">({{count($items)}})</small></label>
+                                                class="text-muted">({{$count}})</small></label>
                                     </div>
                                     @endforeach
                                 </div>

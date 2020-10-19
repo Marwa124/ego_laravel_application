@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Arr;
 
 class Handler extends ExceptionHandler
 {
@@ -69,5 +70,23 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $exception);
+    }
+
+    public function unauthenticated($request, AuthenticationException $exception)
+    {
+        // if ($request->expectsJson()) {
+        //     return response()->json(['error' => 'Unauthenticated.'], 200);
+        // }
+        // $guard = Arr::get($exception->guards(), 0);
+        // // dd($guard);
+        // switch ($guard) {
+        //     case 'client':
+        //         $login = 'client.login';
+        //         break;
+        //     default:
+        //         $login = 'login';
+        //         break;
+        // }
+        // return redirect()->route($login);
     }
 }

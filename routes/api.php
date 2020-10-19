@@ -68,7 +68,7 @@ Route::resource('options', 'API\OptionAPIController');
 
 
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('auth:api')->prefix('v0')->group(function () {
     Route::group(['middleware' => ['role:driver']], function () {
         Route::prefix('driver')->group(function () {
             Route::resource('orders', 'API\OrderAPIController');

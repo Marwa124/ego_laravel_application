@@ -41,8 +41,8 @@ class FrontController extends Controller
                 $query->where('name', 'LIKE', '%' . $request->keyword . '%');
             }
         })->latest()->paginate(10);
-        return view('front.products', compact('products'));
-        // return response()->json($products);
+        // return view('front.products', compact('products'));
+        return response()->json($products);
     }
 
     public function toggleFavorite(Request $request)
@@ -62,6 +62,6 @@ class FrontController extends Controller
         }
 
         // $favorable = $request->user()->products()->toggle($request->product_id);
-      return response()->json($favorable);
+      return response()->json($item);
     }
 }

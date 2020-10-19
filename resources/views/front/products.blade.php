@@ -228,9 +228,6 @@
                     @foreach ($products as $item)
                         <div class="col-6 col-md-4 mb-5">
                             <div class="w-auto position-relative">
-                                {{-- <div class="fav-icon">
-                                    <i class="heart-icon far fa-heart px-1"></i>
-                                </div> --}}
                                 <div class="fav-icon heart-icon {{$item->is_favorite ? 'bg-danger' : ''}}">
                                     <i id="{{$item->id}}" class="far fa-heart {{$item->is_favorite ? 'fas' : 'far'}}"></i>
                                 </div>
@@ -246,7 +243,7 @@
                             </div>
                             <div>
                                 <div>
-                                    <h5 class="mb-1">{{$item->name}}</h5>
+                                    <h5 class="prod-name mb-1">{{$item->name}}</h5>
                                     <p class="mb-0">{{$item->description}}</p>
                                     <p class="mb-0">{{$item->price}}</p>
                                 </div>
@@ -329,5 +326,32 @@
       }
     });
   });
+</script>
+
+
+<script>
+  $(document).on('keyup', '.search-input', function(){
+  var inputSearch = $('input[name="search"]').val();
+  $.ajax({
+    url: '{{url('front/search?keyword=')}}' + inputSearch,
+    type: 'get',
+    success: function(data){
+    //   console.log(data);
+      var itemVal = '';
+      $(".products").html('');
+      $.each(data.data, function(index, value){
+        
+        //   $(".prod-name").html(value.name)
+        //   $(".products").html(data.data);
+        $(".col-6.col-md-4.mb-5").append(itemVal);
+        console.log(value.name);
+      });
+    },
+
+    error: function(x, y, z){
+      console.log(x + ' ' + y + ' ' + z);
+    }
+  });
+});
 </script>
 @endpush
