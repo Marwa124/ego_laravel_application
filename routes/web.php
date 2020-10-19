@@ -36,6 +36,10 @@ Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
     Route::get('/home', 'FrontController@index')->name('front.index');
     Route::get('/products', 'FrontController@products')->name('front.products');
     Route::get('/product/{id}', 'FrontController@product')->name('front.product.show');
+
+
+    Route::get('search', 'FrontController@search')->name('front.search');
+    Route::post('toggle-favorite', 'FrontController@toggleFavorite')->name('favorable');
 });
 
 

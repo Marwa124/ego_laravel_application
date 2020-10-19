@@ -669,8 +669,3 @@ function load_cats( $selected = null, $cat_disabled = null ) {
     //dd( $cat_arr );
     return ( json_encode( $cat_arr, JSON_UNESCAPED_UNICODE ) );
 }
-
-// function replace_images_url($imageMediaPath)
-// {
-//     return substr_replace($imageMediaPath,"earth",6);
-// }

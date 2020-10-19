@@ -80,7 +80,7 @@ class Category extends Model implements HasMedia
     ];
 
     public function child() {
-        return $this->belongsTo(Category::class, 'parent', 'id') ;
+        return $this->belongsTo(Category::class, 'id', 'parent') ;
     }
 
     // public function childs() {

@@ -32,9 +32,9 @@ class BrandDataTable extends DataTable
 
         $dataTable = $dataTable
             ->editColumn('image', function ($brand) {
-                // dd($brand->);
-                // return getMediaColumn($brand, 'image');
-                return $brand->getMediaCollection();
+                return getMediaColumn($brand, 'image');
+
+                // return $brand->getMediaCollection();
             })
             ->editColumn('updated_at', function ($brand) {
                 return getDateColumn($brand, 'updated_at');

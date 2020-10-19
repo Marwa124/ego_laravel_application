@@ -15,6 +15,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Services\DataTable;
 
+
 class CategoryDataTable extends DataTable
 {
     /**
@@ -34,18 +35,18 @@ class CategoryDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
         $columns = array_column($this->getColumns(), 'data');
         $dataTable = $dataTable
-            ->editColumn('image', function ($category) {
-                return getMediaColumn($category, 'image');
-            })
-            ->editColumn('updated_at', function ($category) {
-                return getDateColumn($category, 'updated_at');
-            })
-            ->addColumn('action', 'categories.datatables_actions')
+        ->editColumn('image', function ($category) {
+            return getMediaColumn($category, 'image');
+        })
+        ->editColumn('updated_at', function ($category) {
+            return getDateColumn($category, 'updated_at');
+        })
+        ->addColumn('action', 'categories.datatables_actions')
             ->rawColumns(array_merge($columns, ['action']));
-
-        return $dataTable;
-    }
-
+            
+            return $dataTable;
+        }
+        
     /**
      * Get columns.
      *
@@ -57,11 +58,6 @@ class CategoryDataTable extends DataTable
             [
                 'data' => 'name',
                 'title' => trans('lang.category_name'),
-
-            ],
-            [
-                'data' => 'child.id',
-                'title' => trans('lang.sub_category'),
 
             ],
             [

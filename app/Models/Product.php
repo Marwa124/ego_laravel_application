@@ -98,8 +98,29 @@ class Product extends Model implements HasMedia
     protected $appends = [
         'custom_fields',
         'has_media',
-        'market'
+        'market',
+        'is_favorite'
     ];
+
+    public function users()
+    {
+        return $this->morphToMany('App\Models\User', 'userable');
+    }
+
+    public function getIsFavoriteAttribute()
+    {
+        $client = auth()->user() ? auth()->user() : '';
+        // dd(auth()->user()->products()->find(2));
+        if($client)
+        {
+            $post = $client->products()->where('userable_id', $this->id)->first();
+            if($post){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * @param Media|null $media

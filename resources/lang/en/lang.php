@@ -981,6 +981,7 @@ return [
     'field_markets_placeholder' => 'Insert Markets',
     'field_updated_at' => 'Updated At',
     'category' => 'Category',
+    'sub_category' => 'Sub Category',
     'category_plural' => 'Categories',
     'category_desc' => 'Categories Management',
     'category_edit' => 'Edit Category',

@@ -2,7 +2,8 @@
 <html lang="{{setting('language','en')}}" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>{{setting('app_name')}} | {{setting('app_short_description')}}</title>
+    {{-- <title>{{setting('app_name')}} | {{setting('app_short_description')}}</title> --}}
+    <title>{{env('APP_NAME')}} | @yield('title_name') </title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link rel="icon" type="image/png" href="{{$app_logo}}"/>
     <!-- Tell the browser to be responsive to screen width -->

@@ -9,32 +9,21 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
 use App\Models\Product;
-use Spatie\MediaLibrary\Models\Media;
+use App\Models\Userable;
+use Illuminate\Http\Request;
 
 class FrontController extends Controller
 {
     public function index()
     {
-        // $mediaItems = Media::all();
-        // dd($mediaItems);
         return view('front.index');
     }
 
     public function products()
     {
-        $products = Product::all();
-
-        // $customers = Brand::all();
-    
-        // $grouped = $customers->groupBy(function($item,$key) {
-        //     // dd(json_encode($item->name)[2]);
-        //     return json_encode($item->name)[2];     //treats the name string as an array
-        // });
-        // $brands = Brand::all()->pluck('name', 'id');
-        $brands = Brand::select('name', 'id')->get();
-        return view('front.products', compact('products', 'brands'));
+        $products = Product::paginate(15);
+        return view('front.products', compact('products'));
     }
 
     public function product($id)
@@ -44,4 +33,35 @@ class FrontController extends Controller
         return view('front.product', compact('product'));
     }
 
+    public function search(Request $request)
+    {
+        // dd($request->all());
+        $products = Product::where(function ($query) use ($request) {
+            if ($request->has('keyword')) {
+                $query->where('name', 'LIKE', '%' . $request->keyword . '%');
+            }
+        })->latest()->paginate(10);
+        return view('front.products', compact('products'));
+        // return response()->json($products);
+    }
+
+    public function toggleFavorite(Request $request)
+    {
+        $item = Userable::where('user_id', auth()->user()->id)->where('userable_id', $request->product_id)->delete();
+
+        if (!$item) {
+            $v = new Userable();
+            $v->user_id = auth()->user()->id;
+            $v->userable_id = $request->product_id;
+            $v->userable_type = 'App\Models\Product';
+            $v->save();
+            // dd("vvvv");
+        }else{
+            Userable::where('user_id', auth()->user()->id)->where('userable_id', $request->product_id)->delete();
+            // dd('ppp');
+        }
+
+        // $favorable = $request->user()->products()->toggle($request->product_id);
+      return response()->json($favorable);
+    }
 }

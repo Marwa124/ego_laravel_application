@@ -401,11 +401,14 @@
                 </div>
               </li>
             </ul>
-            <form class="search-form">
+            <form action=""></form>
+            <form class="search-form" action="{{url('front/search')}}">
               <div class="form-group mr-3 mb-0">
                 <div class="input-wrapper d-flex align-items-center" tabindex="1">
-                  <input type="text" class="form-control search-input" placeholder="Search">
-                  <i class="fas fa-search cursor-pointer"></i>
+                  <input type="text" class="form-control search-input" name="search" placeholder="Search">
+                  <div id="search-btn">
+                    <i id="search-icon" class="fas fa-search cursor-pointer"></i>
+                  </div>
                 </div>
               </div>
             </form>
@@ -414,3 +417,28 @@
       </div>
     </div>
   </div>
+
+  @push('scripts')
+      <script>
+      //   $(document).on('click', '#search-btn', function(){
+      //   var inputSearch = $('input[name="search"]').val();
+      //   $.ajax({
+      //     url: '{{url('front/search?keyword=')}}' + inputSearch,
+      //     type: 'get',
+      //     success: function(data){
+      //       // console.log(data);
+      //         $.each(data.data, function(i, val){
+      //             console.log(JSON.stringify(val, null, 4));
+      //             var a =JSON.stringify(val);
+      //             for (var i in a){
+      //               console.log(i.title);
+      //           }
+      //         });
+      //     },
+      //     error: function(x, y, z){
+      //       console.log(x + ' ' + y + ' ' + z);
+      //     }
+      //   });
+      // });
+      </script>
+  @endpush

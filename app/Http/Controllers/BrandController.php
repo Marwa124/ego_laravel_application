@@ -154,37 +154,77 @@ class BrandController extends Controller
      */
     public function update($id, UpdateFieldRequest $request)
     {
-        $field = Brand::findOrFail($id);
+// dd($this->BrandRepository->model());
 
-        if (empty($field)) {
-            Flash::error('Field not found');
-            return redirect(route('fields.index'));
+        $category = $this->BrandRepository->findWithoutFail($id);
+
+        if (empty($category)) {
+            Flash::error('Category not found');
+            return redirect(route('categories.index'));
         }
         $input = $request->all();
-        // dd($input);
-        $customFields = $this->customFieldRepository->findByField('custom_field_model', Brand::class);
+        $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->BrandRepository->model());
         try {
-            $field = $field->update($input);
+            $category = $this->BrandRepository->update($input, $id);
+            
             if(isset($input['image']) && $input['image']){
-            $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
-            // $mediaItem = $cacheUpload->getMedia()->first();
-            // dd($input['image'] . '.jpg');
-            // dd(Brand::findOrFail($id));
-            // dd(Brand::findOrFail($id)->addMedia($input['image']. ".png")->toMediaCollection());
-            // $mediaItem = $field->addMedia($input['image'])->toMediaCollection('image');
-            // $mediaItem->copy($field, 'image');
-        }
+                $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
+                $mediaItem = $cacheUpload->getMedia('image')->first();
+                $mediaItem->copy($category, 'image');
+            }
             foreach (getCustomFieldsValues($customFields, $request) as $value){
-                $field->customFieldsValues()
+                $category->customFieldsValues()
                     ->updateOrCreate(['custom_field_id'=>$value['custom_field_id']],$value);
             }
         } catch (ValidatorException $e) {
             Flash::error($e->getMessage());
         }
 
-        Flash::success(__('lang.updated_successfully',['operator' => __('lang.field')]));
+        Flash::success(__('lang.updated_successfully',['operator' => __('lang.category')]));
 
-        return redirect(route('fields.index'));
+        return redirect(route('brands.index'));
+
+
+
+
+
+
+
+
+
+
+
+        // $field = Brand::findOrFail($id);
+
+        // if (empty($field)) {
+        //     Flash::error('Field not found');
+        //     return redirect(route('fields.index'));
+        // }
+        // $input = $request->all();
+        // // dd($input);
+        // $customFields = $this->customFieldRepository->findByField('custom_field_model', Brand::class);
+        // try {
+        //     $field = $field->update($input);
+        //     if(isset($input['image']) && $input['image']){
+        //     $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
+        //     // $mediaItem = $cacheUpload->getMedia()->first();
+        //     // dd($input['image'] . '.jpg');
+        //     // dd(Brand::findOrFail($id));
+        //     // dd(Brand::findOrFail($id)->addMedia($input['image']. ".png")->toMediaCollection());
+        //     // $mediaItem = $field->addMedia($input['image'])->toMediaCollection('image');
+        //     // $mediaItem->copy($field, 'image');
+        // }
+        //     foreach (getCustomFieldsValues($customFields, $request) as $value){
+        //         $field->customFieldsValues()
+        //             ->updateOrCreate(['custom_field_id'=>$value['custom_field_id']],$value);
+        //     }
+        // } catch (ValidatorException $e) {
+        //     Flash::error($e->getMessage());
+        // }
+
+        // Flash::success(__('lang.updated_successfully',['operator' => __('lang.field')]));
+
+        // return redirect(route('fields.index'));
     }
 
     /**
