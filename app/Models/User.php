@@ -178,6 +178,11 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(\App\Models\Cart::class, 'user_id');
     }
 
+    public function deliveryAddress()
+    {
+        return $this->hasMany(\App\Models\DeliveryAddress::class, 'user_id');
+    }
+
     public function products()
     {
         return $this->morphedByMany('App\Models\Product', 'userable');

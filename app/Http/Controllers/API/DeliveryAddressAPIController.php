@@ -81,7 +81,8 @@ class DeliveryAddressAPIController extends Controller
         $uniqueInput = $request->only("address");
         $otherInput = $request->except("address");
         try {
-            $deliveryAddress = $this->deliveryAddressRepository->updateOrCreate($uniqueInput, $otherInput);
+            $deliveryAddress = $request->user()->deliveryAddress()->updateOrCreate($uniqueInput, $otherInput);
+            return response()->json($deliveryAddress);
 
         } catch (ValidatorException $e) {
             return $this->sendError($e->getMessage());
