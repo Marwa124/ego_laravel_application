@@ -21,7 +21,7 @@ class Controller extends BaseController
      * @param $message
      * @return mixed
      */
-    public function sendResponse($code = null, $result, $message)
+    public function sendResponse($result, $message, $code = null)
     {
         return Response::json(ResponseUtil::makeResponse($code, $message, $result));
     }
@@ -34,5 +34,15 @@ class Controller extends BaseController
     public function sendError($error, $code = 404)
     {
         return Response::json(ResponseUtil::makeError($error), $code);
+    }
+
+    public function apiResponse($status, $message, $data = null) {
+        $response = [
+            'status' => $status,
+            'message' => $message,
+            'data' => $data
+        ];
+
+        return response()->json($response);
     }
 }

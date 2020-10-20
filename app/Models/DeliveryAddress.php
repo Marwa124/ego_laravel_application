@@ -22,16 +22,7 @@ class DeliveryAddress extends Model
 
     public $table = 'delivery_addresses';
     
-
-
-    public $fillable = [
-        'description',
-        'address',
-        'latitude',
-        'longitude',
-        'is_default',
-        'user_id'
-    ];
+     public $guarded = [];
 
     /**
      * The attributes that should be casted to native types.
@@ -53,9 +44,15 @@ class DeliveryAddress extends Model
      * @var array
      */
     public static $rules = [
-        'description' => 'required',
-        'address' => 'required',
-        'user_id' => 'required|exists:users,id'
+        // 'description' => 'required',
+        // 'address' => 'required',
+        'user_id' => 'required|exists:users,id',
+        'receiver' => 'required|exists:receivers,id',
+        'pickupAddress' => 'nullable|exists:receivers,id',
+        'dropOffAddress' => 'nullable|exists:receivers,id',
+        'returnAddress' => 'nullable|exists:receivers,id',
+        'cod' => ['nullable', 'numeric'],
+        'type' => ['nullable', 'numeric'],
     ];
 
     /**
@@ -93,6 +90,11 @@ class DeliveryAddress extends Model
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
+    }
+
+    public function deliveryState()
+    {
+        return $this->belongsTo(\App\Models\DeliveryStates::class, 'delivery_state_id', 'id');
     }
     
 }

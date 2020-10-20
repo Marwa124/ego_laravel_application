@@ -20,6 +20,15 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CouponPermission::class);
         $this->call(SlidesSeeder::class);
+
+
+
+        $this->call(DeliveryTypesTableSeeder::class);
+        $this->call(DeliveryStatesTableSeeder::class);
+        $this->call(CityCodesTableSeeder::class);
+
+
+
         // $this->call(AppServiceProvider::class);
         $this->call(RolesTableSeeder::class);
         $this->call(UsersTableSeeder::class);

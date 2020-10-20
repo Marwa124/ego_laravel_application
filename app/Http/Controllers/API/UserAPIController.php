@@ -43,17 +43,37 @@ class UserAPIController extends Controller
     function login(Request $request)
     {
         try {
-            $this->validate($request, [
-                'email' => 'required|email',
+            $validation = validator()->make($request->all(), [
+                'email' => 'required|email|exists:users,email',
                 'password' => 'required',
             ]);
-            if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-                // Authentication passed...
-                $user = auth()->user();
-                $user->device_token = $request->input('device_token', '');
-                $user->save();
-                return $this->sendResponse($user, 'User retrieved successfully');
+            if($validation->fails())
+            {
+                return $this->apiResponse(0, $validation->errors()->first(), $validation->errors());
             }
+
+            $user = User::where('email', $request->email)->first();
+            if ($user)
+            {
+                if(Hash::check($request->password, $user->password)){
+                    return $this->apiResponse('success', 'Successfully logged', [
+                        'api_token' => $user->api_token,
+                    ]);
+                }else {
+                    return $this->apiResponse('error', 'Invalid Password');
+                }
+            }else {
+                return $this->apiResponse('error', 'Invalid access credentials');
+            }
+
+
+            // if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            //     // Authentication passed...
+            //     $user = auth()->user();
+            //     $user->device_token = $request->input('device_token', '');
+            //     $user->save();
+            //     return $this->sendResponse($user, 'User retrieved successfully');
+            // }
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), 401);
         }

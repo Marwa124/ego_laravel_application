@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateDeliveryAddressRequest;
 use App\Models\DeliveryAddress;
 use App\Repositories\DeliveryAddressRepository;
 use Flash;
@@ -76,10 +77,29 @@ class DeliveryAddressAPIController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    // public function store(Request $request)
     public function store(Request $request)
     {
-        $uniqueInput = $request->only("address");
-        $otherInput = $request->except("address");
+        
+        $validation = validator()->make($request->all(), DeliveryAddress::$rules);
+        // $validation = validator()->make($request->all(), [
+        //     'geoLocation' => 'nullable|array',
+        //     'firstLine ' => 'required',
+        //     ]);
+        if($validation->fails())
+        {
+            $data = $validation->errors();
+            return $this->apiResponse(0, $data->first(), $data);
+        }
+            // return response()->json($validation);
+        // if ($request->expectsJson()) {
+        //     return response()->json(['error' => 'Unauthenticated.'], 200);
+        // }
+        // if ($validation->fails()) {
+        //     return $this->apiResponse('error', $validation->errors()->first(), $validation->errors());
+        // }
+        // ->setStatusCode(Response::HTTP_CREATED);
+
         try {
             $deliveryAddress = $request->user()->deliveryAddress()->updateOrCreate($uniqueInput, $otherInput);
             return response()->json($deliveryAddress);

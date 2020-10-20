@@ -63,8 +63,15 @@ class Handler extends ExceptionHandler
             }
             return response()->view('vendor.errors.page', ['code' => 403, 'message' => $exception->getMessage()]);
         }
+
+        if ($request->expectsJson()) {
+            return response()->json(['401' => 'Unauthenticated.']);
+        }
+        
         if ($exception instanceof AuthenticationException) {
-            if ($request->ajax()) {
+
+            if($request->header('Token') == '')
+            {
                 return response()->json(['error' => $exception->getMessage()], 401);
             }
         }
@@ -72,21 +79,4 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
-    public function unauthenticated($request, AuthenticationException $exception)
-    {
-        // if ($request->expectsJson()) {
-        //     return response()->json(['error' => 'Unauthenticated.'], 200);
-        // }
-        // $guard = Arr::get($exception->guards(), 0);
-        // // dd($guard);
-        // switch ($guard) {
-        //     case 'client':
-        //         $login = 'client.login';
-        //         break;
-        //     default:
-        //         $login = 'login';
-        //         break;
-        // }
-        // return redirect()->route($login);
-    }
 }
