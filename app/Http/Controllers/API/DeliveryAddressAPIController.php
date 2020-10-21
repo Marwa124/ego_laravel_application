@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateDeliveryAddressRequest;
+use App\Models\Address;
 use App\Models\DeliveryAddress;
+use App\Models\Receiver;
 use App\Repositories\DeliveryAddressRepository;
 use Flash;
 use Illuminate\Http\Request;
@@ -13,6 +15,7 @@ use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Exceptions\RepositoryException;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DeliveryAddressController
@@ -45,7 +48,13 @@ class DeliveryAddressAPIController extends Controller
         }
         $deliveryAddresses = $this->deliveryAddressRepository->all();
 
-        return $this->sendResponse($deliveryAddresses->toArray(), 'Delivery Addresses retrieved successfully');
+        return $this->apiResponse(
+            Response::HTTP_OK,
+            'Delivery Addresses retrieved successfully', 
+            ['deliveries' => $deliveryAddresses->toArray()]
+        );
+
+        return $this->sendResponse(DeliveryAddress::paginate(2), 'Delivery Addresses retrieved successfully');
     }
 
     /**
@@ -67,7 +76,26 @@ class DeliveryAddressAPIController extends Controller
             return $this->sendError('Delivery Address not found');
         }
 
-        return $this->sendResponse($deliveryAddress->toArray(), 'Delivery Address retrieved successfully');
+        return $this->apiResponse(
+            Response::HTTP_OK,
+            'Delivery Address retrieved successfully', 
+            ['delivery' => [
+                'id' => $deliveryAddress->toArray()['id'],
+                'receiver' => $deliveryAddress->receiver()->first(),
+                'pickupAddress' => $deliveryAddress->pickupAddresses()->first() ?? $deliveryAddress->toArray()['pickupAddress'],
+                'dropOffAddress' => $deliveryAddress->dropOffAddresses()->first(),
+                'returnAddress' => $deliveryAddress->returnAddresses()->first(),
+                'notes' => $deliveryAddress->toArray()['notes'],
+                'cod' => $deliveryAddress->toArray()['cod'],
+                'type' => $deliveryAddress->toArray()['type'],
+                'isSameDay' => $deliveryAddress->toArray()['isSameDay'],
+                'businessReference' => $deliveryAddress->toArray()['businessReference'],
+                'subAccountId' => $deliveryAddress->toArray()['subAccountId'],
+                'webhookUrl' => $deliveryAddress->toArray()['webhookUrl'],
+                'trackingNumber' => $deliveryAddress->toArray()['trackingNumber'],
+                ]
+            ]
+        );
     }
 
     /**
@@ -77,38 +105,62 @@ class DeliveryAddressAPIController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    // public function store(Request $request)
     public function store(Request $request)
     {
         
-        $validation = validator()->make($request->all(), DeliveryAddress::$rules);
-        // $validation = validator()->make($request->all(), [
-        //     'geoLocation' => 'nullable|array',
-        //     'firstLine ' => 'required',
-        //     ]);
+        if ($request->type == 'Cash Collection') {
+            DeliveryAddress::$rules['pickupAddress.firstLine'] = 'required';
+            DeliveryAddress::$rules['pickupAddress.city']     = 'required';
+            $validation = validator()->make($request->all(), DeliveryAddress::$rules);
+        }
+
+        if ($request->type == 'Package Delivery') {
+            DeliveryAddress::$rules['dropOffAddress.firstLine'] = 'required';
+            DeliveryAddress::$rules['dropOffAddress.city']     = 'required';
+            $validation = validator()->make($request->all(), DeliveryAddress::$rules);
+        }
+
+
         if($validation->fails())
         {
             $data = $validation->errors();
-            return $this->apiResponse(0, $data->first(), $data);
+            return $this->apiResponse('400', $data->first(), $data);
         }
-            // return response()->json($validation);
-        // if ($request->expectsJson()) {
-        //     return response()->json(['error' => 'Unauthenticated.'], 200);
-        // }
-        // if ($validation->fails()) {
-        //     return $this->apiResponse('error', $validation->errors()->first(), $validation->errors());
-        // }
-        // ->setStatusCode(Response::HTTP_CREATED);
-
-        try {
-            $deliveryAddress = $request->user()->deliveryAddress()->updateOrCreate($uniqueInput, $otherInput);
-            return response()->json($deliveryAddress);
-
-        } catch (ValidatorException $e) {
-            return $this->sendError($e->getMessage());
+        
+        $receiverData = Receiver::where('firstName', $request->receiver['firstName'])->where('phone', $request->receiver['phone'])->first();
+        
+        if (!$receiverData) {
+            $receiverData = Receiver::create($request->receiver);
         }
 
-        return $this->sendResponse($deliveryAddress->toArray(), __('lang.saved_successfully', ['operator' => __('lang.delivery_address')]));
+
+        if ($request->pickupAddress) {
+            $addressData = Address::where('firstLine', $request->pickupAddress['firstLine'])->where('city', $request->pickupAddress['city'])->first();
+            if (!$addressData) {
+                $addressData = Address::create($request->pickupAddress);
+            }
+        }
+        
+        // return $this->apiResponse('10', $receiverData);
+
+        $newDelivery = new DeliveryAddress;
+        $newDelivery->receiver_id = $receiverData->id;
+        $newDelivery->user_id = $request->user()->id;
+
+        $newDelivery->pickupAddress = $request->pickupAddress ? $addressData->id : $request->user()->business_registration;
+        $newDelivery->returnAddress = $request->returnAddress ?? $newDelivery->pickupAddress;
+        $newDelivery->isSameDay = $request->isSameDay ?? 0;
+        $newDelivery->trackingNumber = $request->trackingNumber ?? random_int(100, 500000);
+        $newDelivery->type  = $request->type  ?? 'Package Delivery';
+   
+        $newDelivery->save();
+        // $deliveryData = DeliveryAddress::where('trackingNumber', $newDelivery->trackingNumber)->get();
+
+        return $this->apiResponse(
+            Response::HTTP_CREATED,
+            __('lang.saved_successfully', ['operator' => __('lang.delivery_address')]), 
+            ['trackingNumber' => $newDelivery->trackingNumber]
+        );
     }
 
     /**

@@ -36,9 +36,9 @@ class Controller extends BaseController
         return Response::json(ResponseUtil::makeError($error), $code);
     }
 
-    public function apiResponse($status, $message, $data = null) {
+    public function apiResponse($status = 200, $message = 'Sucssess', $data = null) {
         $response = [
-            'status' => $status,
+            'code' => $status,
             'message' => $message,
             'data' => $data
         ];

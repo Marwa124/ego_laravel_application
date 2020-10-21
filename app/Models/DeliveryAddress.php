@@ -44,15 +44,19 @@ class DeliveryAddress extends Model
      * @var array
      */
     public static $rules = [
-        // 'description' => 'required',
-        // 'address' => 'required',
-        'user_id' => 'required|exists:users,id',
-        'receiver' => 'required|exists:receivers,id',
-        'pickupAddress' => 'nullable|exists:receivers,id',
-        'dropOffAddress' => 'nullable|exists:receivers,id',
-        'returnAddress' => 'nullable|exists:receivers,id',
+        'receiver.firstName' => 'required',
+        'receiver.lastName' => 'required',
+        'receiver.phone' => 'required',
+        'receiver.email' => 'nullable|email',
+
+        'pickupAddress.geoLocation' => 'nullable|array',
+        'dropOffAddress.geoLocation' => 'nullable|array',
+        'returnAddress.geoLocation' => 'nullable|array',
+        'receiver.email' => 'nullable|email',
+        
         'cod' => ['nullable', 'numeric'],
-        'type' => ['nullable', 'numeric'],
+        'type' => 'nullable|exists:delivery_types,type',
+        'isSameDay' => 'nullable|boolean',
     ];
 
     /**
@@ -97,4 +101,23 @@ class DeliveryAddress extends Model
         return $this->belongsTo(\App\Models\DeliveryStates::class, 'delivery_state_id', 'id');
     }
     
+    public function receiver()
+    {
+        return $this->belongsTo(\App\Models\Receiver::class, 'receiver_id', 'id');
+    }
+
+    public function pickupAddresses()
+    {
+        return $this->hasMany(\App\Models\Address::class, 'id', 'pickupAddress');
+    }
+
+    public function dropOffAddresses()
+    {
+        return $this->hasMany(\App\Models\Address::class, 'id', 'dropOffAddress');
+    }
+
+    public function returnAddresses()
+    {
+        return $this->hasMany(\App\Models\Address::class, 'id', 'returnAddress');
+    }
 }

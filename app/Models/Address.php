@@ -40,5 +40,11 @@ class Address extends Model
     // {
     //     return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
     // }
+
+   
+    public function deliveryAddresses()
+    {
+        return $this->hasMany(\App\Models\DeliveryAddress::class);
+    }
     
 }

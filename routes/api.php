@@ -105,7 +105,7 @@ Route::middleware('auth:api')->prefix('v0')->group(function () {
     Route::get('carts/count', 'API\CartAPIController@count')->name('carts.count');
     Route::resource('carts', 'API\CartAPIController');
 
-    Route::resource('delivery_addresses', 'API\DeliveryAddressAPIController');
+    Route::resource('deliveries', 'API\DeliveryAddressAPIController');
 
     Route::resource('drivers', 'API\DriverAPIController');
 

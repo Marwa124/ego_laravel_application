@@ -47,7 +47,8 @@
     },
     "autoload": {
         "files":[
-            "app/Helpers/helpers.php"
+            "app/Helpers/helpers.php",
+            "app/Helpers/apiHelpers.php"
         ],
         "classmap": [
             "database/seeds",

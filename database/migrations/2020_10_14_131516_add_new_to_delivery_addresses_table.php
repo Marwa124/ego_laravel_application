@@ -17,12 +17,31 @@ class AddNewToDeliveryAddressesTable extends Migration
             $table->string('pickupAddress')->nullable();
             $table->string('dropOffAddress')->nullable();
             $table->string('returnAddress')->nullable();
-            $table->string('receiver')->nullable();
+            $table->unsignedInteger('receiver_id')->nullable();
             $table->string('state')->nullable();
             $table->string('trackingNumber')->nullable();
             $table->string('notes')->nullable();
             $table->string('cod')->nullable();
             $table->string('businessReference')->nullable();
+            $table->string('isSameDay')->nullable();
+            $table->string('subAccountId')->nullable();
+            $table->string('webhookUrl')->nullable();
+            $table->string('type')->nullable();
+            /* !!!: reciever object */
+            // $table->string('firstName')->nullable();
+            // $table->string('lastName')->nullable();
+            // $table->string('phone')->nullable();
+            // $table->string('email')->nullable();
+            /* !!!: address object */
+            // $table->string('geoLocation')->nullable();
+            // $table->string('firstLine')->nullable();
+            // $table->string('secondLine')->nullable();
+            // $table->string('floor')->nullable();
+            // $table->string('apartment')->nullable();
+            // $table->string('zone')->nullable();
+            // $table->string('district')->nullable();
+            // $table->string('city')->nullable();
+
             $table->unsignedInteger('delivery_state_id')->nullable();
             $table->unsignedInteger('delivery_type_id')->nullable();
         });
