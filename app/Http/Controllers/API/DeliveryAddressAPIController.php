@@ -132,27 +132,23 @@ class DeliveryAddressAPIController extends Controller
         if (!$receiverData) {
             $receiverData = Receiver::create($request->receiver);
         }
-
-
-        if ($request->pickupAddress) {
-            $addressData = Address::where('firstLine', $request->pickupAddress['firstLine'])->where('city', $request->pickupAddress['city'])->first();
-            if (!$addressData) {
-                $addressData = Address::create($request->pickupAddress);
-            }
-        }
         
-        // return $this->apiResponse('10', $receiverData);
+        // return $this->apiResponse('10',  checkOrCreate('', $request->dropOffAddress)['dropOffAddress']);
 
         $newDelivery = new DeliveryAddress;
         $newDelivery->receiver_id = $receiverData->id;
         $newDelivery->user_id = $request->user()->id;
 
-        $newDelivery->pickupAddress = $request->pickupAddress ? $addressData->id : $request->user()->business_registration;
-        $newDelivery->returnAddress = $request->returnAddress ?? $newDelivery->pickupAddress;
+        $newDelivery->pickupAddress = checkOrCreate($request->pickupAddress)['pickupAddress'] ?? $request->user()->business_registration;
+        $newDelivery->dropOffAddress = checkOrCreate('', $request->dropOffAddress)['dropOffAddress'];
+        $newDelivery->returnAddress = checkOrCreate('', '', $request->returnAddress)['returnAddress'];
+
         $newDelivery->isSameDay = $request->isSameDay ?? 0;
         $newDelivery->trackingNumber = $request->trackingNumber ?? random_int(100, 500000);
         $newDelivery->type  = $request->type  ?? 'Package Delivery';
    
+
+
         $newDelivery->save();
         // $deliveryData = DeliveryAddress::where('trackingNumber', $newDelivery->trackingNumber)->get();
 
@@ -172,23 +168,48 @@ class DeliveryAddressAPIController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function update($id, Request $request)
-    {
-        $deliveryAddress = $this->deliveryAddressRepository->findWithoutFail($id);
+    {    
+        $validation = validator()->make($request->all(), DeliveryAddress::$rules);
+        if($validation->fails())
+        {
+            $data = $validation->errors();
+            return $this->apiResponse('400', $data->first(), $data);
+        }
+        
+        $deliveryAddress = $request->user()->deliveryAddress()->find($id);
+        // pickupAddress and dropOffAddress can be updated in ​Pending​ state 
+        $state = $deliveryAddress->state;
+        if ($state != 'pending' && ($request->pickUpAddress || $request->dropOffAddress) ) {
+            return $this->apiResponse(Response::HTTP_FORBIDDEN, 'Pickup address and drop off address Can\'t be updated!');
+        }
 
         if (empty($deliveryAddress)) {
             return $this->sendError('Delivery Address not found');
         }
-        $input = $request->all();
-        if ($input['is_default'] == true){
-            $this->deliveryAddressRepository->initIsDefault($input['user_id']);
-        }
+
         try {
-            $deliveryAddress = $this->deliveryAddressRepository->update($input, $id);
-        } catch (ValidatorException $e) {
+            $receiverData = Receiver::where('firstName', $request->receiver['firstName'])->where('phone', $request->receiver['phone'])->first();
+            
+            if (!$receiverData) {
+                $receiverData = Receiver::create($request->receiver);
+            }
+
+            $deliveryAddress->update([
+                'receiver_id' => $receiverData->id,
+                'pickupAddress' => checkOrCreate($request->pickupAddress)['pickupAddress']  == '' ? $deliveryAddress->pickupAddress : checkOrCreate($request->pickupAddress)['pickupAddress'],
+                'dropOffAddress' => checkOrCreate('', $request->dropOffAddress)['dropOffAddress'] == '' ? $deliveryAddress->dropOffAddress : checkOrCreate('', $request->dropOffAddress)['dropOffAddress'],
+                'returnAddress' => checkOrCreate('', '', $request->returnAddress)['returnAddress'] == '' ? $deliveryAddress->returnAddress : checkOrCreate('', '', $request->returnAddress)['returnAddress'] 
+
+            ]);
+
+        }catch (ValidatorException $e) {
             return $this->sendError($e->getMessage());
         }
 
-        return $this->sendResponse($deliveryAddress->toArray(), __('lang.updated_successfully', ['operator' => __('lang.delivery_address')]));
+        return $this->apiResponse(
+            Response::HTTP_OK,
+            __('lang.updated_successfully', ['operator' => __('lang.delivery_address')])
+        );
 
     }
 

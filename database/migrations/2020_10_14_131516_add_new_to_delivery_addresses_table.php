@@ -18,7 +18,7 @@ class AddNewToDeliveryAddressesTable extends Migration
             $table->string('dropOffAddress')->nullable();
             $table->string('returnAddress')->nullable();
             $table->unsignedInteger('receiver_id')->nullable();
-            $table->string('state')->nullable();
+            $table->string('state')->nullable()->default('pending');
             $table->string('trackingNumber')->nullable();
             $table->string('notes')->nullable();
             $table->string('cod')->nullable();
