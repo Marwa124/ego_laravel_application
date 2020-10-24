@@ -99,7 +99,7 @@ class Product extends Model implements HasMedia
         'custom_fields',
         'has_media',
         'market',
-        'is_favorite'
+        'is_favorite',
     ];
 
     public function users()

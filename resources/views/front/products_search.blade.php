@@ -55,7 +55,7 @@
                     
                 </div>
 
-                <button id="addToCart" data-product="{{$item->id}}" href="">Add to cart</button>
+                <button class="add_to_cart" id="add_to_cart" data-product="{{$item->id}}" >Add to cart</button>
             </div>
         </div>
     @endforeach
@@ -86,39 +86,7 @@
             })
             console.log(page);
         })
-
-
-
-
-
-
-        $("#addToCart").on('click', function (e) {
-            console.log(e);
-            e.preventDefault();
-            var productId = $(this).data('product');
-            console.log(productId);
-            $.ajax({
-                url: '{{route('front.cart')}}', 
-                type: 'get',
-                data: {
-                    product_id: productId
-                },
-                success: function (data) {
-                    // $("#product_data").html(data)
-                }
-            })
-        });
-
-
-
     })
     
-</script>
-    
-<script>
-    // Add To cart
-    $(document).ready(function () {
-        
-    });
 </script>
 @endpush

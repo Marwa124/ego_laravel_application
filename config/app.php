@@ -171,6 +171,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        Darryldecode\Cart\CartServiceProvider::class,
 
     ],
 
@@ -227,6 +228,8 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'HTMLFieldGenerator' => InfyOm\Generator\Utils\HTMLFieldGenerator::class,
 //        'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
+
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
 
     ],
 

@@ -80,7 +80,37 @@ class FrontController extends Controller
 
     public function cart(Request $request)
     {
-        $item = Product::findOrFail($request->product_id)->toggle([$request->product_id]);
-        return response()->json($item);
+        // Product::findOrFail($request->product_id)->toggle([$request->product_id]);
+        
+        $product = Product::findOrFail($request->product_id);
+
+        $rowId = rand(100,7000); 
+        $userID = auth()->user()->id;
+        
+        \Cart::session($userID)->add(array(
+            'id' => $rowId,
+            'name' => $product->name,
+            'price' => $product->price,
+            'quantity' => 1,
+            'attributes' => array(
+                'description' => $product->description,
+                'productId' => $product->id,
+            ),
+            'associatedModel' => $product
+        ));
+
+        $cart = \Cart::getContent();
+        // $cart = Cart::session($userID)->getContent($rowId);
+
+        return response()->json([
+            'product' => $product,
+            'cart' => $cart
+        ]);
+    }
+
+    // Remove product from cart
+    public function productCartRemove(Request $request)
+    {
+        \Cart::session(auth()->user()->id)->remove($request->cart_id);
     }
 }
