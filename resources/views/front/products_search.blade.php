@@ -1,0 +1,124 @@
+<div class="products container row">
+
+    @foreach ($products as $item)
+        <div class="col-6 col-md-4 mb-5">
+            <div class="w-auto position-relative">
+                <div class="fav-icon heart-icon {{$item->is_favorite ? 'bg-danger' : ''}}">
+                    <i id="{{$item->id}}" class="far fa-heart {{$item->is_favorite ? 'fas' : 'far'}}"></i>
+                </div>
+                @if ($item->getMedia('image')->first() != null)
+                    
+                <a class="img-fluid w-100 mb-3" href="{{env('App_Url'). 'storage/app/public/' . $item->getMedia('image')->first()->id .'/'. $item->getMedia('image')->first()->file_name}}" target="_blank">
+                    <img class="img-fluid" src="{{env('App_Url'). 'storage/app/public/' . $item->getMedia('image')->first()->id .'/'. $item->getMedia('image')->first()->file_name}}" alt=""> 
+                        {{-- <img class="img-fluid" src="{{$item->image->getUrl()}}" alt=""> --}}
+
+                    {{-- <img class="img-fluid w-100 mb-3" src="{{env('App_Url').$item->getUrl()}}" alt=""> --}}
+                </a>
+                @endif
+            </div>
+            <div>
+                <div>
+                    <h5 class="prod-name mb-1">{{$item->name}}</h5>
+                    <p class="mb-0">{{$item->description}}</p>
+                    <p class="mb-0">{{$item->price}}</p>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    {{-- @php $rating = 1.6; @endphp   --}}
+                    <?php
+                        $rating = 0;
+                        foreach ($item->productReviews()->get() as $key => $value) {
+                            if($value->rate <= 2)
+                            {
+                                $rating -=$value->rate;
+                            }else {
+                                $rating +=$value->rate;
+                            }
+                        }
+                    ?>
+
+                    @foreach(range(1,5) as $i)
+                        <span class="fa-stack" style="width:1em">
+                            <i class="far fa-star fa-stack-1x"></i>
+
+                            @if($rating >0)
+                                @if($rating >0.5)
+                                    <i class="fas fa-star fa-stack-1x"></i>
+                                @else
+                                    <i class="fas fa-star-half fa-stack-1x"></i>
+                                @endif
+                            @endif
+                            @php $rating--; @endphp
+                        </span>
+                    @endforeach
+
+                     <div class="text-grey mt-1" style="font-size: 10px;"> ({{$item->productReviews()->count()}})</div>
+                    
+                </div>
+
+                <button id="addToCart" data-product="{{$item->id}}" href="">Add to cart</button>
+            </div>
+        </div>
+    @endforeach
+</div>
+{{-- <br> --}}
+{{-- <div class="row"> --}}
+<div class="d-flex justify-content-center">
+    <div>{{$products->links()}}</div>
+</div>
+{{-- </div> --}}
+
+
+@push('scripts')
+
+<script>
+    // Product Pagination
+    $(document).ready(function () {
+        $('.pagination a').on('click', function (e) {
+            e.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            $.ajax({
+                url: '{{url('front/products?page=')}}' + page,
+                type: 'get',
+                dataType: 'html',
+                success: function (data) {
+                    $("#product_data").html(data)
+                }
+            })
+            console.log(page);
+        })
+
+
+
+
+
+
+        $("#addToCart").on('click', function (e) {
+            console.log(e);
+            e.preventDefault();
+            var productId = $(this).data('product');
+            console.log(productId);
+            $.ajax({
+                url: '{{route('front.cart')}}', 
+                type: 'get',
+                data: {
+                    product_id: productId
+                },
+                success: function (data) {
+                    // $("#product_data").html(data)
+                }
+            })
+        });
+
+
+
+    })
+    
+</script>
+    
+<script>
+    // Add To cart
+    $(document).ready(function () {
+        
+    });
+</script>
+@endpush

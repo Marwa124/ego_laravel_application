@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Userable;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class FrontController extends Controller
 {
@@ -20,9 +21,12 @@ class FrontController extends Controller
         return view('front.index');
     }
 
-    public function products()
+    public function products(Request $request)
     {
         $products = Product::paginate(15);
+        if ($request->page) {
+            return view('front.products_search', compact('products'));
+        }
         return view('front.products', compact('products'));
     }
 
@@ -35,14 +39,18 @@ class FrontController extends Controller
 
     public function search(Request $request)
     {
-        // dd($request->all());
-        $products = Product::where(function ($query) use ($request) {
-            if ($request->has('keyword')) {
-                $query->where('name', 'LIKE', '%' . $request->keyword . '%');
-            }
-        })->latest()->paginate(10);
-        // return view('front.products', compact('products'));
-        return response()->json($products);
+        // dd($request->keyword);
+        if ($request->keyword) {
+            $products = Product::where(function ($query) use ($request) {
+                if ($request->has('keyword')) {
+                    $query->where('name', 'LIKE', '%' . $request->keyword . '%');
+                }
+            })->latest()->paginate(2);
+            // dd($products);
+            return view('front.products_search', [
+                'products' => $products
+            ]);
+        }
     }
 
     public function toggleFavorite(Request $request)
@@ -63,5 +71,16 @@ class FrontController extends Controller
 
         // $favorable = $request->user()->products()->toggle($request->product_id);
       return response()->json($item);
+    }
+
+    public function profile()
+    {
+        return view('front.profile');
+    }
+
+    public function cart(Request $request)
+    {
+        $item = Product::findOrFail($request->product_id)->toggle([$request->product_id]);
+        return response()->json($item);
     }
 }

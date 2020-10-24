@@ -267,6 +267,9 @@ class Product extends Model implements HasMedia
         return $this->morphMany('App\Models\Discountable', 'discountable');
     }
 
-
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('image');
+    }
 
 }

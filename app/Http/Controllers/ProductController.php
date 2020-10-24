@@ -107,8 +107,11 @@ class ProductController extends Controller
             $product = $this->productRepository->create($input);
             $product->customFieldsValues()->createMany(getCustomFieldsValues($customFields, $request));
             if (isset($input['image']) && $input['image']) {
+
                 $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
+
                 $mediaItem = $cacheUpload->getMedia('image')->first();
+
                 $mediaItem->copy($product, 'image');
             }
         } catch (ValidatorException $e) {

@@ -115,7 +115,7 @@
                 <a class="nav-item cursor-pointer mx-2 d-flex align-items-center" href="login.html">
                   <i class="far fa-heart"></i>
                 </a>
-                <a class="nav-item cursor-pointer mx-2 d-flex align-items-center" href="login.html">
+                <a class="nav-item cursor-pointer mx-2 d-flex align-items-center" href="{{route('front.profile')}}">
                   <i class="far fa-user"></i>
                 </a>
                 <a class="nav-item mini-cart-toggler hide-onTablet cursor-pointer mx-2"
@@ -401,8 +401,7 @@
                 </div>
               </li>
             </ul>
-            <form action=""></form>
-            <form class="search-form" action="{{url('front/search')}}">
+            {{-- <form class="search-form" action="{{url('front/search')}}"> --}}
               <div class="form-group mr-3 mb-0">
                 <div class="input-wrapper d-flex align-items-center" tabindex="1">
                   <input type="text" class="form-control search-input" name="search" placeholder="Search">
@@ -411,7 +410,7 @@
                   </div>
                 </div>
               </div>
-            </form>
+            {{-- </form> --}}
           </div>
         </div>
       </div>

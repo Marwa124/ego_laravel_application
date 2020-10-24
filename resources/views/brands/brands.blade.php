@@ -49,7 +49,7 @@
         // collection_name: "{!! $brand->getFirstMedia('image')->collection_name !!}"};
     @endif
     var dz_var15866134631720934041ble = $(".dropzone.image").dropzone({
-        url: "{!!url('uploads/store')!!}",
+        url: "{!!url('admin/uploads/store')!!}",
         addRemoveLinks: true,
         maxFiles: 1,
         init: function () {

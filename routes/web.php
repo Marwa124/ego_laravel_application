@@ -26,6 +26,12 @@ Route::post('login','Front\Auth\LoginController@handleProviderCallback')->name('
 Route::get('register','Front\Auth\LoginController@register')->name('front.register');
 Route::post('register','Front\Auth\LoginController@registerProcess')->name('register.submit');
 
+// Route::post('logout',function ()
+// {
+//     return 'true';
+//     auth()->logout();
+// });
+
 
 Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
     // Route::get('client-register', 'AuthController@clientRegister')->name('client.register');
@@ -36,9 +42,13 @@ Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
     Route::get('/home', 'FrontController@index')->name('front.index');
     Route::get('/products', 'FrontController@products')->name('front.products');
     Route::get('/product/{id}', 'FrontController@product')->name('front.product.show');
+    
+    Route::get('/profile', 'FrontController@profile')->name('front.profile');
 
-
-    Route::get('search', 'FrontController@search')->name('front.search');
+    // Search and Pagination
+    Route::get('/products/search', 'FrontController@search')->name('front.search');
+    // Add Product to Cart
+    Route::get('/cart', 'FrontController@cart')->name('front.cart');
     Route::post('toggle-favorite', 'FrontController@toggleFavorite')->name('favorable');
 });
 
