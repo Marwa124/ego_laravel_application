@@ -33,8 +33,12 @@
 
       <?php \Cart::session(auth()->user()->id);   $items = \Cart::getContent(); ?>
       @if (count($items) > 0)
-        {{-- <h2>{{count($items)}}</h2> --}}
       @foreach ($items as $item)
+      <?php
+        $productPrice = App\Models\Product::find($item->attributes->productId)->price;
+
+       dump($item); 
+      ?>
           <div id="mini-cart" class="cart-item m-2 py-5 row" x-data="{ count: 1, showProduct:true }" x-show="showProduct">
             <div class="col-4 cart-item-img p-3">
               <img @click="count++" class="img-fluid w-75 cursor-pointer" src="{{asset('front/images/p5.png')}}" alt="">
@@ -42,12 +46,17 @@
             <div class="col-6">
               <div class="font-weight-bold mb-1">{{$item->name}}</div>
               <div class="mb-3"> <?php echo substr($item->attributes->description, 0, 20) ?> ...</div>
-              <div class="faded mt-2">1 x EGP {{$item->price}}</div>
+              <div class="faded mt-2">
+                <div class="multipleCount">{{$item->quantity}}</div> 
+                x EGP 
+                <div class="productPrice">{{$productPrice}}</div> 
+              </div>
               <div class="btn-group position-quantity-responsive mt-4" role="group" aria-label="Basic example">
                 <button @click="if(count > 1) {count--;}" type="button"
                   class="btn py-1 dark-btn-outline border addCounter">-</button>
-                <div x-text="count" class="btn py-1 border"></div>
-                <button @click="count++" type="button" class="btn py-1 dark-btn-outline border subCounter">+</button>
+                {{-- <div x-text="count" class="counterValue btn py-1 border">{{$item->quantity}}</div> --}}
+                <div class="counterValue btn py-1 border">{{$item->quantity}}</div>
+                <button @click="count++" type="button" data-cart="{{$item->id}}" class="btn py-1 dark-btn-outline border subCounter">+</button>
               </div>
             </div>
             <div class="col-2 text-right">
@@ -114,7 +123,12 @@
                   @click="showMiniCart = !showMiniCart">
                   <div class="d-flex align-items-center">
                     <div class="cart-icon-container position-relative">
-                      <span class="cart-notification text-light font-weight-bold">3</span>
+                      <span class="cartCounts cart-notification text-light font-weight-bold">
+                        @if (count($items) > 0)
+                          {{count($items)}}
+                        @else 0
+                        @endif
+                      </span>
                       <i class="fas fa-shopping-cart"></i>
                     </div>
                   </div>

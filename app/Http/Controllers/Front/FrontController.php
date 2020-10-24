@@ -113,4 +113,17 @@ class FrontController extends Controller
     {
         \Cart::session(auth()->user()->id)->remove($request->cart_id);
     }
+
+    public function productCartCounterUp(Request $request)
+    {
+        \Cart::session(auth()->user()->id)->update($request->cart_id,[
+            'quantity' => (int) $request->counter_value,
+            'price' => (float) $request->product_price * (float) $request->counter_value,
+        ]);
+    }
+
+    public function productCartCounterDown(Request $request)
+    {
+
+    }
 }
