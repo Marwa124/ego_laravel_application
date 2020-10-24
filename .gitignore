@@ -2,7 +2,7 @@
 /public/hot
 # /public/plugins
 # /public/storage
-/storage/*.key
+# /storage/*.key
 /vendor
 /.idea
 /.vscode
