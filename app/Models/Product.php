@@ -145,7 +145,8 @@ class Product extends Model implements HasMedia
      */
     public function getFirstMediaUrl($collectionName = 'default', $conversion = '')
     {
-        $url = $this->getFirstMediaUrlTrait($collectionName);
+        $url = 'admin/' . $this->getFirstMediaUrlTrait($collectionName);
+        // dd($url);
         $array = explode('.', $url);
         $extension = strtolower(end($array));
         if (in_array($extension, config('medialibrary.extensions_has_thumb'))) {

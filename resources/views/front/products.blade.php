@@ -242,7 +242,7 @@
   $('.heart-icon').click(function(data) {
     console.log(data.target.id);
     var e = data.target; // find the clicked icon
-    console.log(data.target);
+    // console.log(data.target);
     var product_id = data.target.id
     $.ajax({
       url: '{{route('favorable')}}',
@@ -253,14 +253,6 @@
       },
       success: function(data){
         if ($(e).hasClass('far')) {
-            // Swal.fire({
-            //     position: 'bottom-start',
-            //     icon: 'success',
-            //     width: 400,
-            //     text: 'Product added',
-            //     showConfirmButton: false,
-            //     timer: 1500
-            // });
             Toast.fire({
                 icon: 'success',
                 title: 'Product added'

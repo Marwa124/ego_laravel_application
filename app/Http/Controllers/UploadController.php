@@ -78,7 +78,7 @@ class UploadController extends Controller
     public function store(UploadRequest $request)
     {
         $input = $request->all();
-        dd($input);
+        // dd($input);
         try {
             $upload = $this->uploadRepository->create($input);
             $upload->addMedia($input['file'])

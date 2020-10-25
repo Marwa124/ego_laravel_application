@@ -17,7 +17,7 @@
     <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
     <!-- Style -->
     <link rel="stylesheet" href="{{asset('front/styles/global.css')}}">
-    <link rel="stylesheet" href="{{asset('front/styles/products.css')}}">
+    <link rel="stylesheet" href="{{asset('front/styles/profile.css')}}">
     <!-- arabicstyle -->
     <!-- <link rel="stylesheet" href="./arabicstyle/arabicstyle.css"> -->
 </head>
@@ -51,7 +51,7 @@
     <nav>
         <div class="nav-logo">
             <a href="index.html">
-                <img class="w-100" src="/images/logo.png" alt="">
+                <img class="w-100" src="{{asset('front/images/logo.png')}}" alt="">
             </a>
         </div>
         <a href="index.html" data-toggle="modal" data-target="#helpModal">Need help?</a>

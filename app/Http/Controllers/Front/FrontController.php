@@ -104,6 +104,7 @@ class FrontController extends Controller
 
         return response()->json([
             'product' => $product,
+            'productImage' => $product->getFirstMediaUrl('','thumb'),
             'cart' => $cart
         ]);
     }
@@ -116,8 +117,13 @@ class FrontController extends Controller
 
     public function productCartCounterUp(Request $request)
     {
+        dump($request->all());
         \Cart::session(auth()->user()->id)->update($request->cart_id,[
-            'quantity' => (int) $request->counter_value,
+            'quantity' => array(
+                'relative' => false,
+                'value' => (int) $request->counter_value,
+            ) 
+            
             // 'price' => (float) $request->product_price * (float) $request->counter_value,
         ]);
     }

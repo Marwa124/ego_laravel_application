@@ -35,13 +35,14 @@
       @if (count($items) > 0)
       @foreach ($items as $item)
       <?php
-        $productPrice = App\Models\Product::find($item->attributes->productId)->price;
+        // $productPrice = App\Models\Product::find($item->attributes->productId)->price;
+        $product = App\Models\Product::find($item->attributes->productId);
 
-       dump($item); 
+      //  dump($item); 
       ?>
           <div id="mini-cart" class="cart-item m-2 py-5 row" x-data="{ count: 1, showProduct:true }" x-show="showProduct">
             <div class="col-4 cart-item-img p-3">
-              <img @click="count++" class="img-fluid w-75 cursor-pointer" src="{{asset('front/images/p5.png')}}" alt="">
+              <img @click="count++" class="img-fluid w-75 cursor-pointer" src="{{$product->getFirstMediaUrl('', 'thumb')}}" alt="">
             </div>
             <div class="col-6">
               <div class="font-weight-bold mb-1">{{$item->name}}</div>
@@ -49,7 +50,7 @@
               <div class="faded mt-2">
                 <div class="multipleCount">{{$item->quantity}}</div> 
                 x EGP 
-                <div class="productPrice">{{$productPrice}}</div> 
+                <div class="productPrice">{{$product->price}}</div> 
               </div>
               <div class="btn-group position-quantity-responsive mt-4" role="group" aria-label="Basic example">
                 <button @click="if(count > 1) {count--;}" type="button"
@@ -117,7 +118,11 @@
                   <i class="far fa-heart"></i>
                 </a>
                 <a class="nav-item cursor-pointer mx-2 d-flex align-items-center" href="{{route('front.profile')}}">
-                  <i class="far fa-user"></i>
+                <i class="far fa-user">
+                  @if (auth()->user())
+                      &nbsp; {{auth()->user()->name}}
+                  @endif
+                </i>
                 </a>
                 <a class="nav-item mini-cart-toggler hide-onTablet cursor-pointer mx-2"
                   @click="showMiniCart = !showMiniCart">
@@ -424,6 +429,31 @@
   </div>
 
   @push('scripts')
+
+  <script>
+    // Product Search
+    $(document).ready(function () {
+          $('.search-input').on('keyup', function () {
+                
+            var inputSearch = $('input[name="search"]').val();
+            $.ajax({
+                url: '{{url('front/products/search?keyword=')}}' + inputSearch,
+                type: 'get',
+                dataType: 'html',
+                success: function(data){
+                    // console.log(data);
+                    $("#product_data").html(data);
+                },
+
+                error: function(x, y, z){
+                    console.log(x + ' ' + y + ' ' + z);
+                }
+            });
+
+        });
+    });
+    </script>
+
       <script>
 
         //Remove Product From Cart
@@ -470,4 +500,68 @@
     });
 
       </script>
+
+
+<script>
+  // Add to Cart
+  $(".add_to_cart").click(function (e) {
+      e.preventDefault();
+      var productId = $(this).data('product');
+      // console.log(productId);
+      $.ajax({
+          url: '{{route('front.cart.product.add')}}', 
+          type: 'get',
+          data: {
+              product_id: productId
+          },
+          success: function (data) {
+            console.log(data.productImage);
+              var cartId = '';
+
+              var array = $.map(data.cart, function(value, index){
+                  return [value];
+              });
+              for (let i = 0; i < array.length; i++) {
+                  const element = array[i];
+                  if (element.attributes.productId == data.product.id) {
+                      // console.log('success');
+                      cartId = element.id;
+                  }
+              }
+              $('.cartCounts').html(array.length);
+              $(e.target).css('backgroundColor', 'green');
+              
+              $('#mini-cart').prepend(`
+              <div id="mini-cart" class="cart-item mb-2 pb-5 row" x-data="{ count: 1, showProduct:true }" x-show="showProduct">
+                  <div class="col-4 cart-item-img p-3">
+                  <img @click="count++" class="img-fluid w-75 cursor-pointer" src="${data.productImage}" alt="">
+                  </div>
+                  <div class="col-6">
+                  <div class="font-weight-bold mb-1">${data.product.name}</div>
+                  <div class="mb-3">${data.product.description.substr(0, 20)}...</div>
+                  <div class="faded mt-2">1 x EGP ${data.product.price}</div>
+                  <div class="btn-group position-quantity-responsive mt-4" role="group" aria-label="Basic example">
+                      <button @click="if(count > 1) {count--;}" type="button"
+                      class="btn py-1 dark-btn-outline border addCounter">-</button>
+                      <div x-text="count" class="btn py-1 border"></div>
+                      <button @click="count++" type="button" class="btn py-1 dark-btn-outline border subCounter">+</button>
+                  </div>
+                  </div>
+                  <div class="col-2 text-right">
+                  <i @click="showProduct=false" data-cart="${cartId}" class="removeCartProduct fas fa-times text-secondary cursor-pointer" type="button"></i>
+                  </div>
+              </div>
+              `);
+              // console.log($('.mini-cart').html());
+              // $("#product_data").html(data)
+          }
+
+      })
+  });
+
+
+  
+
+</script>
+
   @endpush

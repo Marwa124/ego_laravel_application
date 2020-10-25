@@ -47,6 +47,8 @@ Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
 
     // Search and Pagination
     Route::get('/products/search', 'FrontController@search')->name('front.search');
+    // Global Search
+    Route::get('/global-search', 'FrontController@globalSearch')->name('front.global-search');
     
     Route::get('/cart', 'FrontController@cart')->name('front.cart'); // Cart Page
     Route::get('/cart/checkout', 'FrontController@cartCheckout')->name('front.cart.checkout'); // Cart Checkout

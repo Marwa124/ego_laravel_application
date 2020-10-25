@@ -4,13 +4,12 @@
         <div class="col-6 col-md-4 mb-5">
             <div class="w-auto position-relative">
                 <div class="fav-icon heart-icon {{$item->is_favorite ? 'bg-danger' : ''}}">
-                    <i id="{{$item->id}}" class="far fa-heart {{$item->is_favorite ? 'fas' : 'far'}}"></i>
+                    <i id="{{$item->id}}" class="fa-heart {{$item->is_favorite ? 'fas' : 'far'}}"></i>
                 </div>
                 @if ($item->getMedia('image')->first() != null)
                     
-                <a class="img-fluid w-100 mb-3" href="{{env('App_Url'). 'storage/app/public/' . $item->getMedia('image')->first()->id .'/'. $item->getMedia('image')->first()->file_name}}" target="_blank">
-                    <img class="img-fluid" src="{{env('App_Url'). 'storage/app/public/' . $item->getMedia('image')->first()->id .'/'. $item->getMedia('image')->first()->file_name}}" alt=""> 
-                        {{-- <img class="img-fluid" src="{{$item->image->getUrl()}}" alt=""> --}}
+            <a class="img-fluid w-100 mb-3" href="{{route('front.product.show', $item->id)}}" target="_blank">
+                        <img class="img-fluid" src="{{$item->getFirstMediaUrl('','thumb')}}" alt="">
 
                     {{-- <img class="img-fluid w-100 mb-3" src="{{env('App_Url').$item->getUrl()}}" alt=""> --}}
                 </a>

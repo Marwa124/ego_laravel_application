@@ -1,0 +1,48 @@
+nav,
+footer {
+    padding: 10px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+footer{
+    background-color: #222222;
+    color: #fff;
+}
+
+.nav-logo {
+    width: 140px;
+}
+
+main {
+    background-color: #f5f5f5;
+    padding: 10px 6%;
+}
+
+.accountTileContainer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0;
+    a {
+        text-decoration: underline;
+    }
+}
+
+.card-body-info {
+    padding: 20px 50px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    text-align: left;
+    dt {
+        flex-basis: 25%;
+    }
+    dd {
+        flex-basis: 70%;
+    }
+}
+.card-header {
+    background-color: #fff;
+}

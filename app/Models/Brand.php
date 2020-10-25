@@ -22,10 +22,9 @@ use Spatie\MediaLibrary\File;
  */
 class Brand extends Model implements HasMedia
 {
-    // use HasMediaTrait {
-    //     getFirstMediaUrl as protected getFirstMediaUrlTrait;
-    // }
-    use HasMediaTrait;
+    use HasMediaTrait {
+        getFirstMediaUrl as protected getFirstMediaUrlTrait;
+    }
 
     public $table = 'brands';
 

@@ -76,26 +76,55 @@ class BrandController extends Controller
      */
     public function store(CreateBrandRequest $request)
     {
-        $input = $request->all();
-        // dd($this->brandRepository);
-        // $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->cartRepository->model());
 
+        $input = $request->all();
+        $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->BrandRepository->model());
         try {
-            $brand = Brand::create($input);
-            if(isset($input['image']) && $input['image']){
+            $brand = $this->BrandRepository->create($input);
+            $brand->customFieldsValues()->createMany(getCustomFieldsValues($customFields, $request));
+            if (isset($input['image']) && $input['image']) {
+
                 $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
-                $mediaItem = $cacheUpload->addMedia($input['image']);
-                // $mediaItem = $cacheUpload->getMedia('image')->first();
-                // dd($mediaItem->copy());
-                // $mediaItem->copy($brand, 'image');
+                
+                $mediaItem = $cacheUpload->getMedia('')->first();
+                // dd($mediaItem);
+
+                $mediaItem->copy($brand, 'image');
             }
         } catch (ValidatorException $e) {
             Flash::error($e->getMessage());
         }
 
-        Flash::success(__('lang.saved_successfully',['operator' => __('lang.brand')]));
+        Flash::success(__('lang.saved_successfully', ['operator' => __('lang.brand')]));
 
         return redirect(route('brands.index'));
+
+
+
+
+
+
+
+        // $input = $request->all();
+        // // dd($this->brandRepository);
+        // // $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->cartRepository->model());
+
+        // try {
+        //     $brand = Brand::create($input);
+        //     if(isset($input['image']) && $input['image']){
+        //         $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
+        //         $mediaItem = $cacheUpload->addMedia($input['image']);
+        //         // $mediaItem = $cacheUpload->getMedia('image')->first();
+        //         // dd($mediaItem->copy());
+        //         // $mediaItem->copy($brand, 'image');
+        //     }
+        // } catch (ValidatorException $e) {
+        //     Flash::error($e->getMessage());
+        // }
+
+        // Flash::success(__('lang.saved_successfully',['operator' => __('lang.brand')]));
+
+        // return redirect(route('brands.index'));
     }
 
     /**
@@ -169,7 +198,7 @@ class BrandController extends Controller
             
             if(isset($input['image']) && $input['image']){
                 $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
-                $mediaItem = $cacheUpload->getMedia('image')->first();
+                $mediaItem = $cacheUpload->getMedia('')->first();
                 $mediaItem->copy($category, 'image');
             }
             foreach (getCustomFieldsValues($customFields, $request) as $value){
@@ -185,46 +214,9 @@ class BrandController extends Controller
         return redirect(route('brands.index'));
 
 
-
-
-
-
-
-
-
-
-
-        // $field = Brand::findOrFail($id);
-
-        // if (empty($field)) {
-        //     Flash::error('Field not found');
-        //     return redirect(route('fields.index'));
-        // }
-        // $input = $request->all();
-        // // dd($input);
-        // $customFields = $this->customFieldRepository->findByField('custom_field_model', Brand::class);
-        // try {
         //     $field = $field->update($input);
         //     if(isset($input['image']) && $input['image']){
         //     $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
-        //     // $mediaItem = $cacheUpload->getMedia()->first();
-        //     // dd($input['image'] . '.jpg');
-        //     // dd(Brand::findOrFail($id));
-        //     // dd(Brand::findOrFail($id)->addMedia($input['image']. ".png")->toMediaCollection());
-        //     // $mediaItem = $field->addMedia($input['image'])->toMediaCollection('image');
-        //     // $mediaItem->copy($field, 'image');
-        // }
-        //     foreach (getCustomFieldsValues($customFields, $request) as $value){
-        //         $field->customFieldsValues()
-        //             ->updateOrCreate(['custom_field_id'=>$value['custom_field_id']],$value);
-        //     }
-        // } catch (ValidatorException $e) {
-        //     Flash::error($e->getMessage());
-        // }
-
-        // Flash::success(__('lang.updated_successfully',['operator' => __('lang.field')]));
-
-        // return redirect(route('fields.index'));
     }
 
     /**

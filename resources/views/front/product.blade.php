@@ -3,8 +3,7 @@
     {{$product->name . ' ' .trans('product')}}
 @endsection
 @section('content')
-    
-  <!-- Annoncement -->
+    <!-- Annoncement -->
   <div class="py-3 bar" style="margin-top: 180px;">
     <p class="m-0 text-dark">Open Doors To A World Of Fashion</p>
   </div>
@@ -20,14 +19,18 @@
             <img class="img-fluid" src="./images/sp4.png" alt="">
           </div>
           <div class="product-img col-8">
-            <img class="img-fluid" src="{{env('App_Url'). 'storage/app/public/' . $product->getMedia('image')->first()->id .'/'. $product->getMedia('image')->first()->file_name}}" alt=""> 
+            <img class="img-fluid" src="{{$product->getFirstMediaUrl('','')}}" alt=""> 
 
           {{-- <img class="img-fluid" src="{{$product->getMedia('image')->first()->id}}" alt=""> --}}
           </div>
         </div>
         <div class="col-12 col-lg-6">
           <div class="mb-5">
-            <h5 class="mb-3 font-weight-bold">{{$product->brand->name}}</h5>
+            <h5 class="mb-3 font-weight-bold">
+              @if ($product->brand)
+              {{$product->brand->name}}
+              @endif
+            </h5>
             <h1 class="mb-3">{{$product->name}}</h1>
             <p>EGP {{$product->price}}</p>
           </div>
@@ -60,8 +63,9 @@
             </div>
           </div>
           <div class="d-flex mb-5">
-            <a href="cart.html" class="btn dark-btn py-2 ml-2 mr-3">Add to Cart</a>
-            <a href=""><i class="far fa-heart fa-2x pt-2"></i></a>
+            
+            <a href="" class="add_to_cart btn dark-btn py-2 ml-2 mr-3" data-product="{{$product->id}}" >Add to Cart</a>
+                <i id="{{$product->id}}" class="heart-icon fa-heart fa-2x pt-2 {{$product->is_favorite ? 'fas' : 'far'}}" style="cursor: pointer;"></i>
           </div>
           <div>
             <h6 class="font-weight-bold">Estimated Delivery</h6>
@@ -83,8 +87,7 @@
           <div class="mb-5">
             <p class="font-weight-bold">Tiger in The Rain</p>
             <p>sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-              labore et dolore magna aliqua. Ut enim ad minim veniam</p>
+            <p>{{$product->description}}</p>
           </div>
           <div class="mb-5">
             <p class="font-weight-bold">Highlights</p>
@@ -145,65 +148,80 @@
       </div>
       <p>ID: 09876521</p>
     </section>
+
+    @inject('products', 'App\Models\Product')
+
     <section class="likes">
       <div class="w-100">
         <h3 class="font-weight-bold m-5">You may also like</h3>
       </div>
       <div class="container row">
+
+        <?php $products = $products->inRandomOrder()->take(4)->get(); ?>
+        @foreach ($products as $item)
+          
         <div class="col-6 col-md-3 mb-5">
-          <div class="w-auto position-relative">
-            <div class="fav-icon">
-              <i class="heart-icon far fa-heart px-1"></i>
+            <div class="w-auto position-relative">
+              <div class="fav-icon">
+                <i class="heart-icon fa-heart px-1 {{$product->is_favorite ? 'fas' : 'far'}}"></i>
+              </div>
+              <a href="{{route('front.product.show', $item->id)}}">
+                <img class="img-fluid w-100 mb-3" src="{{$item->getFirstMediaUrl('','thumb')}}" alt="">
+              </a>
             </div>
-            <a href="product.html">
-              <img class="img-fluid w-100 mb-3" src="./images/p2.png" alt="">
-            </a>
+            <h4 class="font-weight-bold mb-1">
+              @if ($item->brand)
+                  {{$item->brand->name}}
+              @endif
+            </h4>
+            <p>{{$item->name}}</p>
+            <p>EGP {{$item->price}}</p>
           </div>
-          <h4 class="font-weight-bold mb-1">Brand Name</h4>
-          <p>Charlie white leg pants</p>
-          <p>EGP 6,599</p>
-        </div>
-        <div class="col-6 col-md-3 mb-5">
-          <div class="w-auto position-relative">
-            <div class="fav-icon">
-              <i class="heart-icon far fa-heart px-1"></i>
-            </div>
-            <a href="product.html">
-              <img class="img-fluid w-100 mb-3" src="./images/p1.png" alt="">
-            </a>
-          </div>
-          <h4 class="font-weight-bold mb-1">Brand Name</h4>
-          <p>Charlie white leg pants</p>
-          <p>EGP 6,599</p>
-        </div>
-        <div class="col-6 col-md-3 mb-5">
-          <div class="w-auto position-relative">
-            <div class="fav-icon">
-              <i class="heart-icon far fa-heart px-1"></i>
-            </div>
-            <a href="product.html">
-              <img class="img-fluid w-100 mb-3" src="./images/p3.png" alt="">
-            </a>
-          </div>
-          <h4 class="font-weight-bold mb-1">Brand Name</h4>
-          <p>Charlie white leg pants</p>
-          <p>EGP 6,599</p>
-        </div>
-        <div class="col-6 col-md-3 mb-5">
-          <div class="w-auto position-relative">
-            <div class="fav-icon">
-              <i class="heart-icon far fa-heart px-1"></i>
-            </div>
-            <a href="product.html">
-              <img class="img-fluid w-100 mb-3" src="./images/p6.png" alt="">
-            </a>
-          </div>
-          <h4 class="font-weight-bold mb-1">Brand Name</h4>
-          <p>Charlie white leg pants</p>
-          <p>EGP 6,599</p>
-        </div>
+            
+        @endforeach
       </div>
     </section>
   </div>
 
   @endsection
+
+
+  @push('scripts')
+<script>
+    // Favorate Icon Products
+
+  $('.heart-icon').click(function(data) {
+    console.log(data.target.id);
+    var e = data.target; // find the clicked icon
+    var product_id = data.target.id
+    $.ajax({
+      url: '{{route('favorable')}}',
+      type: 'post',
+      data: {
+        _token: '{{csrf_token()}}',
+        product_id: product_id
+      },
+      success: function(data){
+        if ($(e).hasClass('far')) {
+            Toast.fire({
+                icon: 'success',
+                title: 'Product added'
+            });
+            console.log('xxx');
+          $(e).removeClass('far').addClass('fas');
+        } else {
+            Toast.fire({
+                icon: 'success',
+                title: 'Product removed'
+            });
+
+          $(e).removeClass('fas').addClass('far');
+        };
+      },
+      error: function(){
+      }
+    });
+  });
+</script>
+
+@endpush

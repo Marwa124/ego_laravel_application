@@ -37,6 +37,8 @@ class Permissions
         'RegisterController',
         'PayPalController',
 
+        'UploadsController',
+
     ];
 
     /**

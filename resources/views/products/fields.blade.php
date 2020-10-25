@@ -40,7 +40,7 @@
             var dz_var15671147171873255749ble = $(".dropzone.image").dropzone({
                     url: "{!!url('admin/uploads/store')!!}",
                     addRemoveLinks: true,
-                    maxFiles: 1,
+                    maxFiles: 10,
                     init: function () {
                         @if(isset($product) && $product->hasMedia('image'))
                         dzInit(this, var15671147171873255749ble, '{!! url($product->getFirstMediaUrl('image','thumb')) !!}')
