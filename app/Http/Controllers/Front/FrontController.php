@@ -78,7 +78,7 @@ class FrontController extends Controller
         return view('front.profile');
     }
 
-    public function cart(Request $request)
+    public function addCartProduct(Request $request)
     {
         // Product::findOrFail($request->product_id)->toggle([$request->product_id]);
         
@@ -118,12 +118,24 @@ class FrontController extends Controller
     {
         \Cart::session(auth()->user()->id)->update($request->cart_id,[
             'quantity' => (int) $request->counter_value,
-            'price' => (float) $request->product_price * (float) $request->counter_value,
+            // 'price' => (float) $request->product_price * (float) $request->counter_value,
         ]);
     }
 
     public function productCartCounterDown(Request $request)
     {
 
+    }
+
+    public function cart()
+    {
+        $cartItems = \Cart::session(auth()->user()->id)->getContent();
+        return view('front.cart', compact('cartItems'));
+    }
+
+    public function cartCheckout()
+    {
+        $cartItems = \Cart::session(auth()->user()->id)->getContent();
+        return view('front.checkout', compact('cartItems'));
     }
 }

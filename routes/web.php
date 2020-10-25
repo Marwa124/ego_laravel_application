@@ -48,7 +48,9 @@ Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
     // Search and Pagination
     Route::get('/products/search', 'FrontController@search')->name('front.search');
     
-    Route::get('/cart', 'FrontController@cart')->name('front.cart'); // Add Product to Cart
+    Route::get('/cart', 'FrontController@cart')->name('front.cart'); // Cart Page
+    Route::get('/cart/checkout', 'FrontController@cartCheckout')->name('front.cart.checkout'); // Cart Checkout
+    Route::get('/cart/add-product', 'FrontController@addCartProduct')->name('front.cart.product.add'); // Add Product to Cart
     Route::get('/cart/remove-product', 'FrontController@productCartRemove')->name('front.cart.product.remove'); // Remove Product from Cart
     Route::get('/cart/counter-up-product', 'FrontController@productCartCounterUp')->name('front.cart.product.counterUp'); // INcrease Product Counter in Cart
     Route::get('/cart/counter-down-product', 'FrontController@productCartCounterDown')->name('front.cart.product.counterDown'); // Decrease Product Counter in Cart

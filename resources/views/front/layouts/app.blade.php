@@ -20,6 +20,8 @@
     <!-- Style -->
     <link rel="stylesheet" href="{{asset('front/styles/global.css')}}">
     <link rel="stylesheet" href="{{asset('front/styles/products.css')}}">
+    <link rel="stylesheet" href="styles/cart.css">
+
     <!-- arabicstyle -->
     <!-- <link rel="stylesheet" href="./arabicstyle/arabicstyle.css"> -->
     <!-- Jquery Ui -->
@@ -134,11 +136,26 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <script src="{{asset('front/js/arrowToggle.js')}}"></script>
     <script src="{{asset('front/js/jQuery.UI.js')}}" type="text/javascript"></script>
     <script src="{{asset('front/js/price_range_script.js')}}" type="text/javascript"></script>
     <script src="{{asset('front/js/nav-hover.js')}}"></script>
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
 
+    </script>
     @stack('scripts')
 </body>
 </html>

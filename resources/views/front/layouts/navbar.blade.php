@@ -74,7 +74,7 @@
           <p class="font-weight-bold">Subtotal</p>
           <p class="font-weight-bold">EGP 17,444</p>
         </div>
-        <a href="cart.html" class="btn dark-btn-outline my-3">View Cart</a href="cart.html">
+        <a href="{{route('front.cart')}}" class="btn dark-btn-outline my-3">View Cart</a href="cart.html">
         <a href="checkout.html" class="btn dark-btn">Checkout</a>
       </div>
     </div>
@@ -422,3 +422,52 @@
       </div>
     </div>
   </div>
+
+  @push('scripts')
+      <script>
+
+        //Remove Product From Cart
+    $(".removeCartProduct").click(function () {
+        var cartId = $(this).data('cart');
+        $.ajax({
+            url: '{{route('front.cart.product.remove')}}',
+            type: 'get',
+            data: {
+                cart_id: cartId
+            },
+            success: function (data) {
+                // console.log('done');
+                var counterDown = parseInt($('.cartCounts').html()) - 1;
+                $('.cartCounts').html(counterDown);
+            }
+        });
+    });
+
+    
+    //Increaser counter in Product Cart
+    $(".subCounter").click(function () {
+        var cartId = $(this).data('cart');
+        var counterValue = parseInt($('.counterValue').html()) + 1;
+        var productPrice = parseFloat($('.productPrice').html());
+        
+        console.log(counterValue);
+        console.log(productPrice);
+        $.ajax({
+            url: '{{route('front.cart.product.counterUp')}}',
+            type: 'get',
+            data: {
+                cart_id: cartId,
+                counter_value: counterValue,
+                product_price: productPrice,
+            },
+            success: function (data) {
+                // console.log(data);
+                $('.multipleCount').html(counterValue);
+                $('.counterValue').html(counterValue);
+                // $('.productPrice').html(data.price);
+            }
+        });
+    });
+
+      </script>
+  @endpush

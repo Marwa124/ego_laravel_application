@@ -238,6 +238,7 @@
 @push('scripts')
 <script>
     // Favorate Icon Products
+
   $('.heart-icon').click(function(data) {
     console.log(data.target.id);
     var e = data.target; // find the clicked icon
@@ -252,9 +253,25 @@
       },
       success: function(data){
         if ($(e).hasClass('far')) {
+            // Swal.fire({
+            //     position: 'bottom-start',
+            //     icon: 'success',
+            //     width: 400,
+            //     text: 'Product added',
+            //     showConfirmButton: false,
+            //     timer: 1500
+            // });
+            Toast.fire({
+                icon: 'success',
+                title: 'Product added'
+            });
           $(e).removeClass('far').addClass('fas');
           $(e).parent().addClass('bg-danger');
         } else {
+            Toast.fire({
+                icon: 'success',
+                title: 'Product removed'
+            });
           $(e).removeClass('fas').addClass('far');
           $(e).parent().removeClass('bg-danger');
         };
@@ -316,7 +333,7 @@ $(document).ready(function () {
         var productId = $(this).data('product');
         // console.log(productId);
         $.ajax({
-            url: '{{route('front.cart')}}', 
+            url: '{{route('front.cart.product.add')}}', 
             type: 'get',
             data: {
                 product_id: productId
@@ -368,48 +385,7 @@ $(document).ready(function () {
     });
 
 
-    //Remove Product From Cart
-    $(".removeCartProduct").click(function () {
-        var cartId = $(this).data('cart');
-        $.ajax({
-            url: '{{route('front.cart.product.remove')}}',
-            type: 'get',
-            data: {
-                cart_id: cartId
-            },
-            success: function (data) {
-                // console.log('done');
-                var counterDown = parseInt($('.cartCounts').html()) - 1;
-                $('.cartCounts').html(counterDown);
-            }
-        });
-    });
-
     
-    //Increaser counter in Product Cart
-    $(".subCounter").click(function () {
-        var cartId = $(this).data('cart');
-        var counterValue = parseInt($('.counterValue').html()) + 1;
-        var productPrice = parseFloat($('.productPrice').html());
-        
-        console.log(counterValue);
-        console.log(productPrice);
-        $.ajax({
-            url: '{{route('front.cart.product.counterUp')}}',
-            type: 'get',
-            data: {
-                cart_id: cartId,
-                counter_value: counterValue,
-                product_price: productPrice,
-            },
-            success: function (data) {
-                // console.log(data);
-                $('.multipleCount').html(counterValue);
-                $('.counterValue').html(counterValue);
-                // $('.productPrice').html(data.price);
-            }
-        });
-    });
 
 </script>
 @endpush
