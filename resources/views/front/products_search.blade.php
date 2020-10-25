@@ -59,33 +59,6 @@
         </div>
     @endforeach
 </div>
-{{-- <br> --}}
-{{-- <div class="row"> --}}
 <div class="d-flex justify-content-center">
     <div>{{$products->links()}}</div>
 </div>
-{{-- </div> --}}
-
-
-@push('scripts')
-
-<script>
-    // Product Pagination
-    $(document).ready(function () {
-        $('.pagination a').on('click', function (e) {
-            e.preventDefault();
-            var page = $(this).attr('href').split('page=')[1];
-            $.ajax({
-                url: '{{url('front/products?page=')}}' + page,
-                type: 'get',
-                dataType: 'html',
-                success: function (data) {
-                    $("#product_data").html(data)
-                }
-            })
-            console.log(page);
-        })
-    })
-    
-</script>
-@endpush

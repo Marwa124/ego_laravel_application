@@ -24,9 +24,6 @@ class FrontController extends Controller
     public function products(Request $request)
     {
         $products = Product::paginate(15);
-        if ($request->page) {
-            return view('front.products_search', compact('products'));
-        }
         return view('front.products', compact('products'));
     }
 
@@ -39,7 +36,20 @@ class FrontController extends Controller
 
     public function search(Request $request)
     {
-        // dd($request->keyword);
+        //Filter Products by Price High To Low
+        if ($request->filter) {
+            if ($request->filter == "HighToLow") {
+                $products = Product::orderBy('price', 'DESC')->paginate(15);
+            }
+            elseif($request->filter == "LowToHigh"){
+                $products = Product::orderBy('price', 'ASC')->paginate(15);
+            }
+            return view('front.products_search', [
+                'products' => $products
+            ]);
+        }
+
+        //Filter Products by Price Low To High
         if ($request->keyword) {
             $products = Product::where(function ($query) use ($request) {
                 if ($request->has('keyword')) {
@@ -51,6 +61,27 @@ class FrontController extends Controller
                 'products' => $products
             ]);
         }
+
+        if ($request->search) {
+            $products = Product::where(function ($query) use ($request) {
+                if ($request->has('search')) {
+                    $query->where('name', 'LIKE', '%' . $request->search . '%');
+                }
+            })->latest()->paginate(15);
+            // dd($products);
+            return view('front.products', [
+                'products' => $products
+            ]);
+        }
+    }
+
+    public function searchAutocomplete(Request $request)
+    {
+        $data = Product::select("name", 'id')
+                ->where("name","LIKE","%{$request->term}%")
+                ->get();
+   
+        return response()->json($data);
     }
 
     public function toggleFavorite(Request $request)
