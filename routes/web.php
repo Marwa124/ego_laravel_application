@@ -32,6 +32,8 @@ Route::post('register','Front\Auth\LoginController@registerProcess')->name('regi
 //     auth()->logout();
 // });
 
+// Route::get('iproduct', 'Imports\ImportProductController@product')->name('login');
+// Route::Post('iproduct','Imports\ImportProductController@storeProduct')->name('register.submit');
 
 Route::group(['namespace' => 'Front', 'prefix' => 'front'], function() {
     // Route::get('client-register', 'AuthController@clientRegister')->name('client.register');

@@ -15,11 +15,11 @@
 
 
 
-<div class="form-group row ">
+<div class="form-group row d-flex justify-content-end">
 
-<input type='hidden' name="parent" value="{{ old('parent') }}" class="parent_id">
+<input type='hidden' name="parent" value="{{ old('parent') ?? '0' }}" class="parent_id">
 
-<label>@lang('locale.choose_parent')</label>
+<label>@lang('lang.choose_parent')</label>
 <div class="col-9">
     <div id="jstree"> </div>
 </div>
