@@ -43,28 +43,31 @@ class UserAPIController extends Controller
     function login(Request $request)
     {
         try {
-            $validation = validator()->make($request->all(), [
-                'email' => 'required|email|exists:users,email',
-                'password' => 'required',
-            ]);
-            if($validation->fails())
-            {
-                return $this->apiResponse(0, $validation->errors()->first(), $validation->errors());
-            }
 
-            $user = User::where('email', $request->email)->first();
-            if ($user)
-            {
-                if(Hash::check($request->password, $user->password)){
-                    return $this->apiResponse('success', 'Successfully logged', [
-                        'api_token' => $user->api_token,
-                    ]);
-                }else {
-                    return $this->apiResponse('error', 'Invalid Password');
+                $validation = validator()->make($request->all(), [
+                    'email' => 'required|email|exists:users,email',
+                    'password' => 'required',
+                ]);
+                if($validation->fails())
+                {
+                    return $this->apiResponse(0, $validation->errors()->first(), $validation->errors());
                 }
-            }else {
-                return $this->apiResponse('error', 'Invalid access credentials');
-            }
+
+                $user = User::where('email', $request->email)->first();
+                // return $this->apiResponse('error', $user);
+
+                if ($user)
+                {
+                    if(Hash::check($request->password, $user->password)){
+                        return $this->apiResponse('success', 'Successfully logged', [
+                            'api_token' => $user->api_token,
+                        ]);
+                    }else {
+                        return $this->apiResponse('error', 'Invalid Password');
+                    }
+                }else {
+                    return $this->apiResponse('error', 'Invalid access credentials');
+                }
 
 
             // if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {

@@ -54,7 +54,7 @@
                     
                 </div>
 
-                <button class="add_to_cart" id="add_to_cart" data-product="{{$item->id}}" >Add to cart</button>
+                {{-- <button class="add_to_cart" id="add_to_cart" data-product="{{$item->id}}" >Add to cart</button> --}}
             </div>
         </div>
     @endforeach
