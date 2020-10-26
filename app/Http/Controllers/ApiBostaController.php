@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\DeliveryAddress;
+use App\Models\Receiver;
 use GuzzleHttp\Client;
 use App\Repositories\RoleRepository;
 use App\Repositories\UploadRepository;
@@ -29,6 +31,10 @@ class ApiBostaController extends Controller
             echo "<pre>";
             echo $allDeliveries = json_decode($res->getBody()->getContents());
 
+            $dropOffAddress = DeliveryAddress::where('firstLine', $value->dropOffAddress->firstLine)
+                    ->where('zone_id', $value->dropOffAddress->zone->_id)
+                    ->where('city_id', $value->dropOffAddress->city->_id)->first();
+
             // dd(json_decode($res->getBody()->getContents()));
             foreach ($allDeliveries->deliveries as $key => $value) {
 
@@ -36,8 +42,10 @@ class ApiBostaController extends Controller
                     ->where('zone_id', $value->dropOffAddress->zone->_id)
                     ->where('city_id', $value->dropOffAddress->city->_id)->first();
                 $pickupAddress = Address::where('firstLine', $value->dropOffAddress->firstLine)
-                ->where('zone_id', $value->dropOffAddress->zone->_id)
-                ->where('city_id', $value->dropOffAddress->city->_id)->first();
+                    ->where('zone_id', $value->dropOffAddress->zone->_id)
+                    ->where('city_id', $value->dropOffAddress->city->_id)->first();
+                $receiver = Receiver::where('phone', $value->receiver->phone)
+                    ->where('email', $value->receiver->email)->first();
 
                 if (!$dropOffAddress) {
 
@@ -68,6 +76,14 @@ class ApiBostaController extends Controller
                         'city_id' => $value->pickupAddress->city->_id,
                     ]);
 
+                }
+                if (!$receiver) {
+                    Receiver::create([
+                        'firstName' => $value->receiver->firstName,
+                        'lastName' =>  $value->receiver->lastName,
+                        'phone' => $value->receiver->phone,
+                        'email' => $value->receiver->email,
+                    ]);
                 }
             }
         }
