@@ -77,16 +77,43 @@
             <p>Total</p>
             <p>EGP 2200 EGP</p>
           </div>
-          <div class="d-flex justify-content-around font-weight-bold border-bottom py-3">
-            <button class="btn btn-secondary">Click & Collect</button>
-            <a href="{{route('front.cart.checkout')}}" type="button" class="btn dark-btn">
+       
+          <div class="form-group d-block mb-0">
+            <input type="text" class="form-control" placeholder="Enter Your Voucher">
+          </div>
+          <div class="d-flex justify-content-around font-weight-bold py-3">
+            <a href="{{route('front.cart.checkout')}}" type="button" class="btn btn-block dark-btn">
               Checkout
             </a>
-            <!-- <button class="btn dark-btn">Checkout</button> -->
+          </div>
+          <div class="d-flex">
+            <div class="p-1" style="width: 50px;">
+              <img class="w-100" src="/images/master-card.jpg" alt="">
+            </div>
+            <div class="p-1" style="width: 50px;">
+              <img class="w-100" src="/images/Visa_Inc._logo.svg.png" alt="">
+            </div>
+            {{-- <div class="p-1" style="width: 50px;">
+              <img class="w-100" src="/images/Visa_Inc._logo.svg.png" alt="">
+            </div>
+            <div class="p-1" style="width: 50px;">
+              <img class="w-100" src="/images/master-card.jpg" alt="">
+            </div> --}}
+            {{-- <div class="p-1" style="width: 50px;">
+              <img class="w-100" src="/images/Visa_Inc._logo.svg.png" alt="">
+            </div>
+            <div class="p-1" style="width: 50px;">
+              <img class="w-100" src="/images/master-card.jpg" alt="">
+            </div> --}}
+          </div>
+          <div>
+            <p style="font-size: 12px;">Your transaction is safe and secure</p>
           </div>
         </div>
       </div>
     </div>
   </main>
-  
+
+
+
   @endsection
