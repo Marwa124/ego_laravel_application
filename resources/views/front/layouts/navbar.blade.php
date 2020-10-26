@@ -412,47 +412,26 @@
                 </div>
               </li>
             </ul>
-            {{-- <form class="search-form" action="{{url('front/search')}}"> --}}
+            <form class="search-form" action="{{route('front.search')}}">
               <div class="form-group mr-3 mb-0">
                 <div class="input-wrapper d-flex align-items-center" tabindex="1">
                   <input type="text" class="form-control search-input" name="search" placeholder="Search">
                   <div id="search-btn">
                     <i id="search-icon" class="fas fa-search cursor-pointer"></i>
                   </div>
+
                 </div>
               </div>
-            {{-- </form> --}}
+            </form>
           </div>
+          <ul class="result_search">
+          </ul>
         </div>
       </div>
     </div>
   </div>
 
   @push('scripts')
-
-  <script>
-    // Product Search
-    $(document).ready(function () {
-          $('.search-input').on('keyup', function () {
-                
-            var inputSearch = $('input[name="search"]').val();
-            $.ajax({
-                url: '{{url('front/products/search?keyword=')}}' + inputSearch,
-                type: 'get',
-                dataType: 'html',
-                success: function(data){
-                    // console.log(data);
-                    $("#product_data").html(data);
-                },
-
-                error: function(x, y, z){
-                    console.log(x + ' ' + y + ' ' + z);
-                }
-            });
-
-        });
-    });
-    </script>
 
       <script>
 
@@ -564,4 +543,59 @@
 
 </script>
 
+  
+<script>
+// AutoComplete Search
+$(document).ready(function() {
+      var inputSearch = $('input[name="search"]').val();
+      // src = '{{url('front/products/search')}}',
+      src = '{{route('front.search.autocomplete')}}',
+      
+      $(".search-input").autocomplete({
+          source: function(request, response) {
+              $.ajax({
+                  url: src,
+                  dataType: "json",
+                  data: {
+                      term : request.term
+                  },
+                  success: function(data) {
+                      let x = 0;
+                      $(".result_search").html('');
+
+                      for (x ; x < data.length; x += 1) {
+                        const element = data[x].name;
+                        const Id = data[x].id;
+                        $(".result_search").append(`<li id='${Id}'>${element}</li>`);
+                      }
+                    if (data.length < 1) {
+                      $(".result_search").html(`<li>No result found</li>`);
+                    } 
+                    if ($('input[name="search"]').val().length < 2) {
+                      $(".result_search").html("");
+                    }                 
+                  }
+              });
+          },
+          // minLength: 3,
+      });
+});
+
+    
+    
+
+</script>
+
   @endpush
+
+{{-- @push('css_lib')
+     <style>
+       .result_search{
+         list-style: none;
+         cursor: copy;
+       }
+       .result_search li:hover{
+         background-color: #ccc;
+       }
+     </style>
+ @endpush --}}
