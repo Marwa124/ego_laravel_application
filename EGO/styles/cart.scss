@@ -1,0 +1,24 @@
+@import "./media.scss";
+.quantity {
+    display: flex;
+}
+.rounded-border {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.quantity-input {
+    height: 45px;
+    padding-left: 10px;
+    font-size: 0.7rem;
+}
+button {
+    border: 1px solid black;
+}
+
+.product-grid {
+    position: relative;
+}
+
+.summary{
+    width: 341px;
+}

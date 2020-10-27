@@ -1,0 +1,328 @@
+@media screen and (min-width: 991px) {
+  .navbar-brand-centered {
+    position: absolute;
+    left: 43%;
+    display: block;
+    width: 160px;
+    text-align: center;
+  }
+  .navbar > .container .navbar-brand-centered,
+  .navbar > .container-fluid .navbar-brand-centered {
+    margin-left: -80px;
+  }
+  section h5 {
+    font-size: 2rem;
+  }
+  .responsive-filter {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .responsive-logo {
+    width: 20% !important;
+  }
+  .hide-onTablet {
+    display: none !important;
+  }
+  .secondary-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 1201px) {
+  .search-container input {
+    width: 78px !important;
+  }
+  .nav-link {
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .responsive-text > * {
+    font-size: medium;
+  }
+  .responsive-text p {
+    font-size: 0.6rem;
+  }
+  .products-title {
+    font-size: 1.5rem;
+  }
+  .category-nav {
+    display: hidden;
+  }
+  .position-quantity-responsive {
+    position: absolute;
+    top: 60%;
+    right: 0%;
+  }
+  .position-icon-responsive {
+    position: absolute;
+    bottom: 3%;
+    right: 0;
+  }
+  .w-small-100 {
+    width: 100% !important;
+  }
+}
+
+.search-group {
+  max-height: 200px;
+  overflow: auto;
+}
+
+.pagination {
+  margin: 5% auto;
+}
+
+.fa-arrow-up,
+.fa-arrow-down {
+  font-size: 0.7rem;
+}
+
+#scrollbar-style::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+#scrollbar-style::-webkit-scrollbar {
+  width: 12px;
+  background-color: #f5f5f5;
+}
+
+#scrollbar-style::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #a3a3a3;
+}
+
+.filters form {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 100px;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.ui-slider-horizontal {
+  width: 500px;
+  height: 6px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.ui-widget-header {
+  background: #202020;
+}
+
+.ui-widget.ui-widget-content {
+  border: 2px solid #6e6666;
+}
+
+.ui-slider-handle.ui-corner-all.ui-state-default {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  top: -6px;
+  border-radius: 100%;
+  background: #202020;
+  border: 1px solid #202020;
+}
+
+.ui-slider-handle.ui-corner-all.ui-state-default:focus {
+  outline: none;
+}
+
+.price-range-field {
+  width: 100px;
+  height: 36px;
+  border: 1px solid #6e6666;
+  font-size: 15px;
+  padding: 5px;
+}
+
+.price-filter-range {
+  width: 90%;
+  background-color: #dadada !important;
+}
+
+.ui-slider-range {
+  background-color: #000 !important;
+}
+
+.colorboxes {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  /* checkbox aspect */
+  /* checked mark aspect */
+  /* checked mark aspect changes */
+  /* disabled checkbox */
+  /* accessibility */
+  /* hover style just for information */
+}
+
+.colorboxes [type="checkbox"]:not(:checked),
+.colorboxes [type="checkbox"]:checked {
+  position: absolute;
+}
+
+.colorboxes [type="checkbox"]:not(:checked) + label,
+.colorboxes [type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 1.95em;
+  cursor: pointer;
+}
+
+.colorboxes [type="checkbox"]:not(:checked) + label:before,
+.colorboxes [type="checkbox"]:checked + label:before {
+  content: "";
+  margin-top: 11px;
+  margin-left: 11px;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.colorboxes [type="checkbox"]:not(:checked) + label:after,
+.colorboxes [type="checkbox"]:checked + label:after {
+  content: "\2713\0020";
+  background: unset;
+  margin-top: 12px;
+  margin-left: 12px;
+  font-size: 1em;
+  line-height: 0.8;
+  color: #fff;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.colorboxes [type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+}
+
+.colorboxes [type="checkbox"]:checked + label:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+.colorboxes [type="checkbox"]:disabled:not(:checked) + label:before,
+.colorboxes [type="checkbox"]:disabled:checked + label:before {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-color: #fff !important;
+  background-color: #ddd;
+}
+
+.colorboxes [type="checkbox"]:disabled:checked + label:after {
+  color: #999;
+}
+
+.colorboxes [type="checkbox"]:disabled + label {
+  color: #aaa;
+}
+
+.colorboxes .colorCheckBox {
+  border: 1px solid #ccc;
+  padding: 14px;
+  display: inline-block;
+  border-radius: 4px;
+  -webkit-transition: 100ms;
+  transition: 100ms;
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+}
+
+@media (max-width: 1200px) {
+  .colorboxes {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+  }
+}
+
+.red-check label:hover {
+  border-color: #ca2236 !important;
+}
+
+.red-check label:before {
+  background-color: #ca2236 !important;
+}
+
+.red-check [type="checkbox"]:checked + label {
+  border-color: #ca2236 !important;
+}
+
+.black-check label:hover {
+  border-color: #000 !important;
+}
+
+.black-check label:before {
+  background-color: #000 !important;
+}
+
+.black-check [type="checkbox"]:checked + label {
+  border-color: #000 !important;
+}
+
+.brown-check label:hover {
+  border-color: #75350a !important;
+}
+
+.brown-check label:before {
+  background-color: #75350a !important;
+}
+
+.brown-check [type="checkbox"]:checked + label {
+  border-color: #75350a !important;
+}
+
+.gold-check label:hover {
+  border-color: #d69e0f !important;
+}
+
+.gold-check label:before {
+  background-color: #d69e0f !important;
+}
+
+.gold-check [type="checkbox"]:checked + label {
+  border-color: #d69e0f !important;
+}
+
+.blue-check label:hover {
+  border-color: #0f6cd6 !important;
+}
+
+.blue-check label:before {
+  background-color: #0f6cd6 !important;
+}
+
+.blue-check [type="checkbox"]:checked + label {
+  border-color: #0f6cd6 !important;
+}
+
+.purple-check label:hover {
+  border-color: #974fd6 !important;
+}
+
+.purple-check label:before {
+  background-color: #974fd6 !important;
+}
+
+.purple-check [type="checkbox"]:checked + label {
+  border-color: #974fd6 !important;
+}
+/*# sourceMappingURL=products.css.map */

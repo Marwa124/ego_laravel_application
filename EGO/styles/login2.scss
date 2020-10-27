@@ -1,0 +1,58 @@
+@import "./global.scss";
+
+body {
+    background-color: rgb(247, 245, 245);
+    text-align: left;
+}
+.wrapper {
+    margin-top: 60px;
+    font-weight: 300;
+}
+.logo-wrapper {
+    width: 300px;
+    margin: auto;
+}
+.logo {
+    width: 100%;
+}
+.login-wrapper {
+    display: grid;
+    margin-bottom: 50px;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 7%;
+}
+@media (max-width: 971px) {
+    .login-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+.login-card {
+    background-color: #fff;
+    box-shadow: 0px 0px 30px -15px rgba(0, 0, 0, 0.75);
+    padding: 40px;
+    margin: 2%;
+}
+// @media (min-width: 767px) {
+//     .login-wrapper {
+//         width:40%;
+//     }
+// }
+// @media (min-width: 1025px) {
+//     .login-wrapper {
+//         width:30%;
+//     }
+// }
+.external-login-btn {
+    border: 1px solid #cccc;
+    box-shadow: 1px;
+    margin: 10px 0;
+    transition: 400ms;
+    width: 350px;
+    &:hover{
+        opacity: 0.7;
+    }
+}
+
+.small-text{
+    font-size: 0.6rem;
+}

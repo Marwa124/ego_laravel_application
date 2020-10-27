@@ -1,0 +1,56 @@
+@import "./media.scss";
+@import "./global.scss";
+
+.dark-btn {
+    padding: 1% 19.5%;
+}
+.description-navigation {
+    width: 300px;
+}
+.clickedDescription {
+    position: relative;
+    padding-bottom: 10px;
+    opacity: 0.7;
+}
+.clickedDescription:hover {
+    font-weight: bold;
+    opacity: 1;
+}
+.clickedDescription:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    transition: all 0.4s ease;
+}
+.clickedDescription:hover:after {
+    content: "";
+    background: black;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 30%;
+}
+
+.color {
+    width: 40px;
+    height: 40px;
+    margin: 0 2px;
+    border: none;
+    &:hover {
+        filter: brightness(85%);
+    }
+}
+
+.bg-red {
+    background-color: #c02033;
+}
+.bg-gold {
+    background-color: #d69e0f;
+}
+.bg-brown {
+    background-color: #5c4200;
+}
