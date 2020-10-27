@@ -14,10 +14,12 @@ class alterAddresses extends Migration
     public function up()
     {
         Schema::table('addresses', function (Blueprint $table) {
-            $table->unsignedInteger('city')->change();
+            // $table->integer('city')->change()->nullable();
             $table->renameColumn('city', 'city_id');
-            $table->unsignedInteger('zone')->change();
-            $table->renameColumn('zone', 'zone_id');
+            $table->renameColumn('city', 'city_id');
+            // $table->integer('zone')->change()->nullable();
+            // $table->unsignedInteger('zone')->change();
+            $table->integer('buildingNumber')->nullable();
         });
     }
 
@@ -29,8 +31,12 @@ class alterAddresses extends Migration
     public function down()
     {
         Schema::table('addresses', function (Blueprint $table) {
-            $table->dropColumn('city_id');
-            $table->dropColumn('zone_id');
+            $table->renameColumn('city_id', 'city');
+            $table->renameColumn('zone_id', 'zone');
+            $table->dropColumn('buildingNumber');
+
+            // $table->dropColumn('city');
+            // $table->dropColumn('city_id');
         });
     }
 }

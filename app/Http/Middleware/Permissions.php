@@ -54,6 +54,7 @@ class Permissions
             $permission = $request->route()->getName();
           
         if($permission == 'login' || $permission == 'front.register'){
+            
             return  redirect('front/home');
 
         }

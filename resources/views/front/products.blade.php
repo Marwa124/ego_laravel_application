@@ -239,12 +239,14 @@
                                     <i id="{{$item->id}}" class="fa-heart {{$item->is_favorite ? 'fas' : 'far'}}"></i>
                                 </div>
                                 @if ($item->getMedia('image')->first() != null)
-                                    
-                            <a class="img-fluid w-100 mb-3" href="{{route('front.product.show', $item->id)}}" target="_blank">
+                                    <a class="img-fluid w-100 mb-3" href="{{route('front.product.show', $item->id)}}" target="_blank">
                                         <img class="img-fluid" src="{{$item->getFirstMediaUrl('','thumb')}}" alt="">
+                                    </a>
+                                @else
+                                    <a class="img-fluid w-100 mb-3" href="{{route('front.product.show', $item->id)}}" target="_blank">
+                                        <img class="img-fluid" src="{{env('FRONT_URL') . 'images/image_default.png'}}" alt="">
                 
-                                    {{-- <img class="img-fluid w-100 mb-3" src="{{env('App_Url').$item->getUrl()}}" alt=""> --}}
-                                </a>
+                                     </a>
                                 @endif
                             </div>
                             <div>

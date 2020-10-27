@@ -28,7 +28,8 @@ Route::get('register','Front\Auth\LoginController@register')->name('front.regist
 Route::post('register','Front\Auth\LoginController@registerProcess')->name('register.submit');
 
 
-Route::get('/api-bosta', 'APIBostaController@index')->name('api.bosta');
+// Route::get('/api-bosta', 'APIBostaController@index')->name('api.bosta');
+Route::resource('api-bosta', 'APIBostaController', ['except' => ['edit', 'update', 'create', 'store']]);
 
 
 // Route::post('logout',function ()

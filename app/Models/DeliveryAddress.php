@@ -106,18 +106,18 @@ class DeliveryAddress extends Model
         return $this->belongsTo(\App\Models\Receiver::class, 'receiver_id', 'id');
     }
 
-    public function pickupAddresses()
+    public function pickupAddress()
     {
-        return $this->hasMany(\App\Models\Address::class, 'id', 'pickupAddress');
+        return $this->belongsTo(\App\Models\Address::class, 'id', 'pickupAddress');
     }
 
-    public function dropOffAddresses()
+    public function dropOffAddress()
     {
-        return $this->hasMany(\App\Models\Address::class, 'id', 'dropOffAddress');
+        return $this->belongsTo(\App\Models\Address::class, 'id', 'dropOffAddress');
     }
 
-    public function returnAddresses()
+    public function returnAddress()
     {
-        return $this->hasMany(\App\Models\Address::class, 'id', 'returnAddress');
+        return $this->belongsTo(\App\Models\Address::class, 'id', 'returnAddress');
     }
 }

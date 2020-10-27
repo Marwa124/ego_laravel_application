@@ -40,7 +40,16 @@ class Address extends Model
     // {
     //     return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
     // }
+    
+    public function zone()
+    {
+        return $this->belongsTo(\App\Models\Zone::class, 'zone_id', 'id');
+    }
 
+    public function cityCode()
+    {
+        return $this->belongsTo(\App\Models\CityCode::class, 'city_id', 'id');
+    }
    
     public function deliveryAddresses()
     {

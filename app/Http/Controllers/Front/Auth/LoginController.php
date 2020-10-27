@@ -112,7 +112,9 @@ class LoginController extends Controller
             }
 
         auth()->login($user,true);
-        return redirect('front/home');
+        return redirect()->route('front.index');
+
+        // return redirect('front/home');
     }
 
 
@@ -165,7 +167,9 @@ class LoginController extends Controller
             }
 
             auth()->login($user,true);
-            return redirect('front/home');
+            return redirect()->route('front.index');
+
+            // return redirect('front/home');
 
         }
         catch (\Exception $e){

@@ -17,10 +17,10 @@ use Eloquent as Model;
  * @property boolean is_default
  * @property integer user_id
  */
-class CityCode extends Model
+class Zone extends Model
 {
 
-    public $table = 'city_codes';
+    public $table = 'zones';
     
      public $guarded = [];
 
@@ -30,12 +30,15 @@ class CityCode extends Model
      * @var array
      */
     public static $rules = [
-        'city' => 'required',
+        'name' => 'required',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
     public function Addresses()
     {
-        return $this->hasMany(\App\Models\Address::class, 'city_id', 'id');
+        return $this->hasMany(\App\Models\Address::class, 'zone_id', 'id');
     }
     
 }
