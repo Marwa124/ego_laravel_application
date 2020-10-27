@@ -26,6 +26,12 @@ Route::post('login','Front\Auth\LoginController@handleProviderCallback')->name('
 Route::get('register','Front\Auth\LoginController@register')->name('front.register');
 Route::post('register','Front\Auth\LoginController@registerProcess')->name('register.submit');
 
+
+
+
+//Route::get('media','Imports\ImportProductController@setImages')->name('login');
+
+
 // Route::post('logout',function ()
 // {
 //     return 'true';
