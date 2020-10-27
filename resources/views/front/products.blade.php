@@ -252,7 +252,7 @@
                             <div>
                                 <div>
                                     <h5 class="prod-name mb-1">{{$item->name}}</h5>
-                                    <p class="mb-0">{{$item->description}}</p>
+                                    <p class="mb-0"><?php echo implode(' ', array_slice(explode(' ', $item->description), 0, 10));  ?></p>
                                     <p class="mb-0">{{$item->price}}</p>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center">

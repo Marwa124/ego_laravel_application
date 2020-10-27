@@ -1,0 +1,127 @@
+@media screen and (min-width: 991px) {
+  .navbar-brand-centered {
+    position: absolute;
+    left: 43%;
+    display: block;
+    width: 160px;
+    text-align: center;
+  }
+  .navbar > .container .navbar-brand-centered,
+  .navbar > .container-fluid .navbar-brand-centered {
+    margin-left: -80px;
+  }
+  section h5 {
+    font-size: 2rem;
+  }
+  .responsive-filter {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .responsive-logo {
+    width: 20% !important;
+  }
+  .hide-onTablet {
+    display: none !important;
+  }
+  .secondary-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 1201px) {
+  .search-container input {
+    width: 78px !important;
+  }
+  .nav-link {
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .responsive-text > * {
+    font-size: medium;
+  }
+  .responsive-text p {
+    font-size: 0.6rem;
+  }
+  .products-title {
+    font-size: 1.5rem;
+  }
+  .category-nav {
+    display: hidden;
+  }
+  .position-quantity-responsive {
+    position: absolute;
+    top: 60%;
+    right: 0%;
+  }
+  .position-icon-responsive {
+    position: absolute;
+    bottom: 3%;
+    right: 0;
+  }
+  .w-small-100 {
+    width: 100% !important;
+  }
+}
+
+main {
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(32, 32, 32, 0.2)), to(rgba(0, 0, 0, 0.8))), url("../images/login-header-2.png");
+  background: linear-gradient(rgba(32, 32, 32, 0.2), rgba(0, 0, 0, 0.8)), url("../images/login-header-2.png");
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: top;
+  background-size: cover;
+  height: auto;
+  padding: 100px 0;
+  margin-top: 100px;
+}
+
+body {
+  background-color: #f7f5f5;
+  text-align: left;
+}
+
+.login-wrapper {
+  background-color: #fafafa;
+  margin: auto;
+}
+
+.login-card {
+  -webkit-box-shadow: 0px 0px 30px -15px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 0px 30px -15px rgba(0, 0, 0, 0.75);
+  padding: 40px;
+  width: auto;
+}
+
+.login-wrapper {
+  width: 600px;
+}
+
+.external-login {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+@media (max-width: 625px) {
+  .login-wrapper {
+    width: 100%;
+  }
+  .external-login {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
+.small-text {
+  font-size: 0.6rem;
+}
+/*# sourceMappingURL=auth.css.map */

@@ -53,7 +53,7 @@
       <div class="col-lg-6 col-sm-12 mb-4">
         <a href="{{route('front.product.show', $product->id)}}">
           @if ($product->has_media)
-            <img class="img-fluid" src="{{$product->getMedia('image')->first()->getUrl()}}" alt="">
+            <img class="img-fluid" src="{{$product->getFirstMediaUrl('','thumb')}}" alt="">
           @endif
         </a>
       </div>
