@@ -481,27 +481,52 @@
                   
                     <div class="form-group text-left">
                       <label for="formGroupExampleInput">Email Address</label>
-                      <input type="email" value="{{ old('email') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="formGroupExampleInput" name="email"  placeholder="Enter Your email">
+                      <input type="email" value="{{ old('email', '') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="formGroupExampleInput" name="email"  placeholder="Enter Your email">
+                      @if ($errors->has('email'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('email') }}
+                        </div>
+                      @endif
                     </div>
                     <div class="form-group text-left">
                       <label for="formGroupExampleInput" style="font-size: small;">CONFIRM Email
                           <small>*</small></label>
-                      <input type="email" class="form-control" name="email_confirmation" id="formGroupExampleInput">
-                   </div>
+                      <input type="email" value="{{ old('email_confirmation', '') }}" class="form-control" name="email_confirmation" id="formGroupExampleInput">
+                      @if ($errors->has('email_confirmation'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('email_confirmation') }}
+                        </div>
+                       @endif
+                    </div>
                     {{-- <div class="d-md-flex"> --}}
                       <div class="form-group text-left mr-2">
                         <label for="formGroupExampleInput2">Password</label>
                         <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" id="formGroupExampleInput2" name="password" placeholder="Enter Your Password">
-                      </div>
+                        @if ($errors->has('password'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('password') }}
+                            </div>
+                        @endif
+                    </div>
                       <div class="form-group text-left">
                         <label for="formGroupExampleInput2">Confirm Password</label>
                         <input type="password" class="form-control {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"  name="password_confirmation" id="formGroupExampleInput2" placeholder="Enter Your Password">
-                      </div>
+                        @if ($errors->has('password_confirmation'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('password_confirmation') }}
+                        </div>
+                       @endif
+                    </div>
                       <div class="form-group text-left">
                         <label for="formGroupExampleInput2" style="font-size: small;">Phone Number
                             <small>*</small></label>
-                        <input type="text" name="phone" class="form-control" id="formGroupExampleInput2">
-                      </div>
+                        <input type="text" name="phone" value="{{ old('phone', '') }}" class="form-control {{ $errors->has('phone') ? ' is-invalid' : '' }}" id="formGroupExampleInput2">
+                        @if ($errors->has('phone'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('phone') }}
+                            </div>
+                        @endif
+                    </div>
                     {{-- </div> --}}
 
                     <button type="submit" class="btn dark-btn w-100 py-2 mb-3 " style="font-size: small;">Sign Up</button>
