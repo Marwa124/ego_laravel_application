@@ -22,6 +22,9 @@ body {
   font-family: 'Montserrat';
   font-weight: 500;
   letter-spacing: 1px;
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 .announcement {

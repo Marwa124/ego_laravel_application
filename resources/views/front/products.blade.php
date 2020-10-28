@@ -3,11 +3,10 @@
     {{trans('products')}}
 @endsection
 @section('content')
-
-    <!-- Annoncement -->
-    <div class="py-3 bar" style="margin-top: 180px;">
-        <p class="m-0 text-dark">Open Doors To A World Of Fashion</p>
-    </div>
+<!-- Annoncement -->
+<div class="announcement py-3 bar" style="margin-top: 221px !important;">
+    <div class="m-0 text-dark">YOUR FASHION DESTINATION</div>
+  </div>
 
     <main class="container py-4 mt-4" x-data="{showMiniCart:false, showMenNav:false, showWomenNav:false}">
         <div class="responsive-filter bg-light text-left my-3 mx-4">

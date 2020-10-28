@@ -4,10 +4,10 @@
 @endsection
 @section('content')
 
-    <!-- Annoncement -->
-    <div class="announcement py-3 bar">
-        <div class="m-0 text-dark">YOUR FASHION DESTINATION</div>
-    </div>
+<!-- Annoncement -->
+<div class="announcement py-3 bar" style="margin-top: 221px !important;">
+    <div class="m-0 text-dark">YOUR FASHION DESTINATION</div>
+  </div>
     <main class="container">
         <div class="border-bottom py-2">
             <h4>EGO FIRST MALL</h4>

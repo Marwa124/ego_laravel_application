@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap");
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,15 +14,18 @@ html {
 }
 body {
     text-align: center;
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     // font-family: sans-serif;
     font-weight: 500;
     letter-spacing: 1px;
-    
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    font-size: 95%;
+    background-color: #FAFAFA;
 }
-
-.announcement{
-    margin-top: 190px;
+.announcement {
+    margin-top: 205px;;
 }
 
 @media (min-width: 1200px) {
@@ -31,7 +34,7 @@ body {
     .container-md,
     .container-sm,
     .container-xl {
-        max-width: 1412px;
+        max-width: 1400px;
     }
 }
 
@@ -46,7 +49,7 @@ a {
 .faded {
     opacity: 0.6;
 }
-.btn{
+.btn {
     border-radius: 0;
 }
 .dark-btn-outline {
@@ -62,8 +65,8 @@ a {
     border-color: rgb(17, 17, 17);
     &:hover {
         color: #fff;
-        background-color: rgb(29, 29, 29);
-        border-color: rgb(29, 29, 29);
+        background-color: rgb(54, 54, 54);
+        border-color: rgb(54, 54, 54);
     }
 }
 .grey-bg {
@@ -81,7 +84,7 @@ a {
         border-color: black;
     }
 }
-.form-check{
+.form-check {
     padding-left: 0;
 }
 
@@ -90,30 +93,42 @@ a {
     position: fixed;
     width: 100%;
     top: 0;
-    background-color: #fff;
+    background-color: #FAFAFA ;
     z-index: 50;
-    padding: 20px 10px;
 }
-.navbar-light .navbar-nav .nav-link:hover,
 .nav-link:hover {
-    color: #b70e2a !important;
+    color: #000 !important;
+    :active {
+        color: #000 !important;
+    }
 }
-.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav,
 .nav-link:focus {
-    color: #b70e2a !important;
+    color: #000 !important;
 }
-.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav,
 .nav-link:active {
-    color: #b70e2a !important;
+    color: #000 !important;
+}
+.active-link {
+    color: #000 !important;
 }
 
 .nav-link {
+    color: rgb(75, 75, 75) !important;
     padding: 5px 12px;
     margin-right: 10px;
 }
+
+.nav-icon{
+    padding: 10px;
+    &:hover{
+        background-color: #f3f3f3;
+    }
+}
 .secondary-nav {
     padding: 10px;
-    background-color: #fff;
+    background-color: #FAFAFA;
     position: fixed;
     left: 0;
     width: 100%;
@@ -150,7 +165,7 @@ a {
     transition: 400ms;
 }
 .sub-link {
-    font-weight: 300;
+    font-weight: 400;
     margin: 5px 0;
     &:hover {
         text-decoration: underline !important;
@@ -198,16 +213,17 @@ a {
     font-size: 0.6rem;
     background-color: #ee4266;
     border-radius: 50%;
-    padding: 0.2px 4px;
+    padding: 1px 4px;
 }
 .cursor-pointer {
     cursor: pointer !important;
 }
 .mini-cart {
-    position: fixed;
+    padding: 10px;
     background-color: #fff;
-    right: 11%;
-    top: 10%;
+    position: absolute;
+    right: 0;
+    top: 60px;
     z-index: 100;
     width: 400px;
     box-shadow: 0px 0px 30px -15px rgba(0, 0, 0, 0.5);
@@ -386,3 +402,8 @@ footer {
     -webkit-transform: scale(1);
     transform: scale(1);
 }
+
+// Hide arrows in input number
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }

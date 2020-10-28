@@ -40,12 +40,17 @@ Route::resource('api-bosta', 'APIBostaController', ['except' => ['edit', 'update
 
 // Route::get('iproduct', 'Imports\ImportProductController@product')->name('login');
 // Route::Post('iproduct','Imports\@storeProduct')->name('register.submit');
+Route::post('logout','Front\Auth\LoginController@logout')->middleware('auth');
 
 Route::group(['namespace' => 'Front'], function() {
     // Route::get('client-register', 'AuthController@clientRegister')->name('client.register');
     // Route::post('client-register-save', 'AuthController@clientRegisterSave')->name('client.save');
     // Route::get('client-login', 'AuthController@clientLogin')->name('client.login');
     // Route::post('client-login-save', 'AuthController@clientLoginSave')->name('client.logged');
+
+
+
+
 
     Route::get('/', function(){
         return redirect('home');

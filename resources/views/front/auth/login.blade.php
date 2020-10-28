@@ -1,8 +1,15 @@
-@extends('front.layout.layout')
+@extends('front.layouts.app')
 
 @section('content')
+@section('title_name')
+    {{trans('Login')}}
+@endsection
 
 
+@push('css_lib')
+<link rel="stylesheet" href="{{asset('front/styles/login.css')}}">
+
+@endpush
 <main>
   <div class="login-wrapper">
     <!-- <div class="text-center">
@@ -16,12 +23,17 @@
         @csrf
         <div class="form-group text-left">
           <label for="formGroupExampleInput" style="font-size: small;">EMAIL ADDRESS <small>*</small></label>
-          <input type="email"  value="{{ old('email') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="formGroupExampleInput" name="email" placeholder="{{ __('auth.email') }}">
+          <input  type="email"  value="{{ old('email') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="formGroupExampleInput" name="email" placeholder="{{ __('auth.email') }}">
           @if ($errors->has('email'))
           <div class="invalid-feedback">
               {{ $errors->first('email') }}
           </div>
       @endif
+   
+          @if(Session::has('wrong'))
+            {!! Session::get('wrong') !!} 
+            @endif
+
         </div>
         <div class="form-group text-left">
           <label for="formGroupExampleInput2" style="font-size: small;">Password <small>*</small></label>

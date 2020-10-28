@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use Laracasts\Flash\Flash;
+use App\Http\Controllers\Controller;
 use App\Repositories\RoleRepository;
-use App\Repositories\UploadRepository;
 use App\Repositories\UserRepository;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Repositories\UploadRepository;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class LoginController extends Controller
@@ -66,6 +67,10 @@ class LoginController extends Controller
      */
     public function handleProviderCallback($service)
     {
+
+
+
+        
         $userSocial = Socialite::driver($service)->user();
         $user = User::where('email',$userSocial->email)->first();
         if(!$user){

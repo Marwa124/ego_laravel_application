@@ -6,7 +6,7 @@
 
 
 <!-- Annoncement -->
-<div class="announcement py-3 bar">
+<div class="announcement py-3 bar" style="margin-top: 221px!important;">
   <div class="m-0 text-dark">YOUR FASHION DESTINATION</div>
 </div>
 
@@ -18,21 +18,24 @@
 
 
   <main class="container">
+
+
+    
     <section class="row p-4 position-relative">
       <div class="col-lg-6 col-md-12 col-sm-12 mb-4">
-        <a href="products.html">
+        <a href="javascript:void(0)">
           <img class="img-fluid" src="{{ asset('images/men.png') }}" alt="">
         </a>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12 mb-4">
-        <a href="products.html">
+        <a href="javascript:void(0)">
           <img class="img-fluid" src="{{ asset('images/women.png')}}" alt="">
         </a>
       </div>
     </section>
     <section class="row p-4">
       <div class="col-lg-6 col-sm-12 mb-4">
-        <a href="products.html">
+        <a href="javascript:void(0)">
           <img class="img-fluid" src="{{ asset('images/bag.png') }}" alt="">
         </a>
       </div>
@@ -47,7 +50,7 @@
         <p class="faded">Shop Ego collections, packed with bold colors.</p>
       </div>
       <div class="col-lg-6 col-sm-12 mb-4">
-        <a href="products.html">
+        <a href="javascript:void(0)">
           <img class="img-fluid" src="{{ asset('images/man.png') }}" alt="">
         </a>
       </div>

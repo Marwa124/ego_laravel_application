@@ -4,9 +4,10 @@
 @endsection
 @section('content')
     <!-- Annoncement -->
-  <div class="py-3 bar" style="margin-top: 180px;">
-    <p class="m-0 text-dark">Open Doors To A World Of Fashion</p>
-  </div>
+<!-- Annoncement -->
+<div class="announcement py-3 bar" style="margin-top: 221px !important;">
+  <div class="m-0 text-dark">YOUR FASHION DESTINATION</div>
+</div>
   <div class="container py-4" x-data="{showMiniCart:false, showMenNav:false, showWomenNav:false}">
     <div class="product ml-4 text-left my-5">
       <div class="row">

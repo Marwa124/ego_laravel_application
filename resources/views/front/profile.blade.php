@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>   
-         {{env('APP_NAME')}} | profile
+         EGO | profile
     </title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -50,7 +50,7 @@
 
     <nav>
         <div class="nav-logo">
-            <a href="index.html">
+            <a href="{{ url('/home') }}">
                 <img class="w-100" src="{{asset('front/images/logo.png')}}" alt="">
             </a>
         </div>
@@ -80,6 +80,8 @@
                         <dt class="font-weight-bold">E-mail Address</dt>
                         <dd>{{auth()->user()->email}}</dd>
                         <dt class="font-weight-bold">Phone Number</dt>
+                        <dd class=""></dd>
+                        <dt class="font-weight-bold">Gender</dt>
                         {{-- <dd>{{auth()->user()->phone}}</dd> --}}
                         {{-- <dt class="font-weight-bold">Gender</dt>
                         <dd>{{auth()->user()->email}}</dd> --}}
@@ -145,7 +147,7 @@
                             <p class="font-weight-bold">You currently have no orders </p>
                             <p>When you've placed an order, you'll find all the details here. </p>
                             <div class="">
-                                <button class="btn dark-btn">Start Shopping Now</button>
+                                <a href="{{ url('/home') }}" class="btn dark-btn">Start Shopping Now</a>
                             </div>
                         </div>
                     </dl>
@@ -190,9 +192,14 @@
         </div>
     </main>
     <footer>
-        <a href="index.html">Sign Out</a>
-        <a href="" data-toggle="modal" data-target="#helpModal">Need help?</a>
+        <a  href="" onclick="event.preventDefault();getElementById('logout-form').submit()">Sign Out</a>
+          
+        {{-- <a href="" data-toggle="modal" data-target="#helpModal">Need help?</a> --}}
     </footer>
+    <form action="{{ url('logout') }}" method="POST" style="display:none" id="logout-form"> 
+        @csrf
+        
+       </form>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"

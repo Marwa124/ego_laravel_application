@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Front\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use Laracasts\Flash\Flash;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use App\Repositories\RoleRepository;
-use App\Repositories\UploadRepository;
 use App\Repositories\UserRepository;
-use function Couchbase\basicDecoderV1;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Repositories\UploadRepository;
+use function Couchbase\basicDecoderV1;
 use Illuminate\Support\Facades\Request;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Prettus\Validator\Exceptions\ValidatorException;
-use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -79,6 +81,10 @@ class LoginController extends Controller
     public function handleProviderCallback()
     {
 
+        $this->validate(request(),[
+            'email' => 'required|string|email',
+            'password' => 'required'
+        ]);
         // dd(request()->all());
         // $userSocial = Socialite::driver($service)->user();
         $user = User::where('email',request()->email)->first();
@@ -108,7 +114,8 @@ class LoginController extends Controller
         //     }
         // }
             if(!$user){
-                Flash::error('Wrong Email or Password');
+               session()->flash('wrong','Wrong Email or Password');
+                return back();
             }
 
         auth()->login($user,true);
@@ -153,5 +160,18 @@ class LoginController extends Controller
         catch (\Exception $e){
             return back();
         }
+    }
+
+
+
+
+
+
+    public function logout(Request $request){
+        Auth::logout();
+
+        // $request->session()->invalidate();
+
+        return redirect('/home');
     }
 }

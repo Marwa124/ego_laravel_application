@@ -5,7 +5,7 @@
     {{-- <title>{{setting('app_name')}} | {{setting('app_short_description')}}</title> --}}
     <title>{{env('APP_NAME')}} | @yield('title_name') </title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link rel="icon" type="image/png" href="{{$app_logo}}"/>
+    <link rel="icon" type="image/png" href="{{url('front/images/logo.png')}}"/>
     
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="{{asset('front/styles/products.css')}}">
     <link rel="stylesheet" href="{{asset('front/styles/cart.css')}}">
     <link rel="stylesheet" href="{{asset('front/styles/single_store.css')}}">
+
+  
 
     <!-- arabicstyle -->
     <!-- <link rel="stylesheet" href="./arabicstyle/arabicstyle.css"> -->
@@ -54,8 +56,8 @@
                 <div class="col-6 col-lg-3 d-flex flex-column justify-content-around py-4 responsive-text">
                     <div>
                         <div class=" w-75 mx-auto">
-                            <a href="index.html">
-                                <img class="w-100" src="./images/logo.png" alt="">
+                            <a href="{{ url('/') }}">
+                                <img class="w-100" src="{{ asset('images/logo.png') }}" alt="">
                             </a>
                         </div>
                     </div>
@@ -64,16 +66,16 @@
                         <div class="mobile-download">
                             <button class="download-app-box apple">
                                 <div class="app-img mr-3">
-                                    <a href="">
-                                        <img class="w-100" src="./images/apple-logo.png" alt="">
+                                    <a href="javascript:void(0)">
+                                        <img class="w-100" src="{{ asset('images/apple-logo.png') }}" alt="">
                                     </a>
                                 </div>
                                 <p class="mb-0">Download on App Store</p>
                             </button>
                             <button class="download-app-box android">
                                 <div class="app-img mr-3">
-                                    <a href="">
-                                        <img class="w-100" src="./images/android.png" alt="">
+                                    <a href="javascript:void(0)">
+                                        <img class="w-100" src="{{ asset('images/android.png') }}" alt="">
                                     </a>
                                 </div>
                                 <p class="mb-0">Download on Android</p>

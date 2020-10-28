@@ -19,13 +19,20 @@ html {
 
 body {
   text-align: center;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-weight: 500;
   letter-spacing: 1px;
+  min-height: 100%;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: auto 1fr auto;
+      grid-template-rows: auto 1fr auto;
+  font-size: 95%;
+  background-color: #FAFAFA;
 }
 
 .announcement {
-  margin-top: 190px;
+  margin-top: 205px;
 }
 
 @media (min-width: 1200px) {
@@ -34,7 +41,7 @@ body {
   .container-md,
   .container-sm,
   .container-xl {
-    max-width: 1412px;
+    max-width: 1400px;
   }
 }
 
@@ -73,8 +80,8 @@ a:hover {
 
 .dark-btn:hover {
   color: #fff;
-  background-color: #1d1d1d;
-  border-color: #1d1d1d;
+  background-color: #363636;
+  border-color: #363636;
 }
 
 .grey-bg {
@@ -106,34 +113,49 @@ a:hover {
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: #fff;
+  background-color: #FAFAFA;
   z-index: 50;
-  padding: 20px 10px;
 }
 
-.navbar-light .navbar-nav .nav-link:hover,
 .nav-link:hover {
-  color: #b70e2a !important;
+  color: #000 !important;
 }
 
-.navbar-light .navbar-nav .nav-link:hover,
+.nav-link:hover :active {
+  color: #000 !important;
+}
+
+.navbar-light .navbar-nav,
 .nav-link:focus {
-  color: #b70e2a !important;
+  color: #000 !important;
 }
 
-.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav,
 .nav-link:active {
-  color: #b70e2a !important;
+  color: #000 !important;
+}
+
+.active-link {
+  color: #000 !important;
 }
 
 .nav-link {
+  color: #4b4b4b !important;
   padding: 5px 12px;
   margin-right: 10px;
 }
 
+.nav-icon {
+  padding: 10px;
+}
+
+.nav-icon:hover {
+  background-color: #f3f3f3;
+}
+
 .secondary-nav {
   padding: 10px;
-  background-color: #fff;
+  background-color: #FAFAFA;
   position: fixed;
   left: 0;
   width: 100%;
@@ -175,7 +197,7 @@ a:hover {
 }
 
 .sub-link {
-  font-weight: 300;
+  font-weight: 400;
   margin: 5px 0;
 }
 
@@ -228,7 +250,7 @@ a:hover {
   font-size: 0.6rem;
   background-color: #ee4266;
   border-radius: 50%;
-  padding: 0.2px 4px;
+  padding: 1px 4px;
 }
 
 .cursor-pointer {
@@ -236,10 +258,11 @@ a:hover {
 }
 
 .mini-cart {
-  position: fixed;
+  padding: 10px;
   background-color: #fff;
-  right: 11%;
-  top: 10%;
+  position: absolute;
+  right: 0;
+  top: 60px;
   z-index: 100;
   width: 400px;
   -webkit-box-shadow: 0px 0px 30px -15px rgba(0, 0, 0, 0.5);
@@ -449,5 +472,9 @@ footer {
   opacity: 1;
   -webkit-transform: scale(1);
   transform: scale(1);
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 /*# sourceMappingURL=global.css.map */
