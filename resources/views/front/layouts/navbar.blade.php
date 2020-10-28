@@ -117,7 +117,7 @@
               </a>
 
                 @endguest
-                <a class="nav-item cursor-pointer d-flex align-items-center nav-icon mr-3 ml-3" href="{{ url('login') }}">
+                <a class="nav-item cursor-pointer d-flex align-items-center nav-icon mr-3 ml-3" href="{{ url('wishlist') }}">
                   <i class="far fa-heart" style="font-size: 1.2rem;"></i>
                 </a>
                 <a class="nav-item mini-cart-toggler hide-onTablet cursor-pointer">
