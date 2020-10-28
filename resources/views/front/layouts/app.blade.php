@@ -20,7 +20,8 @@
     <!-- Style -->
     <link rel="stylesheet" href="{{asset('front/styles/global.css')}}">
     <link rel="stylesheet" href="{{asset('front/styles/products.css')}}">
-    <link rel="stylesheet" href="styles/cart.css">
+    <link rel="stylesheet" href="{{asset('front/styles/cart.css')}}">
+    <link rel="stylesheet" href="{{asset('front/styles/single_store.css')}}">
 
     <!-- arabicstyle -->
     <!-- <link rel="stylesheet" href="./arabicstyle/arabicstyle.css"> -->

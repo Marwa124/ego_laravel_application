@@ -51,6 +51,8 @@ Route::group(['namespace' => 'Front'], function() {
         return redirect('home');
     });
     Route::get('/home', 'FrontController@index')->name('front.index');
+    Route::post('/subscriber', 'FrontController@subscribe')->name('front.subscribe');
+    Route::get('/single-store', 'FrontController@singleStore')->name('front.single_store');
     Route::get('/products', 'FrontController@products')->name('front.products');
     Route::get('/product/{id}', 'FrontController@product')->name('front.product.show');
     

@@ -9,16 +9,81 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateSubscriberRequest;
 use App\Models\Product;
+use App\Models\Subscriber;
 use App\Models\Userable;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Session;
+use Prettus\Validator\Exceptions\ValidatorException;
+
+
+ini_set('display_errors', 'true');
+error_reporting(-1);
 
 class FrontController extends Controller
 {
     public function index()
     {
         return view('front.index');
+    }
+
+    public function subscribe(Request $request)
+    {
+        $client = ''; $forward = ''; $remote = '';
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $client = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $forward = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $remote = $_SERVER['REMOTE_ADDR'];
+        }
+
+        if(filter_var($client, FILTER_VALIDATE_IP))
+        {
+            $ip = $client;
+        }
+        elseif(filter_var($forward, FILTER_VALIDATE_IP))
+        {
+            $ip = $forward;
+        }
+        else
+        {
+            $ip = $remote;
+        }
+
+        // return $ip;        
+
+
+       try {
+
+            $validation = validator()->make($request->all(), Subscriber::$rules);
+        
+            if($validation->fails())
+            {
+                $data = $validation->errors();
+                Session::flash('error', Subscriber::$messages['email.unique']); 
+                return redirect()->back();
+            }
+            
+            $request['ip'] = $ip;
+            // dd($request->all());
+            Subscriber::create($request->all());
+            Session::flash('success', 'Subscribed Successfully!'); 
+            // return redirect()->back()->with('success', 'Subscribed Successfully!');
+            return redirect()->back();
+
+        } catch (ValidatorException $e) {
+            Session::flash('error', $e->getMessage()); 
+        }
+        
+    }
+
+    public function singleStore()
+    {
+        return view('front.single_store');
     }
 
     public function products(Request $request)

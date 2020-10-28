@@ -4,12 +4,17 @@
 @endsection
 @section('content')
 
+
 <!-- Annoncement -->
 <div class="announcement py-3 bar">
   <div class="m-0 text-dark">YOUR FASHION DESTINATION</div>
 </div>
 
-
+@if(Session::has('success'))
+<p class=" flashMs alert {{ Session::get('alert-class', 'alert-success') }}">{{ Session::get('success') }}</p>
+@elseif(Session::has('error'))
+<p class=" flashMs alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('error') }}</p>
+@endif  
 
 
   <main class="container">
@@ -52,9 +57,10 @@
         <h3 class="font-weight-bold">What's new?</h3>
         <p class="faded">Sign up for exclusive daily sales access and tailored new arrivals</p>
       </div>
-      <form action="" class="d-md-flex mb-2">
-        <input type="email" class="form-control mr-4" id="" placeholder="name@example.com">
-        <button type="button" class="btn dark-btn font-weight-bold px-5">Subscribe</button>
+      <form action="{{route('front.subscribe')}}" method="post" class="d-md-flex mb-2">
+        @csrf
+        <input type="email" name="email" class="form-control mr-4" id="" placeholder="name@example.com">
+        <button type="submit" class="btn dark-btn font-weight-bold px-5">Subscribe</button>
       </form>
       <div>
         <p class="mb-0 faded">To opt, click Unsubscribe at the bottom of out emails.</p>
@@ -69,3 +75,11 @@
   </main>
 
 @endsection
+
+@push('scripts')
+    <script>
+       $(".flashMs").delay(3000).fadeOut(300);
+       console.log("fsghdf"); 
+</script>
+
+@endpush
