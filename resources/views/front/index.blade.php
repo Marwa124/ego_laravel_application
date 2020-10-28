@@ -79,7 +79,6 @@
 @push('scripts')
     <script>
        $(".flashMs").delay(3000).fadeOut(300);
-       console.log("fsghdf"); 
 </script>
 
 @endpush

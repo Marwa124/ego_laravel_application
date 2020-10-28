@@ -7,6 +7,8 @@
         // dd($brands);
 
 ?>
+@inject('categories', 'App\Models\Category')
+
 <div class="filters d-none d-lg-block text-left col-3 ml-4">
     <form action="">
         <div class="filter-section">
@@ -17,7 +19,7 @@
                     <i class="fas fa-angle-down"></i></a>
             </div>
             <div class="collapse ml-2" id="CategoryCollapse">
-                <div class="filter-section">
+                {{-- <div class="filter-section">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h7 class="">Accessories <small class="text-muted">(163)</small></h7>
                         <a class="btn arrowClicked" data-toggle="collapse" href="#accessoriesCollapse"
@@ -46,12 +48,15 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <p><a href="">Activewear</a> <small class="text-muted">(21)</small> </p>
-                <p><a href="">Bags</a> <small class="text-muted">(53)</small></p>
-                <p><a href="">Clothing</a> <small class="text-muted">(163)</small> </p>
-                <p><a href="">Fine Jewelry</a> <small class="text-muted">(9)</small></p>
-                <p><a href="">Shoes</a> <small class="text-muted">(94)</small></p>
+                </div> --}}
+                @foreach ($categories->all() as $item)
+                    <p><a href="javascript:void(0)" class="category_link">
+                        {{$item->name}}
+                        <input type="text" hidden value="{{$item->id}}" class="category_id">
+                       </a> <small class="text-muted categories">
+                        ({{$item->products()->count()}})
+                    </small></p>
+                @endforeach
             </div>
         </div>
         <div class="filter-section">
@@ -63,7 +68,7 @@
             </div>
             <div class="collapse" id="BrandsCollapse">
                 <div>
-                    <input type="text" class="form-control mb-3" id="exampleInputEmail1"
+                    <input type="text" class="form-control mb-3 brandSearch" name="brandSearch" id="exampleInputEmail1"
                         aria-describedby="emailHelp" placeholder="Search By Brands">
                     <div class="search-group" id="scrollbar-style">
                         @foreach ($brands as $key => $items)
@@ -74,7 +79,7 @@
                                 <?php $count = App\Models\Brand::find($item['id'])->products()->count();  ?> 
                                 
                                     <div class="form-check mb-1">
-                                        <input type="checkbox" class="form-check-input" id="{{$item['id']}}">
+                                        <input type="checkbox" name="brands" class="form-check-input brands" id="{{$item['id']}}" value="{{$item['id']}}">
                                         <label class="form-check-label" for="{{$item['id']}}">{{$item['name']}} <small
                                                 class="text-muted">({{$count}})</small></label>
                                     </div>
@@ -173,3 +178,134 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+    <script>
+    
+        $(document).ready(function() {
+
+            // $checks = $(":checkbox");
+            // $checks.on('change', function() {
+            //     var string = $checks.filter(":checked").map(function(i,v){
+            //         return this.value;
+            //     }).get().join(" ");
+            //     $('input.brands').val(string);
+            //     console.log($('input.brands').val(string));
+            // });
+
+
+                // $('.category_id')
+                // console.log(e.target);
+                
+
+            // Category Filter
+            $('.category_link').on('click', function(e) {
+                var categoryId = $(this).find(".category_id").val();
+                console.log($(this).find(".category_id").val());
+                $.ajax({
+                    url: '{{route('front.products.sidebar')}}',
+                    type: 'get',
+                    dataType: 'html',
+                    data: {
+                        categoryId: categoryId,
+                    },
+                    success: function(data){
+                        $("#product_data").html(data);
+                    }
+                })
+
+            });
+
+            // Brand Search 
+            $('.brandSearch').on('keyup', function() {
+                var brandSearch = $('.brandSearch').val();
+                console.log($('.brandSearch').val());
+                $.ajax({
+                    url: '{{route('front.products.sidebar')}}',
+                    type: 'get',
+                    dataType: 'html',
+                    data: {
+                        brandSearch: brandSearch,
+                    },
+                    success: function(data){
+                    // $('.search-group').html('');
+
+                    // for (let i = 0; i < data.length; i++) {
+                    //     const element = array[i];
+                    //     if (element.attributes.productId == data.product.id) {
+                    //         // console.log('success');
+                    //         cartId = element.id;
+                    //     }
+                    // }
+                    console.log(data.name);
+                    $('.search-group').html(`
+                        <div class="letter-search mb-3">
+                        <div class="checkboxes ml-3">
+                            <div class="form-check mb-1">
+                                <input type="checkbox" name="brands" class="form-check-input brands" id="${data['id']}" value="${data['id']}">
+                                <label class="form-check-label" for="${data['id']}">${data['name']} <small
+                                        class="text-muted">()</small></label>
+                            </div>
+                            </div>
+                        </div>
+                    `);
+
+                    // array.forEach(element => {
+                    //     $('.search-group').html(`
+                    //     <div class="letter-search mb-3">
+                    //     <div class="checkboxes ml-3">
+                    //         <div class="form-check mb-1">
+                    //             <input type="checkbox" name="brands" class="form-check-input brands" id="${element.id}" value="${element.id}">
+                    //             <label class="form-check-label" for="${element.id}">${element.name} <small
+                    //                     class="text-muted">(${array.size()})</small></label>
+                    //         </div>
+                    //         </div>
+                    //     </div>
+                    //     `);
+                    // });
+
+
+                    }
+                })
+
+               
+            });
+
+            // Brand CheckBox Filter
+            $('input[type=checkbox]').on('change',function(e) {
+                
+                // console.log(e.target);
+                // console.log($(this).val());
+                var brands = [];
+// brands.push($(this).val())
+                        
+                if ($('input.brands').is(':checked')) {
+                    // var brands = $(this).val();
+                    $("input.brands:checked").each(function(){
+                        brands.push($(this).val());
+                    });
+                    console.log(brands);
+                    // console.log($('input.brands:checkbox:checked'));
+                    $.ajax({
+                        url: '{{route('front.products.sidebar')}}',
+                        type: 'get',
+                        dataType: 'html',
+                        data: {
+                            brands: brands,
+                        },
+                        success: function(data){
+                            $("#product_data").html(data);
+                        }
+                    })
+
+
+                }else{
+
+                }
+
+            })
+
+        });
+
+    </script>
+@endpush

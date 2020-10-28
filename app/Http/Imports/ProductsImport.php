@@ -24,55 +24,90 @@ class ProductsImport implements ToCollection
      */
     public function collection(Collection $rows)
     {
+        // dd($rows);
+        $array = [];
+        foreach ($rows as $key => $value) {
+            // dd($key);
+            if ($key > 0) {
 
-
-        $rows->forget(0);
-
-
-        $path = public_path('uploads/images');
-        $files = File::files($path);
-        $order = 31;
-        $custom_properties  = [
-            'user_id'   => 1,
-            'generated_conversions'   => [
-                'thumb'   => true,
-                'icon'   => true,
-            ]
-        ];
-
-
-        foreach ($rows as $row) {
-            $product = Product::where('ego_code', $row[1])->first();
-            $images = explode('/', $row[8]);
-
-            foreach ($images as $image) {
-                foreach ($files as $file) {
-
-                    if ($file->getFilenameWithoutExtension() == trim($image)) {
-//                        dd($file->getFilename());
-                        $media = new Media([
-                            'model_type' => 'App\Models\Product',
-                            'model_id' => $product->id,
-                            'collection_name' => 'image',
-                            'name' => $file->getFilenameWithoutExtension(),
-                            'file_name' => $file->getFilename(),
-                            'mime_type' => 'image/' . $file->getExtension(),
-                            'disk' => 'public',
-                            'size' => $file->getSize(),
-                            'manipulations' => [],
-                            'custom_properties' => $custom_properties,
-                            'responsive_images' => [],
-                            'order_column' => $order,
-                        ]);
-
-                        $media->save();
-                        $order++;
-
-                    }
+                $array['category'] = $value[5];
+                $array['product'] = $value[6];
+                
+                $cat = Category::where('name', $value[5])->first();
+                $prod = Product::where('name', $value[6])->first();
+                if ($prod) {
+                    $prod->update(['category_id' => $cat['id']]);
                 }
+                // echo "<pre>";
+                // var_dump($prod['category_id']);
+
             }
 
+            // dd($array);
         }
+
+        // foreach ($array as $key => $v) {
+        //     $cat = Category::where('name', $v)->first();
+        // }
+
+        // dd(count($array));
+
+        // $subArr = [];
+        // for ($i=0; $i < count($array); $i++) { 
+        //     dd($array[$i]);
+        // }
+        // foreach ($array as $key => $v) {
+        //     $subArr[] = $v;
+        // }
+        // dd($subArr);
+// dd();
+//         $rows->forget(0);
+
+
+//         $path = public_path('uploads/images');
+//         $files = File::files($path);
+//         $order = 31;
+//         $custom_properties  = [
+//             'user_id'   => 1,
+//             'generated_conversions'   => [
+//                 'thumb'   => true,
+//                 'icon'   => true,
+//             ]
+//         ];
+
+
+//         foreach ($rows as $row) {
+//             $product = Product::where('ego_code', $row[1])->first();
+//             $images = explode('/', $row[8]);
+
+//             foreach ($images as $image) {
+//                 foreach ($files as $file) {
+
+//                     if ($file->getFilenameWithoutExtension() == trim($image)) {
+// //                        dd($file->getFilename());
+//                         $media = new Media([
+//                             'model_type' => 'App\Models\Product',
+//                             'model_id' => $product->id,
+//                             'collection_name' => 'image',
+//                             'name' => $file->getFilenameWithoutExtension(),
+//                             'file_name' => $file->getFilename(),
+//                             'mime_type' => 'image/' . $file->getExtension(),
+//                             'disk' => 'public',
+//                             'size' => $file->getSize(),
+//                             'manipulations' => [],
+//                             'custom_properties' => $custom_properties,
+//                             'responsive_images' => [],
+//                             'order_column' => $order,
+//                         ]);
+
+//                         $media->save();
+//                         $order++;
+
+//                     }
+//                 }
+//             }
+
+//         }
 
 
         // return new Product([

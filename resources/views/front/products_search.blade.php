@@ -1,5 +1,7 @@
 <div class="products container row">
-
+    @if (count($products) > 0)
+        
+    
     @foreach ($products as $item)
         <div class="col-6 col-md-4 mb-5">
             <div class="w-auto position-relative">
@@ -18,7 +20,7 @@
             <div>
                 <div>
                     <h5 class="prod-name mb-1">{{$item->name}}</h5>
-                    <p class="mb-0">{{$item->description}}</p>
+                    <p class="mb-0"><?php echo implode(' ', array_slice(explode(' ', $item->description), 0, 10));  ?></p>
                     <p class="mb-0">{{$item->price}}</p>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
@@ -58,6 +60,12 @@
             </div>
         </div>
     @endforeach
+
+    @else
+
+        <h5>No data Found</h5>
+        
+    @endif
 </div>
 <div class="d-flex justify-content-center">
     <div>{{$products->links()}}</div>

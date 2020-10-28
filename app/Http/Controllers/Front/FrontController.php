@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateSubscriberRequest;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Subscriber;
 use App\Models\Userable;
@@ -53,11 +55,9 @@ class FrontController extends Controller
         {
             $ip = $remote;
         }
-
         // return $ip;        
 
-
-       try {
+        try {
 
             $validation = validator()->make($request->all(), Subscriber::$rules);
         
@@ -84,6 +84,60 @@ class FrontController extends Controller
     public function singleStore()
     {
         return view('front.single_store');
+    }
+
+    public function sidebar(Request $request)
+    {
+        // $request->session()->put('brands', $request->brands);
+        // $request->session()->put('category', $request->categoryId);
+        // $brands = $request->session()->get('brands');
+        // $category = $request->session()->get('category');
+
+        // Brand Search
+        if ($request->brandSearch) {
+            $brands = Brand::where(function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%' . $request->brandSearch . '%');
+            })->get();
+
+        // dd((array) $brands);
+        $brandArray = [];
+        foreach ($brands as $key => $value) {
+            $brandArray['name'] = $value->name;
+            $brandArray['id'] = $value->id;
+            
+        }
+        // dd($brandArray);
+
+
+            return response()->json($brandArray);
+        }
+
+        // Category Filter
+        if ($request->categoryId) {
+            $categoryObject = Category::find($request->categoryId);
+            $cat = $categoryObject->products()->paginate(15);
+            return view('front.products_search', [
+                'products' => $cat 
+            ]);
+        }
+
+        // Brand Filter
+        if ($request->brands) {
+            $items = [];
+            foreach ($request->brands as $key => $brand) {
+                $brandObject = Brand::find($brand);
+                // var_dump($brandObject);
+                $items['brand_products'] = $brandObject->products()->paginate(15);
+            }
+            // echo "<pre>";
+            // dd($items['brand_products']);
+    
+            // return view('front.product', compact('product'));
+
+            return view('front.products_search', [
+                'products' => $items['brand_products'] 
+            ]);
+        }
     }
 
     public function products(Request $request)

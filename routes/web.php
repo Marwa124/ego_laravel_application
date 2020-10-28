@@ -39,7 +39,7 @@ Route::resource('api-bosta', 'APIBostaController', ['except' => ['edit', 'update
 // });
 
 // Route::get('iproduct', 'Imports\ImportProductController@product')->name('login');
-// Route::Post('iproduct','Imports\ImportProductController@storeProduct')->name('register.submit');
+// Route::Post('iproduct','Imports\@storeProduct')->name('register.submit');
 
 Route::group(['namespace' => 'Front'], function() {
     // Route::get('client-register', 'AuthController@clientRegister')->name('client.register');
@@ -52,7 +52,7 @@ Route::group(['namespace' => 'Front'], function() {
     });
     Route::get('/home', 'FrontController@index')->name('front.index');
     Route::post('/subscriber', 'FrontController@subscribe')->name('front.subscribe');
-    Route::get('/single-store', 'FrontController@singleStore')->name('front.single_store');
+    Route::get('/store', 'FrontController@singleStore')->name('front.single_store');
     Route::get('/products', 'FrontController@products')->name('front.products');
     Route::get('/product/{id}', 'FrontController@product')->name('front.product.show');
     
@@ -63,8 +63,9 @@ Route::group(['namespace' => 'Front'], function() {
     // Autocomplete Search
     Route::get('/products/autocomplete-search', 'FrontController@searchAutocomplete')->name('front.search.autocomplete');
     // Products Price Filter
-    // productPriceFilter
     Route::get('/products/price-filter', 'FrontController@search')->name('front.products.price.filter');
+    // Products Sidebar Filter
+    Route::get('/products/sidebar', 'FrontController@sidebar')->name('front.products.sidebar');
     
     Route::get('/cart', 'FrontController@cart')->name('front.cart'); // Cart Page
     Route::get('/cart/checkout', 'FrontController@cartCheckout')->name('front.cart.checkout'); // Cart Checkout
@@ -84,6 +85,7 @@ Auth::routes();
 Route::get('login/{service}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback');
 
+Route::get('storage/app/public/{id}/{conversion}/{filename?}', 'UploadController@storage');
 
 
 Route::group(['middleware' => ['role:admin']], function() {
@@ -100,7 +102,6 @@ Route::get('payments/paypal', 'PayPalController@index')->name('paypal.index');
 // Route::get('firebase/sw-js','AppSettingController@initFirebase');
 
 
-Route::get('storage/app/public/{id}/{conversion}/{filename?}', 'UploadController@storage');
 Route::middleware('auth')->group(function () {
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
     Route::get('/', 'DashboardController@index')->name('dashboard');
