@@ -103,11 +103,7 @@
 .filters form {
   position: -webkit-sticky;
   position: sticky;
-  top: 100px;
-}
-
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  top: 200px;
 }
 
 .ui-slider-horizontal {
@@ -161,6 +157,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: grid;
   -ms-grid-columns: 1fr 1fr;
       grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
   /* checkbox aspect */
   /* checked mark aspect */
   /* checked mark aspect changes */
@@ -184,7 +181,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .colorboxes [type="checkbox"]:not(:checked) + label:before,
 .colorboxes [type="checkbox"]:checked + label:before {
   content: "";
-  margin-top: 11px;
+  margin-top: 15px;
   margin-left: 11px;
   width: 1.5em;
   height: 1.5em;
@@ -197,7 +194,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .colorboxes [type="checkbox"]:checked + label:after {
   content: "\2713\0020";
   background: unset;
-  margin-top: 12px;
+  margin-top: 14px;
   margin-left: 12px;
   font-size: 1em;
   line-height: 0.8;
@@ -241,8 +238,6 @@ input[type="number"]::-webkit-inner-spin-button {
   border-radius: 4px;
   -webkit-transition: 100ms;
   transition: 100ms;
-  -webkit-transform: scale(0.9);
-          transform: scale(0.9);
 }
 
 @media (max-width: 1200px) {

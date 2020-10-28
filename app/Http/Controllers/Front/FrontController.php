@@ -81,9 +81,19 @@ class FrontController extends Controller
         
     }
 
-    public function singleStore()
+    public function store_locator()
     {
+        return view('front.store_locator');
+    }
+    public function single_store(){
+        
         return view('front.single_store');
+    }
+
+
+    public function wishlist(){
+        
+        return view('front.wishlist');
     }
 
     public function sidebar(Request $request)

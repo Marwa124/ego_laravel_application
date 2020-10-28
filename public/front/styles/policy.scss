@@ -1,0 +1,29 @@
+@import "./media.scss";
+
+
+main
+{
+    text-align: left !important;
+}
+
+.policy-section{
+    margin-bottom: 1.5rem;
+    .policy-title{
+        text-decoration: underline;
+        font-weight: bold;
+    }
+}
+
+ol{
+    margin-left: 1.8rem;
+}
+
+.accordion{
+    margin: 10px;
+}
+
+.card{
+    .card-header{
+        padding: .75rem 0.25rem;
+    }
+}

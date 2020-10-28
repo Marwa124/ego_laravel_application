@@ -1,0 +1,88 @@
+@import "./media.scss";
+/* The side navigation menu */
+main {
+    margin-top: 100px;
+    text-align: left;
+    display: flex;
+}
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+    .sidebar {
+        border: none !important;
+        width: 100% !important;
+    }
+}
+
+body {
+    background-color: #fafafa;
+}
+/* The side navigation menu */
+.sidebar {
+    margin: 20px auto;
+    padding: 0 20px;
+    width: 400px;
+    text-align: left;
+    border-right: 1px solid rgb(175, 175, 175);
+}
+
+/* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+div.content {
+    padding: 1px 16px;
+    width: 100%;
+    margin-bottom: 200px;
+}
+
+/* On screens that are less than 700px wide, make the sidebar into a topbar */
+// @media screen and (max-width: 700px) {
+//     .sidebar {
+//         width: 100%;
+//         height: auto;
+//         position: relative;
+//     }
+//     .sidebar a {
+//         float: left;
+//     }
+//     div.content {
+//         margin-left: 0;
+//     }
+// }
+
+// /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+// @media (max-width: 400px) {
+//     .sidebar a {
+//         text-align: center;
+//         float: none;
+//     }
+// }
+
+// Sidebar Buttons
+.search-town {
+    border: none;
+    width: 100%;
+    padding: 0 !important;
+    display: flex;
+}
+
+.locationBtn {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    margin-bottom: 1rem;
+    width: 100%;
+    border: 1px solid rgb(105, 105, 105);
+    text-align: left;
+}
+
+.dropdown-select {
+    background-color: #fff;
+    border: 1px solid rgb(105, 105, 105);
+    padding-left: 10px;
+}
+
+.store-select {
+    &:hover {
+        text-decoration: underline;
+    }
+}
