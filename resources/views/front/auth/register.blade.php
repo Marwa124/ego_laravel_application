@@ -468,49 +468,74 @@
         </div>
     </div>
     <main>
-      @if ($message = Session::get('error'))
+      {{-- @if ($message = Session::get('error'))
       <div class="alert alert-success">
           <p>{{ $message }}</p>
       </div>
-       @endif
-        <div class="login-wrapper">
-            <div class="login-card mt-5">
-                <h3 class="font-weight-medium text-center mb-2">SIGN UP</h3>
-                <form action="{{ route('register.submit') }}" method="post" class="border-top pt-5">
-                  @csrf
-                  
-                    <div class="form-group text-left">
-                      <label for="formGroupExampleInput">Email Address</label>
-                      <input type="email" value="{{ old('email') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="formGroupExampleInput" name="email"  placeholder="Enter Your email">
+       @endif --}}
+       <div class="login-wrapper">
+        <div class="login-card mt-5">
+            <h3 class="font-weight-medium text-center mb-2">SIGN UP</h3>
+            <form action="{{ route('register.submit') }}" method="post" class="border-top pt-5">
+              @csrf
+              
+                <div class="form-group text-left">
+                  <label for="formGroupExampleInput">Email Address</label>
+                  <input type="email" value="{{ old('email', '') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" id="formGroupExampleInput" name="email"  placeholder="Enter Your email">
+                  @if ($errors->has('email'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('email') }}
                     </div>
-                    <div class="form-group text-left">
-                      <label for="formGroupExampleInput" style="font-size: small;">CONFIRM Email
-                          <small>*</small></label>
-                      <input type="email" class="form-control" name="email_confirmation" id="formGroupExampleInput">
-                   </div>
-                    {{-- <div class="d-md-flex"> --}}
-                      <div class="form-group text-left mr-2">
-                        <label for="formGroupExampleInput2">Password</label>
-                        <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" id="formGroupExampleInput2" name="password" placeholder="Enter Your Password">
-                      </div>
-                      <div class="form-group text-left">
-                        <label for="formGroupExampleInput2">Confirm Password</label>
-                        <input type="password" class="form-control {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"  name="password_confirmation" id="formGroupExampleInput2" placeholder="Enter Your Password">
-                      </div>
-                      <div class="form-group text-left">
-                        <label for="formGroupExampleInput2" style="font-size: small;">Phone Number
-                            <small>*</small></label>
-                        <input type="text" name="phone" class="form-control" id="formGroupExampleInput2">
-                      </div>
-                    {{-- </div> --}}
+                  @endif
+                </div>
+                <div class="form-group text-left">
+                  <label for="formGroupExampleInput" style="font-size: small;">CONFIRM Email
+                      <small>*</small></label>
+                  <input type="email" value="{{ old('email_confirmation', '') }}" class="form-control" name="email_confirmation" id="formGroupExampleInput">
+                  @if ($errors->has('email_confirmation'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('email_confirmation') }}
+                    </div>
+                   @endif
+                </div>
+                {{-- <div class="d-md-flex"> --}}
+                  <div class="form-group text-left mr-2">
+                    <label for="formGroupExampleInput2">Password</label>
+                    <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" id="formGroupExampleInput2" name="password" placeholder="Enter Your Password">
+                    @if ($errors->has('password'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('password') }}
+                        </div>
+                    @endif
+                </div>
+                  <div class="form-group text-left">
+                    <label for="formGroupExampleInput2">Confirm Password</label>
+                    <input type="password" class="form-control {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"  name="password_confirmation" id="formGroupExampleInput2" placeholder="Enter Your Password">
+                    @if ($errors->has('password_confirmation'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('password_confirmation') }}
+                    </div>
+                   @endif
+                </div>
+                  <div class="form-group text-left">
+                    <label for="formGroupExampleInput2" style="font-size: small;">Phone Number
+                        <small>*</small></label>
+                    <input type="text" name="phone" value="{{ old('phone', '') }}" class="form-control {{ $errors->has('phone') ? ' is-invalid' : '' }}" id="formGroupExampleInput2">
+                    @if ($errors->has('phone'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('phone') }}
+                        </div>
+                    @endif
+                </div>
+                {{-- </div> --}}
 
-                    <button type="submit" class="btn dark-btn w-100 py-2 mb-3 " style="font-size: small;">Sign Up</button>
-                    <p style="font-size: 0.6rem; text-align: center;">EGO does not Share Your Information With Third
-                        Parties And You Can Unregister At Any Time</p>
+                <button type="submit" class="btn dark-btn w-100 py-2 mb-3 " style="font-size: small;">Sign Up</button>
+                <p style="font-size: 0.6rem; text-align: center;">EGO does not Share Your Information With Third
+                    Parties And You Can Unregister At Any Time</p>
 
-                  </form>
-            </div>
+              </form>
         </div>
+    </div>
     </main>
 
     <footer class="text-left">

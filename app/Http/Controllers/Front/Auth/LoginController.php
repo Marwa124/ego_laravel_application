@@ -133,55 +133,8 @@ class LoginController extends Controller
     public function registerProcess()
     {
         try{
-
-            // $rules = [
-            //     'phone'      => 'required|regex:/(^\+(?:[0-9]?){6,14}[0-9]$)|(^01(1|2|0|5)[0-9]{8}$)',
-            //     // 'email'   => 'required|email|unique:users,email',
-            //     'password'   => 'required|min:8|confirmed',
-            //     'email'      => 'required|string|email|max:255|unique:users,email|confirmed',
-            //   ];
-            //   $messages = [
-            //     'phone.regex' => 'enter a valid phone number',
-            //     'password.min:8' => 'password has to be minimum 8 chars',
-            //     'password.confirmed' => 'password confirmation is invalid',
-            //     'email.confirmed' => 'email confirmation is invalid',
-            //     'email.unique' => 'email has to be unique'
-            //   ];
-            //   dd($this->validate($request, $rules, $messages));
-            //   $this->validate($request, $rules, $messages);
-
-
-
-            $validate = \Validator::make(\request()->all(),[
-                // regex:/(^\+(?:[0-9]?){6,14}[0-9]$)|(^01(1|2|0|5)[0-9]{8}$)/
-                'phone'      => 'required',
-                // 'email'   => 'required|email|unique:users,email',
-                'password'   => 'required|min:8|confirmed',
-                'email'      => 'required|string|email|max:255|unique:users,email|confirmed',
-            ]);
-
-            // if($validate->fails() ){
-            //     return back();
-            // }
-            if($validate->fails())
-            {
-                return back()->with('error', $validate->errors()->first());
-            }
-
-            if(\request('privacy') != 1){
-                return back();
-
-            }
-
-
-            $user =  User::create(
-                [
-                    'name' =>  \request('username'),
-                    'email' =>  \request('email'),
-                    'password' =>  Hash::make(\request('password')),
-                ]
-            );
-
+            $user = User::create(request()->all());
+            
             $role = Role::findOrFail(4);
             $user->assignRole($role);
 
@@ -199,9 +152,6 @@ class LoginController extends Controller
         }
         catch (\Exception $e){
             return back();
-
         }
-
-
     }
 }
