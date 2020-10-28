@@ -76,6 +76,13 @@ Route::group(['namespace' => 'Front'], function() {
     Route::post('toggle-favorite', 'FrontController@toggleFavorite')->name('favorable');
 });
 
+
+
+
+
+
+
+
 Route::group(['prefix' => 'admin',], function() {
 
 
@@ -84,6 +91,7 @@ Auth::routes();
 Route::get('login/{service}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback');
 
+Route::get('storage/app/public/{id}/{conversion}/{filename?}', 'UploadController@storage');
 
 
 Route::group(['middleware' => ['role:admin']], function() {
@@ -100,7 +108,6 @@ Route::get('payments/paypal', 'PayPalController@index')->name('paypal.index');
 // Route::get('firebase/sw-js','AppSettingController@initFirebase');
 
 
-Route::get('storage/app/public/{id}/{conversion}/{filename?}', 'UploadController@storage');
 Route::middleware('auth')->group(function () {
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
     Route::get('/', 'DashboardController@index')->name('dashboard');

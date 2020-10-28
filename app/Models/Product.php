@@ -145,7 +145,7 @@ class Product extends Model implements HasMedia
      */
     public function getFirstMediaUrl($collectionName = 'default', $conversion = '')
     {
-        $url = 'admin/' . $this->getFirstMediaUrlTrait($collectionName);
+        $url = $this->getFirstMediaUrlTrait($collectionName);
         // dd($url);
         $array = explode('.', $url);
         $extension = strtolower(end($array));
