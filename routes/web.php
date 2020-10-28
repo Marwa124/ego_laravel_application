@@ -77,6 +77,13 @@ Route::group(['namespace' => 'Front'], function() {
     Route::post('toggle-favorite', 'FrontController@toggleFavorite')->name('favorable');
 });
 
+
+
+
+
+
+
+
 Route::group(['prefix' => 'admin',], function() {
 
 

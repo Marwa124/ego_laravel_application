@@ -238,21 +238,22 @@
                                 <div class="fav-icon heart-icon {{$item->is_favorite ? 'bg-danger' : ''}}">
                                     <i id="{{$item->id}}" class="fa-heart {{$item->is_favorite ? 'fas' : 'far'}}"></i>
                                 </div>
+                               {{-- {{ dump($item->getFirstMediaUrl('','thumb')) }}  --}}
                                 @if ($item->getMedia('image')->first() != null)
                                     <a class="img-fluid w-100 mb-3" href="{{route('front.product.show', $item->id)}}" target="_blank">
-                                        <img class="img-fluid" src="{{$item->getFirstMediaUrl('','thumb')}}" alt="">
+                                        <img class="img-fluid" src="{{$item->getFirstMediaUrl('image','thumb')}}" alt="">
                                     </a>
                                 @else
                                     <a class="img-fluid w-100 mb-3" href="{{route('front.product.show', $item->id)}}" target="_blank">
-                                        <img class="img-fluid" src="{{env('FRONT_URL') . 'images/image_default.png'}}" alt="">
+                                        <img class="img-fluid" src="{{env('FRONT_URL') . 'images/image_default.png'}}" alt="" width="292" height="379">
                 
                                      </a>
                                 @endif
                             </div>
                             <div>
                                 <div>
-                                    <h5 class="prod-name mb-1">{{$item->name}}</h5>
-                                    <p class="mb-0"><?php echo implode(' ', array_slice(explode(' ', $item->description), 0, 10));  ?></p>
+                                    <h5 class="prod-name mb-1">{{ implode(' ', array_slice(explode(' ', $item->name), 0, 5))}}</h5>
+                                    <p class="mb-0"><?php echo implode(' ', array_slice(explode(' ', $item->description), 0, 5));  ?></p>
                                     <p class="mb-0">{{$item->price}}</p>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center">
@@ -293,8 +294,18 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="d-flex justify-content-center">
-                    <div>{{$products->links()}}</div>
+                {{-- <div class="d-flex justify-content-center">
+                    {{-- <div>{{$products->links()}}</div> 
+                </div> --}}
+
+                <div class="pagination container d-flex align-items-center justify-content-between" >
+                    @if($products->currentPage() > 1)
+                    <a href="{{ url('products?page='.($products->currentPage()-1)) }}" class="btn dark-btn-outline font-weight-bold px-4 py-2">Prev</a>
+                    @else
+                    <a href="javascript:void(0)" style="cursor: not-allowed" class="btn dark-btn-outline font-weight-bold px-4 py-2">Prev</a>
+                    @endif
+                    <div>{{ $products->currentPage() }} of {{ $products->lastPage() }}</div>
+                    <a  href="{{ url('products?page='.($products->currentPage()+1)) }}" class="btn dark-btn font-weight-bold px-4 py-2">Next</a>
                 </div>
 
 
