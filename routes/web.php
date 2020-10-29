@@ -66,7 +66,7 @@ Route::group(['namespace' => 'Front'], function() {
     Route::get('/profile', 'FrontController@profile')->name('front.profile');
 
     // Search and Pagination
-    Route::get('/products/search', 'FrontController@search')->name('front.search');
+    // Route::get('/products/search', 'FrontController@search')->name('front.search');
     // Autocomplete Search
     Route::get('/products/autocomplete-search', 'FrontController@searchAutocomplete')->name('front.search.autocomplete');
     // Products Price Filter

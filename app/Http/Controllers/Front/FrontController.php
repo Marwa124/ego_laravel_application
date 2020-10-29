@@ -98,11 +98,6 @@ class FrontController extends Controller
 
     public function sidebar(Request $request)
     {
-        // $request->session()->put('brands', $request->brands);
-        // $request->session()->put('category', $request->categoryId);
-        // $brands = $request->session()->get('brands');
-        // $category = $request->session()->get('category');
-
         // Brand Search
         if ($request->brandSearch) {
 
@@ -205,9 +200,21 @@ class FrontController extends Controller
 
     public function searchAutocomplete(Request $request)
     {
-        $data = Product::select("name", 'id')
-                ->where("name","LIKE","%{$request->term}%")
-                ->get();
+        $products=Product::where('name','LIKE',"%{$request->term}%")->select("name", 'id')->get();
+        
+        $data=array();
+        foreach ($products as $product) {
+                $data[]=array('value'=>$product->name,'id'=>$product->id);
+        }
+        if(count($data))
+             return $data;
+        else
+            return ['value'=>'No Result Found','id'=>''];
+
+
+        // $data = Product::select("name", 'id')
+        //         ->where("name","LIKE","%{$request->term}%")
+        //         ->get();
    
         return response()->json($data);
     }

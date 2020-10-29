@@ -560,11 +560,14 @@
                 </div>
               </li>
             </ul>
-            <form class="search-form">
+            <form class="search-form" action="{{route('front.products.price.filter')}}">
               <div class="form-group mr-3 mb-0">
                 <div class="input-wrapper d-flex align-items-center" tabindex="1">
-                  <input type="text" class="form-control search-input" placeholder="Search">
-                  <i class="fas fa-search cursor-pointer"></i>
+                  <input type="text" class="form-control search-input" name="search" placeholder="Search">
+                  <div id="search-btn">
+                    <i id="search-icon" class="fas fa-search cursor-pointer"></i>
+                  </div>
+        
                 </div>
               </div>
             </form>
@@ -575,17 +578,7 @@
   </div>
     
     @push('scripts')
-    <form class="search-form" action="{{route('front.search')}}">
-      <div class="form-group mr-3 mb-0">
-        <div class="input-wrapper d-flex align-items-center" tabindex="1">
-          <input type="text" class="form-control search-input" name="search" placeholder="Search">
-          <div id="search-btn">
-            <i id="search-icon" class="fas fa-search cursor-pointer"></i>
-          </div>
-
-        </div>
-      </div>
-    </form>
+    
   </div>
   <ul class="result_search">
   </ul>
@@ -700,37 +693,36 @@
 
 </script>
 
-  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.css"></script>
 <script>
 // AutoComplete Search
 $(document).ready(function() {
       var inputSearch = $('input[name="search"]').val();
-      // src = '{{url('front/products/search')}}',
-      src = '{{route('front.search.autocomplete')}}',
       
       $(".search-input").autocomplete({
           source: function(request, response) {
               $.ajax({
-                  url: src,
+                  url: '{{route('front.search.autocomplete')}}',
                   dataType: "json",
                   data: {
                       term : request.term
                   },
                   success: function(data) {
-                      let x = 0;
-                      $(".result_search").html('');
+                    response(data)
+                    //   let x = 0;
+                    //   $(".result_search").html('');
 
-                      for (x ; x < data.length; x += 1) {
-                        const element = data[x].name;
-                        const Id = data[x].id;
-                        $(".result_search").append(`<li id='${Id}'>${element}</li>`);
-                      }
-                    if (data.length < 1) {
-                      $(".result_search").html(`<li>No result found</li>`);
-                    } 
-                    if ($('input[name="search"]').val().length < 2) {
-                      $(".result_search").html("");
-                    }                 
+                    //   for (x ; x < data.length; x += 1) {
+                    //     const element = data[x].name;
+                    //     const Id = data[x].id;
+                    //     $(".result_search").append(`<li id='${Id}'>${element}</li>`);
+                    //   }
+                    // if (data.length < 1) {
+                    //   $(".result_search").html(`<li>No result found</li>`);
+                    // } 
+                    // if ($('input[name="search"]').val().length < 2) {
+                    //   $(".result_search").html("");
+                    // }                 
                   }
               });
           },
@@ -744,15 +736,3 @@ $(document).ready(function() {
 </script>
 
   @endpush
-
-{{-- @push('css_lib')
-     <style>
-       .result_search{
-         list-style: none;
-         cursor: copy;
-       }
-       .result_search li:hover{
-         background-color: #ccc;
-       }
-     </style>
- @endpush --}}
