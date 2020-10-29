@@ -99,7 +99,7 @@
                 <div class="search-group" id="scrollbar-style">
                     <div class="colorboxes">
                         <div class="black-check">
-                            <input type="checkbox" id="black"/>
+                            <input hidden value="black" type="checkbox" id="black"/>
                             <label class="colorCheckBox text-left d-flex" for="black">
                                 <div class="ml-2">
                                     Black
@@ -107,7 +107,7 @@
                             </label>
                         </div>
                         <div class="red-check">
-                            <input type="checkbox" id="red"/>
+                            <input hidden value="red" type="checkbox" id="red"/>
                             <label class="colorCheckBox text-left d-flex" for="red">
                                 <div class="ml-2">
                                     Red
@@ -115,7 +115,7 @@
                             </label>
                         </div>
                         <div class="brown-check">
-                            <input type="checkbox" id="brown"/>
+                            <input hidden type="checkbox" value="brown" id="brown"/>
                             <label class="colorCheckBox text-left d-flex" for="brown">
                                 <div class="ml-2">
                                     Brown
@@ -123,7 +123,7 @@
                             </label>
                         </div>
                         <div class="gold-check">
-                            <input type="checkbox" id="gold"/>
+                            <input hidden value="gold" type="checkbox" id="gold"/>
                             <label class="colorCheckBox text-left d-flex" for="gold">
                                 <div class="ml-2">
                                     Gold
@@ -131,7 +131,7 @@
                             </label>
                         </div>
                         <div class="blue-check">
-                            <input type="checkbox" id="blue"/>
+                            <input hidden value="blue" type="checkbox" id="blue"/>
                             <label class="colorCheckBox text-left d-flex" for="blue">
                                 <div class="ml-2">
                                     Blue
@@ -139,7 +139,7 @@
                             </label>
                         </div>
                         <div class="purple-check">
-                            <input type="checkbox" id="purple"/>
+                            <input hidden value="purple" type="checkbox" id="purple"/>
                             <label class="colorCheckBox text-left d-flex" for="purple">
                                 <div class="ml-2">
                                     Purple
@@ -215,8 +215,6 @@
                         $(".resultSearchBrands").html(data);
                     }
                 })
-
-               
             });
 
             // Brand CheckBox Filter
@@ -232,8 +230,6 @@
                     $("input.brands:checked").each(function(){
                         brands.push($(this).val());
                     });
-                    // console.log(brands);
-                    // console.log($('input.brands:checkbox:checked'));
                     $.ajax({
                         url: '{{route('front.products.sidebar')}}',
                         type: 'get',
@@ -252,5 +248,64 @@
 
         });
 
+    </script>
+
+    <script>
+        $("#max_price").on('change', function() {
+            priceFilter();
+        })
+
+        $("#min_price").on('change', function() {
+            priceFilter();
+        })
+
+        $("#slider-range").slider({
+            range: true,
+            min: 4000,
+            max: 10000,
+            values: [ $('input#min_price').val(), $('input#max_price').val() ],
+            slide: function( event, ui ) {
+            priceFilter();
+                // $( "#amount-min" ).val( ui.values[ 0 ] );
+                // $( "#amount-max" ).val( ui.values[ 1 ] );
+            }
+        });
+
+        function priceFilter() {
+            var maxPrice = $('input#max_price').val();          
+            var minPrice = $('input#min_price').val();          
+                $.ajax({
+                    url: '{{route('front.sidebar.price.filter')}}',
+                    type: 'get',
+                    dataType: 'html',
+                    data: {
+                        max_price: maxPrice,
+                        min_price: minPrice,
+                    },
+                    success: function(data){
+                        $("#product_data").html(data);
+                    }
+                })
+            // console.log(maxPrice);
+            // console.log(minPrice);
+        }
+    </script>
+
+    <script>
+        $(".colorboxes div").on('click', function(e) {
+            console.log($(this).find("input").val());
+            var color = $(this).find("input").val();
+            $.ajax({
+                url: '{{route('front.sidebar.price.filter')}}',
+                type: 'get',
+                dataType: 'html',
+                data: {
+                    color: color,
+                },
+                success: function(data){
+                    $("#product_data").html(data);
+                }
+            })
+        })
     </script>
 @endpush

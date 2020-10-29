@@ -71,6 +71,9 @@ Route::group(['namespace' => 'Front'], function() {
     Route::get('/products/autocomplete-search', 'FrontController@searchAutocomplete')->name('front.search.autocomplete');
     // Products Price Filter
     Route::get('/products/price-filter', 'FrontController@search')->name('front.products.price.filter');
+
+    // Products Sidebar Price Filter
+    Route::get('/products/sidebar-price-filter', 'FrontController@sidebarPriceFilter')->name('front.sidebar.price.filter');
     // Products Sidebar Filter
     Route::get('/products/sidebar', 'FrontController@sidebar')->name('front.products.sidebar');
     

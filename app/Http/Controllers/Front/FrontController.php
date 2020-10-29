@@ -144,6 +144,36 @@ class FrontController extends Controller
         }
     }
 
+    public function sidebarPriceFilter(Request $request)
+    {
+        //Sidebar Price Search
+        if ($request->max_price && $request->min_price) {
+            $result = Product::whereBetween('price', [$request->min_price, $request->max_price])->paginate(15);
+
+            return view('front.products_search', [
+                'products' => $result
+            ]);
+        }
+
+        //Sidebar Color Filter
+        if ($request->color) {
+
+            $products = Product::where(function ($query) use ($request) {
+                $query->where('color', 'LIKE', '%' . $request->color . '%');
+            })->latest()->paginate(15);
+
+            // if (strpos($a, 'are') !== false) {
+            //     echo 'true';
+            // }
+// dd($);           
+
+            return view('front.products_search', [
+                'products' => $products
+            ]);
+        }
+
+    }
+
     public function products(Request $request)
     {
         $products = Product::paginate(15);
@@ -178,7 +208,7 @@ class FrontController extends Controller
                 if ($request->has('keyword')) {
                     $query->where('name', 'LIKE', '%' . $request->keyword . '%');
                 }
-            })->latest()->paginate(2);
+            })->latest()->paginate(15);
             // dd($products);
             return view('front.products_search', [
                 'products' => $products
@@ -211,11 +241,6 @@ class FrontController extends Controller
         else
             return ['value'=>'No Result Found','id'=>''];
 
-
-        // $data = Product::select("name", 'id')
-        //         ->where("name","LIKE","%{$request->term}%")
-        //         ->get();
-   
         return response()->json($data);
     }
 

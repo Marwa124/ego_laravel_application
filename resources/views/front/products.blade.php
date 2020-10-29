@@ -333,17 +333,9 @@
       },
       success: function(data){
         if ($(e).hasClass('far')) {
-            Toast.fire({
-                icon: 'success',
-                title: 'Product added'
-            });
           $(e).removeClass('far').addClass('fas');
           $(e).parent().addClass('bg-danger');
         } else {
-            Toast.fire({
-                icon: 'success',
-                title: 'Product removed'
-            });
           $(e).removeClass('fas').addClass('far');
           $(e).parent().removeClass('bg-danger');
         };

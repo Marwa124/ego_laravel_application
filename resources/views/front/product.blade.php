@@ -204,18 +204,8 @@
       },
       success: function(data){
         if ($(e).hasClass('far')) {
-            Toast.fire({
-                icon: 'success',
-                title: 'Product added'
-            });
-            console.log('xxx');
           $(e).removeClass('far').addClass('fas');
         } else {
-            Toast.fire({
-                icon: 'success',
-                title: 'Product removed'
-            });
-
           $(e).removeClass('fas').addClass('far');
         };
       },
