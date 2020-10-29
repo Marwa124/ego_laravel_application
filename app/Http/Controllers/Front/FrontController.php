@@ -95,21 +95,24 @@ class FrontController extends Controller
 
         // Brand Search
         if ($request->brandSearch) {
+
             $brands = Brand::where(function ($query) use ($request) {
-                $query->where('name', 'LIKE', '%' . $request->brandSearch . '%');
+                $query->where('name', 'LIKE', '%' . $request->brandSearch . '%')->select("name", 'id');
             })->get();
 
-        // dd((array) $brands);
-        $brandArray = [];
-        foreach ($brands as $key => $value) {
-            $brandArray['name'] = $value->name;
-            $brandArray['id'] = $value->id;
-            
-        }
-        // dd($brandArray);
+            return view('front.sidebar_brands_search', [
+                'brands' => $brands,
+                'sort'   => false
+            ]);
+        }else {
+            $brands = Brand::all()->groupby(function($item, $key){
+                return json_encode($item->name)[1];
+            })->toArray();
 
-
-            return response()->json($brandArray);
+            return view('front.sidebar_brands_search', [
+                'brands' => $brands,
+                'sort'   => true
+            ]);
         }
 
         // Category Filter
@@ -129,10 +132,6 @@ class FrontController extends Controller
                 // var_dump($brandObject);
                 $items['brand_products'] = $brandObject->products()->paginate(15);
             }
-            // echo "<pre>";
-            // dd($items['brand_products']);
-    
-            // return view('front.product', compact('product'));
 
             return view('front.products_search', [
                 'products' => $items['brand_products'] 
@@ -213,10 +212,8 @@ class FrontController extends Controller
             $v->userable_id = $request->product_id;
             $v->userable_type = 'App\Models\Product';
             $v->save();
-            // dd("vvvv");
         }else{
             Userable::where('user_id', auth()->user()->id)->where('userable_id', $request->product_id)->delete();
-            // dd('ppp');
         }
 
         // $favorable = $request->user()->products()->toggle($request->product_id);

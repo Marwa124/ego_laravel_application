@@ -1,10 +1,7 @@
 <?php
-        // $brands = App\Models\Brand::select('name', 'id')->get();
-        // json_encode($item->name)[2]
         $brands = App\Models\Brand::all()->groupby(function($item, $key){
             return json_encode($item->name)[1];
         })->toArray();
-        // dd($brands);
 
 ?>
 @inject('categories', 'App\Models\Category')
@@ -70,7 +67,7 @@
                 <div>
                     <input type="text" class="form-control mb-3 brandSearch" name="brandSearch" id="exampleInputEmail1"
                         aria-describedby="emailHelp" placeholder="Search By Brands">
-                    <div class="search-group" id="scrollbar-style">
+                    <div class="search-group resultSearchBrands" id="scrollbar-style">
                         @foreach ($brands as $key => $items)
                             <div class="letter-search mb-3">
                             <h6 class="text-capitalize">{{$key}}</h6>
@@ -184,24 +181,10 @@
     
         $(document).ready(function() {
 
-            // $checks = $(":checkbox");
-            // $checks.on('change', function() {
-            //     var string = $checks.filter(":checked").map(function(i,v){
-            //         return this.value;
-            //     }).get().join(" ");
-            //     $('input.brands').val(string);
-            //     console.log($('input.brands').val(string));
-            // });
-
-
-                // $('.category_id')
-                // console.log(e.target);
-                
-
             // Category Filter
             $('.category_link').on('click', function(e) {
                 var categoryId = $(this).find(".category_id").val();
-                console.log($(this).find(".category_id").val());
+                // console.log($(this).find(".category_id").val());
                 $.ajax({
                     url: '{{route('front.products.sidebar')}}',
                     type: 'get',
@@ -219,7 +202,7 @@
             // Brand Search 
             $('.brandSearch').on('keyup', function() {
                 var brandSearch = $('.brandSearch').val();
-                console.log($('.brandSearch').val());
+
                 $.ajax({
                     url: '{{route('front.products.sidebar')}}',
                     type: 'get',
@@ -228,43 +211,8 @@
                         brandSearch: brandSearch,
                     },
                     success: function(data){
-                    // $('.search-group').html('');
 
-                    // for (let i = 0; i < data.length; i++) {
-                    //     const element = array[i];
-                    //     if (element.attributes.productId == data.product.id) {
-                    //         // console.log('success');
-                    //         cartId = element.id;
-                    //     }
-                    // }
-                    console.log(data.name);
-                    $('.search-group').html(`
-                        <div class="letter-search mb-3">
-                        <div class="checkboxes ml-3">
-                            <div class="form-check mb-1">
-                                <input type="checkbox" name="brands" class="form-check-input brands" id="${data['id']}" value="${data['id']}">
-                                <label class="form-check-label" for="${data['id']}">${data['name']} <small
-                                        class="text-muted">()</small></label>
-                            </div>
-                            </div>
-                        </div>
-                    `);
-
-                    // array.forEach(element => {
-                    //     $('.search-group').html(`
-                    //     <div class="letter-search mb-3">
-                    //     <div class="checkboxes ml-3">
-                    //         <div class="form-check mb-1">
-                    //             <input type="checkbox" name="brands" class="form-check-input brands" id="${element.id}" value="${element.id}">
-                    //             <label class="form-check-label" for="${element.id}">${element.name} <small
-                    //                     class="text-muted">(${array.size()})</small></label>
-                    //         </div>
-                    //         </div>
-                    //     </div>
-                    //     `);
-                    // });
-
-
+                        $(".resultSearchBrands").html(data);
                     }
                 })
 
@@ -284,7 +232,7 @@
                     $("input.brands:checked").each(function(){
                         brands.push($(this).val());
                     });
-                    console.log(brands);
+                    // console.log(brands);
                     // console.log($('input.brands:checkbox:checked'));
                     $.ajax({
                         url: '{{route('front.products.sidebar')}}',
@@ -297,9 +245,6 @@
                             $("#product_data").html(data);
                         }
                     })
-
-
-                }else{
 
                 }
 
