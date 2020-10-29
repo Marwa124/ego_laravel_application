@@ -34,3 +34,23 @@
     height: 3px;
     width: 30%;
 }
+
+.color {
+    width: 40px;
+    height: 40px;
+    margin: 0 2px;
+    border: none;
+    &:hover {
+        filter: brightness(85%);
+    }
+}
+
+.bg-red {
+    background-color: #c02033;
+}
+.bg-gold {
+    background-color: #d69e0f;
+}
+.bg-brown {
+    background-color: #5c4200;
+}

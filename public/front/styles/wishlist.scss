@@ -1,0 +1,42 @@
+@import "./media.scss";
+
+.cancel-icon {
+    cursor: pointer;
+    position: absolute;
+    right: -4%;
+    top: -4%;
+    border-radius: 50%;
+    background-color: #000000;
+    padding: 10px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    img {
+        position: relative;
+        top: calc(50% - 11px);
+        left: calc(50% - 8px);
+    }
+    .heart-icon {
+        color: #ffffff;
+    }
+}
+
+.color {
+    width: 40px;
+    height: 40px;
+    margin: 0 2px;
+    border: none;
+    &:hover {
+        filter: brightness(85%);
+    }
+}
+
+.bg-red {
+    background-color: #c02033;
+}
+.bg-gold {
+    background-color: #d69e0f;
+}
+.bg-brown {
+    background-color: #5c4200;
+}

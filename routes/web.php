@@ -57,8 +57,10 @@ Route::group(['namespace' => 'Front'], function() {
     });
     Route::get('/home', 'FrontController@index')->name('front.index');
     Route::post('/subscriber', 'FrontController@subscribe')->name('front.subscribe');
-    Route::get('/store', 'FrontController@singleStore')->name('front.single_store');
+    Route::get('/stores', 'FrontController@store_locator')->name('front.store_locator');
+    Route::get('/single_store', 'FrontController@single_store')->name('front.single_store');
     Route::get('/products', 'FrontController@products')->name('front.products');
+    Route::get('/wishlist', 'FrontController@wishlist');
     Route::get('/product/{id}', 'FrontController@product')->name('front.product.show');
     
     Route::get('/profile', 'FrontController@profile')->name('front.profile');
@@ -99,6 +101,7 @@ Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallb
 
 Route::get('storage/app/public/{id}/{conversion}/{filename?}', 'UploadController@storage');
 
+Route::middleware('adminauth')->group(function () {
 
 Route::group(['middleware' => ['role:admin']], function() {
 
@@ -114,7 +117,6 @@ Route::get('payments/paypal', 'PayPalController@index')->name('paypal.index');
 // Route::get('firebase/sw-js','AppSettingController@initFirebase');
 
 
-Route::middleware('auth')->group(function () {
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
     Route::get('/', 'DashboardController@index')->name('dashboard');
 

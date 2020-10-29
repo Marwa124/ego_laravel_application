@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{asset('front/styles/global.css')}}">
     <link rel="stylesheet" href="{{asset('front/styles/products.css')}}">
     <link rel="stylesheet" href="{{asset('front/styles/cart.css')}}">
-    <link rel="stylesheet" href="{{asset('front/styles/single_store.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('front/styles/single_store.css')}}"> --}}
 
   
 
@@ -119,13 +119,13 @@
         <div style="max-width: 1140px; margin: auto;">
             <div class="d-flex justify-content-between"
                 style="border-top:1px solid black; padding: 20px 10px 100px; font-size: small;">
-                <p>@ 2020 <a href="index.html">EGO</a></p>
+                <p>@ 2020 <a href="{{ url('/home') }}">EGO</a></p>
                 <div class="d-flex">
                     <div style="width: 40px; padding: 4px;">
-                        <img class="w-100" src="./images/master-card.jpg" alt="">
+                        <img class="w-100" src="{{ asset('front/images/master-card.jpg') }}" alt="">
                     </div>
                     <div style="width: 40px; padding: 4px;">
-                        <img class="w-100" src="./images/Visa_Inc._logo.svg.png" alt="">
+                        <img class="w-100" src="{{ asset('front/images/Visa_Inc._logo.svg.png') }}" alt="">
                     </div>
                 </div>
             </div>

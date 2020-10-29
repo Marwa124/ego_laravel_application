@@ -93,7 +93,7 @@
             </ul>
             <div class="d-block mb-0 h-auto">
               <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <a href="{{ url('store') }}" class="ml-3 nav-item cursor-pointer mx-2 d-flex align-items-center nav-icon ">
+                <a href="{{ url('stores') }}" class="ml-3 nav-item cursor-pointer mx-2 d-flex align-items-center nav-icon ">
                   Stores
                 </a>
 
@@ -108,11 +108,16 @@
 
                 <a class="nav-item cursor-pointer d-flex align-items-center nav-icon"  href="{{ url('login') }}" >
                 <i class=" far fa-user" style="font-size: 1.2rem;"></i>
-                <p class="mb-0 ml-1">Login</p>
+                <p class="mb-0 ml-1">Login</p>|
+              
+              </a>
+                <a class="nav-item cursor-pointer d-flex align-items-center nav-icon"  href="{{ url('register') }}" >
+                <i class=" far fa-user" style="font-size: 1.2rem;"></i>
+                <p class="mb-0 ml-1">register</p>
               </a>
 
                 @endguest
-                <a class="nav-item cursor-pointer d-flex align-items-center nav-icon mr-3 ml-3" href="{{ url('login') }}">
+                <a class="nav-item cursor-pointer d-flex align-items-center nav-icon mr-3 ml-3" href="{{ url('wishlist') }}">
                   <i class="far fa-heart" style="font-size: 1.2rem;"></i>
                 </a>
                 <a class="nav-item mini-cart-toggler hide-onTablet cursor-pointer">

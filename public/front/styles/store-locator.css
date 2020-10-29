@@ -70,20 +70,76 @@
 /* The side navigation menu */
 main {
   margin-top: 100px;
-}
-
-.grid-container {
+  text-align: left;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-@media (max-width: 767px) {
-  .grid-container {
+@media (max-width: 768px) {
+  main {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
   }
+  .sidebar {
+    border: none !important;
+    width: 100% !important;
+  }
 }
-/*# sourceMappingURL=single-store.css.map */
+
+body {
+  background-color: #fafafa;
+}
+
+/* The side navigation menu */
+.sidebar {
+  margin: 20px auto;
+  padding: 0 20px;
+  width: 400px;
+  text-align: left;
+  border-right: 1px solid #afafaf;
+}
+
+/* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+div.content {
+  padding: 1px 16px;
+  width: 100%;
+  margin-bottom: 200px;
+}
+
+/* On screens that are less than 700px wide, make the sidebar into a topbar */
+.search-town {
+  border: none;
+  width: 100%;
+  padding: 0 !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.locationBtn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid dimgray;
+  text-align: left;
+}
+
+.dropdown-select {
+  background-color: #fff;
+  border: 1px solid dimgray;
+  padding-left: 10px;
+}
+
+.store-select:hover {
+  text-decoration: underline;
+}
+/*# sourceMappingURL=store-locator.css.map */
