@@ -39,7 +39,7 @@ Route::resource('api-bosta', 'APIBostaController', ['except' => ['edit', 'update
 // });
 
 // Route::get('iproduct', 'Imports\ImportProductController@product')->name('login');
-// Route::Post('iproduct','Imports\@storeProduct')->name('register.submit');
+// Route::Post('iproduct','Imports\ImportProductController@storeProduct')->name('register.submit');
 Route::post('logout','Front\Auth\LoginController@logout')->middleware('auth');
 
 Route::group(['namespace' => 'Front'], function() {

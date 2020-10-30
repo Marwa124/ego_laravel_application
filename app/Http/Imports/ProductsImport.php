@@ -4,6 +4,7 @@ namespace App\Http\Imports;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Color;
 use App\Models\Product;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -30,14 +31,25 @@ class ProductsImport implements ToCollection
             // dd($key);
             if ($key > 0) {
 
-                $array['category'] = $value[5];
-                $array['product'] = $value[6];
+                preg_match('#\((.*?)\)#', $value[7], $match);
+                // echo $match[1];
+                // dd($match[preg_match('#\((.*?)\)#', $value[7], $match)]);
+
                 
-                $cat = Category::where('name', $value[5])->first();
-                $prod = Product::where('name', $value[6])->first();
-                if ($prod) {
-                    $prod->update(['category_id' => $cat['id']]);
-                }
+
+                Color::create([
+                    'code' => "#".preg_replace("/\([^)]+\)/","",$value[7]) ?? $value[7],
+                    'name' => $match[1] ?? '',
+                ]);
+
+                // $array['category'] = $value[5];
+                // $array['product'] = $value[6];
+                
+                // $cat = Category::where('name', $value[5])->first();
+                // $prod = Product::where('name', $value[6])->first();
+                // if ($prod) {
+                //     $prod->update(['category_id' => $cat['id']]);
+                // }
                 // echo "<pre>";
                 // var_dump($prod['category_id']);
 

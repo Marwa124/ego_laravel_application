@@ -64,10 +64,10 @@ class Product extends Model implements HasMedia
         'discount_price',
         'description',
         'capacity',
-        'package_items_count',
-        'unit',
-        'featured',
-        'deliverable',
+        // 'package_items_count',
+        // 'unit',
+        // 'featured',
+        // 'deliverable',
         'market_id',
         'category_id'
     ];
@@ -82,11 +82,13 @@ class Product extends Model implements HasMedia
         'price' => 'double',
         'discount_price' => 'double',
         'description' => 'string',
-        'capacity' => 'double',
-        'package_items_count' => 'integer',
-        'unit' => 'string',
-        'featured' => 'boolean',
-        'deliverable' => 'boolean',
+        'capacity' => 'array',
+        'sizes' => 'array',
+        'colors' => 'array',
+        // 'package_items_count' => 'integer',
+        // 'unit' => 'string',
+        // 'featured' => 'boolean',
+        // 'deliverable' => 'boolean',
         'market_id' => 'integer',
         'category_id' => 'double'
     ];
@@ -219,6 +221,26 @@ class Product extends Model implements HasMedia
     public function productReviews()
     {
         return $this->hasMany(\App\Models\ProductReview::class, 'product_id');
+    }
+
+    // public function productFeatures()
+    // {
+    //     return $this->hasMany(\App\Models\ProductFeature::class);
+    // }
+
+    // public function colorProducts()
+    // {
+    //     return $this->hasMany(\App\Models\ColorProduct::class, 'product_id');
+    // }
+
+    public function colors()
+    {
+        return $this->belongsToMany(\App\Models\Color::class, 'color_products', 'product_id', 'color_id');
+    }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(\App\Models\Size::class, 'product_features')->withPivot('count');
     }
 
     /**

@@ -13,6 +13,8 @@ use App\Criteria\Products\ProductsOfUserCriteria;
 use App\DataTables\ProductDataTable;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Color;
+use App\Models\ProductFeature;
 use App\Repositories\CategoryRepository;
 use App\Repositories\CustomFieldRepository;
 use App\Repositories\MarketRepository;
@@ -79,6 +81,7 @@ class ProductController extends Controller
     {
 
         $category = $this->categoryRepository->pluck('name', 'id');
+        $color = Color::pluck('name', 'id');
         if (auth()->user()->hasRole('admin')) {
             $market = $this->marketRepository->pluck('name', 'id');
         } else {
@@ -89,7 +92,8 @@ class ProductController extends Controller
             $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->productRepository->model());
             $html = generateCustomField($customFields);
         }
-        return view('products.create')->with("customFields", isset($html) ? $html : false)->with("market", $market)->with("category", $category);
+        return view('products.create')->with("customFields", isset($html) ? $html : false)->with("market", $market)
+            ->with("category", $category);
     }
 
     /**
@@ -102,9 +106,21 @@ class ProductController extends Controller
     public function store(CreateProductRequest $request)
     {
         $input = $request->all();
+        dd($input);
         $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->productRepository->model());
         try {
             $product = $this->productRepository->create($input);
+
+            $features = ProductFeature::where('product_id', $product->id)->get();
+            foreach ($features as $feature) {
+                $feature->delete();
+            }
+
+            for ($i=0; $i < count($request->sizes); $i++) { 
+                $product->sizes()->attach($request->sizes[$i], ['count' => $request->capacity[$i]]);
+                
+            }
+
             $product->customFieldsValues()->createMany(getCustomFieldsValues($customFields, $request));
             if (isset($input['image']) && $input['image']) {
 
@@ -236,8 +252,11 @@ class ProductController extends Controller
 
                 return redirect(route('products.index'));
             }
+            $product->sizes()->detach();
+            $product->colors()->detach();
 
             $this->productRepository->delete($id);
+
 
             Flash::success(__('lang.deleted_successfully', ['operator' => __('lang.product')]));
 

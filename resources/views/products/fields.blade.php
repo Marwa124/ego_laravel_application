@@ -1,3 +1,7 @@
+@inject('colors', 'App\Models\Color')
+@inject('sizes', 'App\Models\Size')
+
+
 @if($customFields)
     <h5 class="col-12 pb-4">{!! trans('lang.main_fields') !!}</h5>
 @endif
@@ -14,11 +18,12 @@
     </div>
 
     <!-- Image Field -->
-    <div class="form-group row">
+    {{-- 'enctype' => "multipart/form-data" --}}
+    <div class="form-group row imageForm">
         {!! Form::label('image', trans("lang.product_image"), ['class' => 'col-3 control-label text-right']) !!}
         <div class="col-9">
             <div style="width: 100%" class="dropzone image" id="image" data-field="image">
-                <input type="hidden" name="image">
+                <input type="hidden" multiple="multiple" name="image[]">
             </div>
             <a href="#loadMediaModal" data-dropzone="image" data-toggle="modal" data-target="#mediaModal" class="btn btn-outline-{{setting('theme_color','primary')}} btn-sm float-right mt-1">{{ trans('lang.media_select')}}</a>
             <div class="form-text text-muted w-50">
@@ -40,8 +45,27 @@
             var dz_var15671147171873255749ble = $(".dropzone.image").dropzone({
                     url: "{!!url('admin/uploads/store')!!}",
                     addRemoveLinks: true,
+                    contentType: 'multipart/form-data',
+                    acceptedFiles: ".jpeg,.jpg,.png,.gif",
                     maxFiles: 10,
                     init: function () {
+
+                        @if(isset($product) && $product->hasMedia('image'))
+                            var files =
+                            {!! json_encode($project->hasMedia('image')) !!}
+                            console.log(files);
+                            for (var i in files) {
+                            var file = files[i]
+                            console.log(file);
+                            this.options.addedfile.call(this, file)
+                            file.previewElement.classList.add('dz-complete')
+                            $('.imageForm').append('<input type="hidden" name="document[]" value="' + file.file_name + '">')
+                            }
+                        dzInit(this, var15671147171873255749ble, '{!! url($product->getFirstMediaUrl('image','thumb')) !!}')
+                        @endif
+
+
+
                         @if(isset($product) && $product->hasMedia('image'))
                         dzInit(this, var15671147171873255749ble, '{!! url($product->getFirstMediaUrl('image','thumb')) !!}')
                         @endif
@@ -104,13 +128,14 @@
         </div>
     </div>
 </div>
-<div style="flex: 50%;max-width: 50%;padding: 0 4px;" class="column">
+<div style="flex: 50%;max-width: 50%;padding: 0 4px;" class="column appendSide">
 
     <!-- Capacity Field -->
-    <div class="form-group row ">
-        {!! Form::label('capacity', trans("lang.product_capacity"), ['class' => 'col-3 control-label text-right']) !!}
+    <div class="form-group row">
+        {{-- lang.product_capacity --}}
+        {!! Form::label('capacity', trans("lang.count") , ['class' => 'col-3 control-label text-right']) !!}
         <div class="col-9">
-            {!! Form::number('capacity', null,  ['class' => 'form-control','placeholder'=>  trans("lang.product_capacity_placeholder"),'step'=>"any", 'min'=>"0"]) !!}
+            {!! Form::number('capacity[]', null,  ['class' => 'form-control','placeholder'=>  trans("lang.product_capacity_placeholder"),'step'=>"any", 'min'=>"0", 'required' => 'required']) !!}
             <div class="form-text text-muted">
                 {{ trans("lang.product_capacity_help") }}
             </div>
@@ -118,18 +143,35 @@
     </div>
 
     <!-- unit Field -->
-    <div class="form-group row ">
-        {!! Form::label('unit', trans("lang.product_unit"), ['class' => 'col-3 control-label text-right']) !!}
+    {{-- lang.product_unit --}}
+    {{-- <div class="form-group row ">
+        {!! Form::label('size', trans("lang.size"), ['class' => 'col-3 control-label text-right']) !!}
         <div class="col-9">
-            {!! Form::text('unit', null,  ['class' => 'form-control','placeholder'=>  trans("lang.product_unit_placeholder")]) !!}
+            {!! Form::text('size[]', null,  ['class' => 'form-control','placeholder'=>  trans("lang.product_size_placeholder")]) !!}
             <div class="form-text text-muted">
-                {{ trans("lang.product_unit_help") }}
+                {{ trans("lang.product_size_help") }}
             </div>
+        </div>
+    </div> --}}
+
+
+    <div class="form-group row ">
+        {!! Form::label('size_id', trans("lang.product_size_id"), ['class' => 'col-3 control-label text-right']) !!}
+        <div class="col-9">
+            <select name="sizes[]" id="" class="select2 form-control">
+                @foreach($sizes->all() as $size)
+                    <option value="{{ $size->id }}">
+                        {{ $size->name }}
+                    </option>    
+                @endforeach 
+                <div class="form-text text-muted">{{ trans("lang.product_size_id_help") }}</div>
+            </select>
         </div>
     </div>
 
+
     <!-- package_items_count Field -->
-    <div class="form-group row ">
+    {{-- <div class="form-group row ">
         {!! Form::label('package_items_count', trans("lang.product_package_items_count"), ['class' => 'col-3 control-label text-right']) !!}
         <div class="col-9">
             {!! Form::number('package_items_count', null,  ['class' => 'form-control','placeholder'=>  trans("lang.product_package_items_count_placeholder"),'step'=>"any", 'min'=>"0"]) !!}
@@ -137,7 +179,7 @@
                 {{ trans("lang.product_package_items_count_help") }}
             </div>
         </div>
-    </div>
+    </div> --}}
     
 
     <!-- Market Id Field -->
@@ -158,8 +200,53 @@
         </div>
     </div>
 
+
+    
+    {{-- Color Option Field --}}
+    {{-- <div class="form-group row">
+        {!! Form::label('color_id', trans("lang.product_color_id"),['class' => 'col-3 control-label text-right']) !!}
+        <div class="col-9">
+            {!! Form::select('color_id', $color->pluck('name', 'id'), null, [
+                'class' => 'select2 form-control',
+                'style' => 'background-color:{{$color->pluck("code")}};'
+                ]) !!}
+            <div class="form-text text-muted">{{ trans("lang.product_color_id_help") }}</div>
+        </div>
+    </div> --}}
+
+
+
+    <div class="form-group row">
+        {!! Form::label('color_id', trans("lang.product_color_id"),['class' => 'col-3 control-label text-right']) !!}
+        <div class="col-9">
+
+
+
+            <select multiple="multiple" class="select2 form-control" name="colors[]" id="colors">
+                <option value="" disabled>Choose color</option>
+                @foreach($colors->all() as $Key => $color)
+                    <option value="{{$color->id}}" style="color:{{$color->code}}" >{{$color->name}}</option>
+                @endforeach
+                <div class="form-text text-muted">{{ trans("lang.product_color_id_help") }}</div>
+            </select>
+
+
+            {{-- @if($selectedTags->contains($tag->id)) selected @endif > --}}
+        {{-- <select name="color" id="" class="select2 form-control">
+            @foreach($color->all() as $tag)
+                <option value="{{ $tag->id }}" style="background-color: {{$tag->code}}">
+                    {{ $tag->name }}
+                </option>    
+            @endforeach 
+            <div class="form-text text-muted">{{ trans("lang.product_color_id_help") }}</div>
+        </select> --}}
+
+        
+        </div>
+    </div>
+
     <!-- 'Boolean Featured Field' -->
-    <div class="form-group row ">
+    {{-- <div class="form-group row ">
         {!! Form::label('featured', trans("lang.product_featured"),['class' => 'col-3 control-label text-right']) !!}
         <div class="checkbox icheck">
             <label class="col-9 ml-2 form-check-inline">
@@ -167,10 +254,10 @@
                 {!! Form::checkbox('featured', 1, null) !!}
             </label>
         </div>
-    </div>
+    </div> --}}
 
     <!-- 'Boolean deliverable Field' -->
-    <div class="form-group row ">
+    {{-- <div class="form-group row ">
         {!! Form::label('deliverable', trans("lang.product_deliverable"),['class' => 'col-3 control-label text-right']) !!}
         <div class="checkbox icheck">
             <label class="col-9 ml-2 form-check-inline">
@@ -178,7 +265,9 @@
                 {!! Form::checkbox('deliverable', 1, null) !!}
             </label>
         </div>
-    </div>
+    </div> --}}
+
+    <button class="addProductFeature btn btn-primary btn-sm d-flex ml-auto"> Add More Size Features </button>
 
 </div>
 @if($customFields)
@@ -193,3 +282,39 @@
     <button type="submit" class="btn btn-{{setting('theme_color')}}"><i class="fa fa-save"></i> {{trans('lang.save')}} {{trans('lang.product')}}</button>
     <a href="{!! route('products.index') !!}" class="btn btn-default"><i class="fa fa-undo"></i> {{trans('lang.cancel')}}</a>
 </div>
+
+{{-- <div class="form-group row ">
+    <label for="size" class="col-3 control-label text-right">{{trans("lang.size")}}</label>
+    <div class="col-9">
+        <input type="text" name="size[]" id="" class="form-control" placeholder="{{trans("lang.product_size_placeholder")}}">
+    </div>
+</div> --}}
+@push('scripts')
+    <script>
+        $(".addProductFeature").on('click', function(e) {
+            e.preventDefault();
+            $('.appendSide').append(`
+            <div class="form-group row">
+                <label for="capacity" class="col-3 control-label text-right">{{trans("lang.count")}}</label>
+                <div class="col-9">
+                    <input required type="number" name="capacity[]" id="" class="form-control" placeholder="{{trans("lang.product_capacity_placeholder")}}" step="any" min="0">
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                {!! Form::label('size_id', trans("lang.product_size_id"), ['class' => 'col-3 control-label text-right']) !!}
+                <div class="col-9">
+                    <select name="sizes[]" id="" class="select2 form-control">
+                        @foreach($sizes->all() as $size) 
+                            <option value="{{$size->id}}">
+                                {{$size->name}}
+                            </option>
+                        @endforeach 
+                        <div class="form-text text-muted">{{ trans("lang.product_size_id_help") }}</div>
+                    </select>
+                </div>
+            </div>
+            `);
+        })
+    </script>
+@endpush
