@@ -15,6 +15,7 @@ use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Color;
 use App\Models\ProductFeature;
+use App\Models\Size;
 use App\Repositories\CategoryRepository;
 use App\Repositories\CustomFieldRepository;
 use App\Repositories\MarketRepository;
@@ -81,7 +82,6 @@ class ProductController extends Controller
     {
 
         $category = $this->categoryRepository->pluck('name', 'id');
-        $color = Color::pluck('name', 'id');
         if (auth()->user()->hasRole('admin')) {
             $market = $this->marketRepository->pluck('name', 'id');
         } else {
@@ -93,7 +93,7 @@ class ProductController extends Controller
             $html = generateCustomField($customFields);
         }
         return view('products.create')->with("customFields", isset($html) ? $html : false)->with("market", $market)
-            ->with("category", $category);
+            ->with("category", $category)->with("productFeatures", '')->with("selectedColors", '');
     }
 
     /**
@@ -106,7 +106,6 @@ class ProductController extends Controller
     public function store(CreateProductRequest $request)
     {
         $input = $request->all();
-        dd($input);
         $customFields = $this->customFieldRepository->findByField('custom_field_model', $this->productRepository->model());
         try {
             $product = $this->productRepository->create($input);
@@ -115,10 +114,8 @@ class ProductController extends Controller
             foreach ($features as $feature) {
                 $feature->delete();
             }
-
             for ($i=0; $i < count($request->sizes); $i++) { 
                 $product->sizes()->attach($request->sizes[$i], ['count' => $request->capacity[$i]]);
-                
             }
 
             $product->customFieldsValues()->createMany(getCustomFieldsValues($customFields, $request));
@@ -178,6 +175,7 @@ class ProductController extends Controller
             return redirect(route('products.index'));
         }
         $category = $this->categoryRepository->pluck('name', 'id');
+        $productFeatures = ProductFeature::all();
         if (auth()->user()->hasRole('admin')) {
             $market = $this->marketRepository->pluck('name', 'id');
         } else {
@@ -190,7 +188,14 @@ class ProductController extends Controller
             $html = generateCustomField($customFields, $customFieldsValues);
         }
 
-        return view('products.edit')->with('product', $product)->with("customFields", isset($html) ? $html : false)->with("market", $market)->with("category", $category);
+        $arr = [];
+        $color_id = $product->colors()->get();
+        foreach ($color_id as $key => $val) {
+            $arr[] = $val->id;
+        }
+
+        return view('products.edit')->with('product', $product)->with("customFields", isset($html) ? $html : false)
+            ->with("market", $market)->with("category", $category)->with("productFeatures", $productFeatures)->with("selectedColors", $arr);
     }
 
     /**

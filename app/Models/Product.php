@@ -54,6 +54,7 @@ class Product extends Model implements HasMedia
         'price' => 'required|numeric|min:0',
         'description' => 'required',
         'market_id' => 'required|exists:markets,id',
+        'brand_id' => 'required|exists:brands,id',
         'category_id' => 'required|exists:categories,id'
     ];
 
@@ -68,6 +69,9 @@ class Product extends Model implements HasMedia
         // 'unit',
         // 'featured',
         // 'deliverable',
+        'brand_id',
+        'gender_category',
+        'ego_code',
         'market_id',
         'category_id'
     ];
@@ -85,6 +89,9 @@ class Product extends Model implements HasMedia
         'capacity' => 'array',
         'sizes' => 'array',
         'colors' => 'array',
+        'ego_code' => 'string',
+        'gender_category' => 'string',
+        'brand_id' => 'integer',
         // 'package_items_count' => 'integer',
         // 'unit' => 'string',
         // 'featured' => 'boolean',
