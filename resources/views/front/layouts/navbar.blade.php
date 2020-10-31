@@ -636,15 +636,20 @@
   $(".add_to_cart").click(function (e) {
       e.preventDefault();
       var productId = $(this).data('product');
-      // console.log(productId);
+      var productSize = $('input[name=size]').val();
+      var productColor = $('.productColor').val();
+
+      // console.log(productSize);
       $.ajax({
           url: '{{route('front.cart.product.add')}}', 
           type: 'get',
           data: {
-              product_id: productId
+              product_id: productId,
+              product_size: productSize,
+              product_color: productColor,
           },
           success: function (data) {
-            console.log(data.productImage);
+            // console.log(data.productImage);
               var cartId = '';
 
               var array = $.map(data.cart, function(value, index){
@@ -658,7 +663,7 @@
                   }
               }
               $('.cartCounts').html(array.length);
-              $(e.target).css('backgroundColor', 'green');
+              // $(e.target).css('backgroundColor', 'green');
               
               $('#mini-cart').prepend(`
               <div id="mini-cart" class="cart-item mb-2 pb-5 row" x-data="{ count: 1, showProduct:true }" x-show="showProduct">

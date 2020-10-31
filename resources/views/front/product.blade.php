@@ -38,11 +38,11 @@
           <div class="mb-4">
             <h6 class="font-weight-bold">Select a Color</h6>
             <div class="input-group ">
-              <select class="custom-select" id="inputGroupSelect01">
+              <select class="custom-select productColor" id="inputGroupSelect01">
                 <option selected>Choose...</option>
-                <option value="1">Brown</option>
-                <option value="2">Black</option>
-                <option value="3">Green</option>
+                @foreach ($product->colors()->get() as $color)
+                  <option value="{{$color->id}}">{{$color->name}}</option>
+                @endforeach
               </select>
             </div>
           </div>
@@ -50,11 +50,10 @@
             <h6 class="font-weight-bold">Select a Size</h6>
             <div class="row mb-5">
               <div class="col d-flex">
-                <button class="btn dark-btn-outline px-3 mx-2">6</button>
-                <button class="btn dark-btn-outline px-3 mx-2">8</button>
-                <button class="btn dark-btn-outline px-3 mx-2">10</button>
-                <button class="btn dark-btn-outline px-3 mx-2">12</button>
-                <button class="btn dark-btn-outline px-3 mx-2">14</button>
+                @foreach ($product->sizes()->get() as $size)
+                  <button class="btn dark-btn-outline sizeBtn px-3 mx-2"> 
+                    <input type="hidden" name="size" value="{{$size->id}}"> {{$size->name}}</button>
+                @endforeach
               </div>
               <div class="col">
                 <button class="btn" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -215,5 +214,10 @@
   });
 </script>
 
+<script>
+  $(".sizeBtn").on('click', function() {
+    $(this).toggleClass('sizeBtnToggle')
+  })
+</script>
 
 @endpush

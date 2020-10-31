@@ -23,10 +23,14 @@
           <div class="col-1"></div>
         </div>
         <div class="products">
-            @foreach ($cartItems as $item)
-                <div x-data="{ count: 1 }" class="row product-grid py-5">
+          @foreach ($cartItems as $item)
+          <?Php
+            $productId = $item->attributes->productId;
+            $productObj = App\Models\Product::find($productId);
+          ?>
+                <div x-data="{ count: 1 }" id="" data-id="{{$item->id}}" class="row product-grid py-5">
                     <div class="col-2">
-                    <img @click="count++" class="img-fluid w-small-100 w-50 cursor-pointer" src="./images/pc1.png"
+                    <img @click="count++" class="img-fluid w-small-100 w-50 cursor-pointer" src="{{$productObj->getFirstMediaUrl('image')}}"
                         alt="product">
                     </div>
                     <div class="col-3">
@@ -50,7 +54,7 @@
                     </div>
                     <div class="col-1 font-weight-bold">{{(float) $item->price * (int) $item->quantity}} EGP</div>
                     <div class="col-1"><i
-                        class="fas fa-times text-secondary responsive-icon position-icon-responsive cursor-pointer"
+                        class="removeCartItem fas fa-times text-secondary responsive-icon position-icon-responsive cursor-pointer"
                         type="button"></i></div>
                 </div>
             @endforeach
@@ -117,3 +121,25 @@
 
 
   @endsection
+
+  @push('scripts')
+      <script>
+
+        $(".removeCartItem").on('click', function(e) {
+          var itemId = $(this).closest(".product-grid").data('id');
+          $(this).closest(".product-grid").remove()
+
+          $.ajax({
+            url: '{{route('front.cart.product.add')}}',
+            type: "get",
+            dataType: "json",
+            data: {
+                cartId : itemId
+            },
+            success: function() {
+            }
+          })
+        })
+
+      </script>
+  @endpush

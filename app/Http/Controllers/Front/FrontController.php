@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Illuminate\Support\Str;
 
 
 ini_set('display_errors', 'true');
@@ -28,6 +29,10 @@ class FrontController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()) {
+ 
+            session()->put('guestId', Str::random(10).rand(100, 9999));
+        }
         return view('front.index');
     }
 
@@ -270,26 +275,53 @@ class FrontController extends Controller
     public function addCartProduct(Request $request)
     {
         // Product::findOrFail($request->product_id)->toggle([$request->product_id]);
+        if ($request->cartId) {
+            if (auth()->user()) {
+                \Cart::session(auth()->user()->id)->remove($request->cartId);
+            }else{
+                \Cart::session(session()->get('guestId'))->remove($request->cartId);
+            }
+
+            return response()->json();
+        }
         
         $product = Product::findOrFail($request->product_id);
 
         $rowId = rand(100,7000); 
-        $userID = auth()->user()->id;
-        
-        \Cart::session($userID)->add(array(
-            'id' => $rowId,
-            'name' => $product->name,
-            'price' => $product->price,
-            'quantity' => 1,
-            'attributes' => array(
-                'description' => $product->description,
-                'productId' => $product->id,
-            ),
-            'associatedModel' => $product
-        ));
+        if (auth()->user()) {
+            $userID = auth()->user()->id;
 
+            \Cart::session($userID)->add(array(
+                'id' => $rowId,
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => 1,
+                'attributes' => array(
+                    'description' => $product->description,
+                    'productId' => $product->id,
+                    'productSize' => $request->product_size ?? '',
+                    'productColor' => $request->product_color ?? '',
+                ),
+                'associatedModel' => $product
+            ));
+        }else{
+            \Cart::session(session()->get('guestId'))->add(array(
+                'id' => $rowId,
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => 1,
+                'attributes' => array(
+                    'description' => $product->description,
+                    'productId' => $product->id,
+                    'productSize' => $request->product_size ?? '',
+                    'productColor' => $request->product_color ?? '',
+                ),
+                'associatedModel' => $product
+            ));
+        }
+        
+        
         $cart = \Cart::getContent();
-        // $cart = Cart::session($userID)->getContent($rowId);
 
         return response()->json([
             'product' => $product,
@@ -306,13 +338,12 @@ class FrontController extends Controller
 
     public function productCartCounterUp(Request $request)
     {
-        dump($request->all());
+        // dump($request->all());
         \Cart::session(auth()->user()->id)->update($request->cart_id,[
             'quantity' => array(
                 'relative' => false,
                 'value' => (int) $request->counter_value,
             ) 
-            
             // 'price' => (float) $request->product_price * (float) $request->counter_value,
         ]);
     }
@@ -324,13 +355,27 @@ class FrontController extends Controller
 
     public function cart()
     {
-        $cartItems = \Cart::session(auth()->user()->id)->getContent();
+        if (auth()->user()) {
+            $cartItems = \Cart::session(auth()->user()->id)->getContent();
+        }elseif(Session::has('guestId')){
+            // dd(session()->get('guestId'));
+            $cartItems = \Cart::session(session()->get('guestId'))->getContent();
+        }else{
+            $cartItems = [];
+        }
         return view('front.cart', compact('cartItems'));
     }
 
     public function cartCheckout()
     {
-        $cartItems = \Cart::session(auth()->user()->id)->getContent();
+        if (auth()->user()) {
+            $cartItems = \Cart::session(auth()->user()->id)->getContent();
+        }elseif(Session::has('guestId')){
+            $cartItems = \Cart::session(session()->get('guestId'))->getContent();
+        }else{
+            $cartItems = [];
+        }
+
         return view('front.checkout', compact('cartItems'));
     }
 }
