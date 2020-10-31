@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Product;
+use App\Models\Size;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Illuminate\Support\Collection;
@@ -26,21 +27,58 @@ class ProductsImport implements ToCollection
     public function collection(Collection $rows)
     {
         // dd($rows);
-        $array = [];
+        // $array = [];
         foreach ($rows as $key => $value) {
-            // dd($key);
             if ($key > 0) {
 
-                preg_match('#\((.*?)\)#', $value[7], $match);
+                // dum($value);
+                $product = Product::where('ego_code', $value[1])->first();
+                $colors = Color::all();
+                $a = $value[7];
+                if ($product) {
+                    foreach ($colors as $key => $color) {
+                        $string = str_replace('#', '', str_replace(' ', '', $color->code));
+                        
+                        if (strpos($a, $string) !== false) {
+                            $product->colors()->attach($color->id);
+                            // dump($color);
+                            // dump($string);
+                        }
+                    }
+                }
+                // dump($value[7]);
+
+                $size = explode("/ ",$value[13]);
+                $counts = explode(". ",$value[12]);
+
+                // if ((count($size) == count($counts)) && $product) {
+
+                //     echo "size    ";
+                // dump(explode("/ ",$value[13])); // sizes
+                // echo "count    ";
+                // dump(explode(". ",$value[12])); // counts
+
+                    // for ($i=0; $i < count($size); $i++) { 
+                    //     $sizeObj = Size::where('name', $size[$i])->first();
+                    //     $product->sizes()->attach($sizeObj, ['count' => $counts[$i]]);
+                    // }
+                // }
+            
+            
+                // dump(explode("/ ",$value[13])); // sizes
+                // dump(explode(". ",$value[12])); // counts
+                
+                // explode("/ ",$str);
+                // preg_match('#\((.*?)\)#', $value[7], $match);
                 // echo $match[1];
                 // dd($match[preg_match('#\((.*?)\)#', $value[7], $match)]);
 
                 
 
-                Color::create([
-                    'code' => "#".preg_replace("/\([^)]+\)/","",$value[7]) ?? $value[7],
-                    'name' => $match[1] ?? '',
-                ]);
+                // Color::create([
+                //     'code' => "#".preg_replace("/\([^)]+\)/","",$value[7]) ?? $value[7],
+                //     'name' => $match[1] ?? '',
+                // ]);
 
                 // $array['category'] = $value[5];
                 // $array['product'] = $value[6];
@@ -57,6 +95,7 @@ class ProductsImport implements ToCollection
 
             // dd($array);
         }
+        // dd();
 
         // foreach ($array as $key => $v) {
         //     $cat = Category::where('name', $v)->first();

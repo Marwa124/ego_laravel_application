@@ -24,19 +24,58 @@ class SizesTableSeeder extends Seeder
                 'name' => 'All Sizes',
             ],
             [
-                'name' => 'X Large',
+                'name' => 'XL',
             ],
             [
-                'name' => 'Large ',
+                'name' => 'L',
             ],
             [
-                'name' => 'Medium ',
+                'name' => 'M',
             ],
             [
-                'name' => 'Small',
+                'name' => 'S',
             ],
             [
-                'name' => 'X Small',
+                'name' => 'XS',
+            ],
+            [
+                'name' => '46',
+            ],
+            [
+                'name' => '44',
+            ],
+            [
+                'name' => '42',
+            ],
+            [
+                'name' => '41',
+            ],
+            [
+                'name' => '40',
+            ],
+            [
+                'name' => '39',
+            ],
+            [
+                'name' => '38',
+            ],
+            [
+                'name' => '37',
+            ],
+            [
+                'name' => '36',
+            ],
+            [
+                'name' => '29',
+            ],
+            [
+                'name' => '28',
+            ],
+            [
+                'name' => '27',
+            ],
+            [
+                'name' => '29',
             ],
         ];
 
