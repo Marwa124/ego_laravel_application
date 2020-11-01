@@ -197,6 +197,7 @@ Route::get('payments/paypal', 'PayPalController@index')->name('paypal.index');
     ]);;
 
     Route::post('products/remove-media', 'ProductController@removeMedia');
+    Route::post('products/media', 'ProductController@storeMedia')->name('products.storeMedia');
     Route::resource('products', 'ProductController')->except([
         'show'
     ]);

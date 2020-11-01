@@ -26,7 +26,9 @@
         <div class="col-9">
             <div style="width: 100%" class="dropzone image" id="image" data-field="image">
                 <input type="hidden" name="image">
+               
             </div>
+         
             <a href="#loadMediaModal" data-dropzone="image" data-toggle="modal" data-target="#mediaModal" class="btn btn-outline-{{setting('theme_color','primary')}} btn-sm float-right mt-1">{{ trans('lang.media_select')}}</a>
             <div class="form-text text-muted w-50">
                 {{ trans("lang.product_image_help") }}
@@ -37,15 +39,22 @@
         <script type="text/javascript">
             var var15671147171873255749ble = '';
             @if(isset($product) && $product->hasMedia('image'))
-                var15671147171873255749ble = {
-                name: "{!! $product->getFirstMedia('image')->name !!}",
-                size: "{!! $product->getFirstMedia('image')->size !!}",
-                type: "{!! $product->getFirstMedia('image')->mime_type !!}",
-                collection_name: "{!! $product->getFirstMedia('image')->collection_name !!}"
+            var var15671147171873255749ble = [];
+
+            @foreach($product->getMedia('image') as $prodImage)
+
+            var15 = {
+                name: "{!! $prodImage->name !!}",
+                size: "{!! $prodImage->size !!}",
+                type: "{!! $prodImage->mime_type !!}",
+                collection_name: "{!! $prodImage->collection_name !!}"
             };
+            var15671147171873255749ble.push(var15);
+            @endforeach
+
                     @endif
             var dz_var15671147171873255749ble = $(".dropzone.image").dropzone({
-                    url: "{!!url('admin/uploads/store')!!}",
+                    url: "{!!route('products.storeMedia')!!}",
                     addRemoveLinks: true,
                     maxFiles: 10,
                     init: function () {
@@ -63,9 +72,15 @@
                         dz_var15671147171873255749ble[0].mockFile = '';
                         dzMaxfile(this, file);
                     },
-                    complete: function (file) {
+                    complete: function (file, response) {
+
                         dzComplete(this, file, var15671147171873255749ble, dz_var15671147171873255749ble[0].mockFile);
                         dz_var15671147171873255749ble[0].mockFile = file;
+                        // console.log(dz_var15671147171873255749ble[0].mockFile);
+                        // console.log(file.xhr.response);
+                        // console.log(file);
+                        // console.log(file.upload);
+                        $('#imageUpload').append('<input type="hidden" name="document[]" value="' + file.xhr.response + '">')
                     },
                     removedfile: function (file) {
                         dzRemoveFile(
@@ -78,6 +93,9 @@
             dropzoneFields['image'] = dz_var15671147171873255749ble;
         </script>
 @endprepend
+
+
+
 
 <!-- Price Field -->
     <div class="form-group row ">

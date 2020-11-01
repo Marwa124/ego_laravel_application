@@ -49,7 +49,7 @@
     </div>
     <div class="card-body">
       {!! Form::open(['route' => 'products.store']) !!}
-      <div class="row">
+      <div class="row" id="imageUpload">
         @include('products.fields')
       </div>
       {!! Form::close() !!}

@@ -14,6 +14,7 @@ use App\DataTables\ProductDataTable;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Color;
+use App\Models\Media;
 use App\Models\ProductFeature;
 use App\Models\Size;
 use App\Repositories\CategoryRepository;
@@ -26,6 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -119,13 +121,16 @@ class ProductController extends Controller
             }
 
             $product->customFieldsValues()->createMany(getCustomFieldsValues($customFields, $request));
-            if (isset($input['image']) && $input['image']) {
+            if (isset($input['document']) && $input['document']) {
+                foreach ($input['document'] as $value) {
+                    Media::where('id', $value)->update(['model_id' => $product->id]);
+                }
 
-                $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
+                // $cacheUpload = $this->uploadRepository->getByUuid($input['image']);
 
-                $mediaItem = $cacheUpload->getMedia('image')->first();
+                // $mediaItem = $cacheUpload->getMedia('image')->first();
 
-                $mediaItem->copy($product, 'image');
+                // $mediaItem->copy($product, 'image');
             }
         } catch (ValidatorException $e) {
             Flash::error($e->getMessage());
@@ -135,6 +140,90 @@ class ProductController extends Controller
 
         return redirect(route('products.index'));
     }
+
+
+    public function storeMedia(Request $request)
+    {
+        $file = $request->file('file');
+        $path = public_path('uploads/images');
+        $files = File::files($path);
+
+
+       
+
+
+
+
+
+        $order = 283;
+        $custom_properties  = [
+            'user_id'   => 1,
+            'generated_conversions'   => [
+                'thumb'   => true,
+                'icon'   => true,
+            ]
+        ];
+
+        $imageExtension = $file->getClientOriginalExtension();
+
+        // $imageName ='resturant_'.time().'.'.$imageExtension;
+        $name = uniqid() . '_' . trim($file->getClientOriginalName());
+
+                $media = new Media([
+                    'model_type' => 'App\Models\Product',
+                    // 'model_id' => $product->id,
+                    'collection_name' => 'image',
+                    'name' => explode('.', $name)[0],
+                    'file_name' => $name,
+                    'mime_type' => 'image/' . $file->getExtension(),
+                    'disk' => 'public',
+                    'size' => $file->getSize(),
+                    'manipulations' => [],
+                    'custom_properties' => $custom_properties,
+                    'responsive_images' => [],
+                    'order_column' => $order,
+                ]);
+
+                $media->save();
+                
+                 $path = public_path(). '/uploads/images/';
+              
+            
+                $file->move($path, $name);
+            
+                $old = $media->file_name;
+                $extention = explode('.', $old)[1];
+        
+                $path = storage_path('app/public/' . $media->id);
+                File::makeDirectory($path);
+        
+        
+                $file = public_path('uploads/images/' . $old);
+                $destination = storage_path('app/public/' . $media->id . '/' . $old);
+                File::copy($file, $destination);
+        //////////////////////////////////////CREATE conversions FOLDER////////////////////////////////////////////////
+                $path = storage_path('app/public/' . $media->id . '/' . 'conversions');
+                File::makeDirectory($path);
+        
+                $thumb = $media->name . '-thumb' . '.' . $extention;
+                $file = public_path('uploads/images/' . $old);
+                $destination = storage_path('app/public/' . $media->id . '/conversions/' .$thumb);
+                File::copy($file, $destination);
+        
+        
+        
+                $icon = $media->name . '-icon' . '.' . $extention;
+                $file = public_path('uploads/images/' . $old);
+                $destination = storage_path('app/public/' . $media->id . '/conversions/' .$icon);
+                File::copy($file, $destination);
+        
+        
+        
+                $order++;
+
+        return response()->json($media->id);
+    }    
+
 
     /**
      * Display the specified Product.
